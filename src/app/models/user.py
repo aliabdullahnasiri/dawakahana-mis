@@ -8,7 +8,7 @@ from flask import abort, url_for
 from flask_login import AnonymousUserMixin, UserMixin, current_user, login_required
 from numerize import numerize
 
-from app.const import DEFAULT_AVATAR, EMPLOYEE
+from app.const import DEFAULT_AVATAR
 from app.extensions.bcrypt import bcrypt
 from app.extensions.db import db
 from app.extensions.login_manager import login_manager
