@@ -28,3 +28,6 @@ instance/
 
 # Logs
 *.log
+
+# Uploads
+src/app/static/uploads
