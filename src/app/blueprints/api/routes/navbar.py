@@ -79,11 +79,7 @@ def build_navbar(current_user) -> List:
     return list(
         filter(
             lambda f_item: (
-                type(f_item["for"]) is str
-                and current_user.primary_role_id
-                == getattr(Role.get(f_item["for"]), "id")
-                if f_item and f_item.get("for")
-                else True
+                type(f_item["for"]) is str if f_item and f_item.get("for") else True
             ),
             [
                 (

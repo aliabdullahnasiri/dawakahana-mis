@@ -37,8 +37,6 @@ class User(UserMixin, db.Model):
         nullable=True,
     )
 
-    primary_role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
-
     employee = db.relationship(
         "Employee", back_populates="user", cascade="delete", uselist=False
     )
@@ -61,11 +59,10 @@ class User(UserMixin, db.Model):
         backref=db.backref("users", lazy="dynamic"),
         lazy="dynamic",
     )
-    primary_role = db.relationship("Role", back_populates="user")
 
     @property
     def permissions(self):
-        permissions = self.primary_role.hex_permissions if self.primary_role else 0
+        permissions = 0
 
         for role in self.roles.all():
             permissions |= role.hex_permissions
@@ -77,10 +74,6 @@ class User(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.administer())
-
-    @property
-    def is_employee(self) -> bool:
-        return self.primary_role == Role.get(EMPLOYEE)
 
     def to_dict(self) -> Dict:
         dct = {
@@ -184,12 +177,8 @@ class User(UserMixin, db.Model):
 
     def update_roles(
         self,
-        primary_role: Union[Role, None] = None,
         roles: Union[List[Role], None] = None,
     ):
-        if primary_role:
-            self.primary_role_id = getattr(primary_role, "id")
-
         if type(roles) is list:
             _roles = self.roles.all()
 

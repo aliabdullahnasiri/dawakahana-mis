@@ -58,7 +58,7 @@ def signup():
             user.set_password(passwd)
 
         if user.email == FLASKY_ADMIN:
-            user.primary_role = Role.administrator()
+            user.update_roles([Role.administrator()])
 
         db.session.add(user)
         db.session.commit()
