@@ -1,0 +1,86 @@
+{% with f = form.a %}
+<form autocomplete="off" method="POST" action="{{ url_for('api.add_medicine') }}">
+  {{ f.hidden_tag() }}
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="my-2">
+        <div class="input-group input-group-outline">
+          {{ f.barcode.label(class="form-label") }}
+          {{ f.barcode(class="form-control") }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="my-2">
+        <div class="input-group input-group-outline">
+          {{ f.name.label(class="form-label") }}
+          {{ f.name(class="form-control") }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="my-2">
+        <div class="input-group input-group-outline">
+          {{ f.generic_name.label(class="form-label") }}
+          {{ f.generic_name(class="form-control") }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="my-2">
+        <div class="input-group input-group-outline">
+          {{ f.manufacturer.label(class="form-label") }}
+          {{ f.manufacturer(class="form-control") }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="my-2">
+        <div class="input-group input-group-outline">
+          {{ f.strength.label(class="form-label") }}
+          {{ f.strength(class="form-control") }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="my-2">
+        <div class="px-2 py-0 my-0">
+          {{ f.description.label(class="form-label") }}
+        </div>
+        <div class="input-group input-group-outline">
+          {{ f.description(class="form-control") }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="mt-2 mx-3">
+        <div class="form-check form-check-info ps-0">
+          {{ f.is_active(class="form-check-input") }} {{
+          f.is_active.label(class="form-check-label") }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-center">
+        {{ f.submit(class="btn bg-gradient-info btn-lg w-100 mt-4 mb-0") }}
+      </div>
+    </div>
+  </div>
+</form>
+{% endwith %}

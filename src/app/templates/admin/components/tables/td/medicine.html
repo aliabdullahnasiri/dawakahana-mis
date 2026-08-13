@@ -1,0 +1,19 @@
+<div class="d-flex px-0 py-1">
+  <div>
+    <div class="avatar avatar-sm bg-gradient-info border-radius-lg d-flex align-items-center justify-content-center">
+      <span class="text-white text-sm">
+        {{ medicine and medicine.name[0] or name[0] }}
+      </span>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column justify-content-center ms-0">
+    <h6 class="mb-0 text-sm">
+      {{ medicine and medicine.name or name }}
+    </h6>
+
+    <p class="text-xs text-secondary mb-0">
+      {{ medicine and medicine.manufacturer or manufacturer }}
+    </p>
+  </div>
+</div>

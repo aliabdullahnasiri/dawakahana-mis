@@ -6,7 +6,6 @@ from flask_login import current_user, login_required
 
 from app.blueprints.api import bp
 from app.models.permission import Permission
-from app.models.role import Role
 
 ITEMS: List[Dict] = [
     {
@@ -42,6 +41,22 @@ ITEMS: List[Dict] = [
         "type": "section",
         "title": _("MANAGEMENT_LABEL"),
         "items": [
+            {
+                "type": "item",
+                "title": _("MEDICINES_LABEL"),
+                "icon": None,
+                "endpoint": "admin.medicines",
+                "permissions": Permission.get("FETCH_MEDICINES")
+                | Permission.get("FETCH_MEDICINE"),
+            },
+            {
+                "type": "item",
+                "title": _("MEDICINE_STOCKS_LABEL"),
+                "icon": None,
+                "endpoint": "admin.medicine_stocks",
+                "permissions": Permission.get("FETCH_MEDICINE_STOCKS")
+                | Permission.get("FETCH_MEDICINE_STOCK"),
+            },
             {
                 "type": "item",
                 "title": _("JOBS_LABEL"),

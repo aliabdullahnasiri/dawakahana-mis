@@ -1,0 +1,15 @@
+<table
+  class="table align-items-center mb-0 table-hover"
+  data-type="dynamic"
+  data-get-rows="{{ url_for('api.fetch_medicine_stocks_rows') }}"
+  data-get-row="{{ url_for('api.fetch_medicine_stock_row', id=-1) }}"
+  data-update-row="{{ url_for('api.update_medicine_stock') }}"
+  data-delete-row="{{ url_for('api.delete_medicine_stock', id=-1) }}"
+  data-view-row="{{ url_for('admin.view', entity='medicine_stock', id=-1) }}"
+  data-add-row-modal-id="#AddMedicineStockModal"
+  data-edit-row-modal-id="#EditMedicineStockModal"
+  data-view-row-modal-id="#ViewModal"
+>
+  <thead></thead>
+  <tbody></tbody>
+</table>

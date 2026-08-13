@@ -1,5 +1,4 @@
 import json
-import re
 from operator import and_
 from typing import List, Self
 
@@ -26,6 +25,8 @@ class MustBeUnique:
 
         try:
             vals = json.loads(field.data)
+            if not isinstance(vals, list):
+                vals = [vals]
         except:
             vals.append(field.data)
 

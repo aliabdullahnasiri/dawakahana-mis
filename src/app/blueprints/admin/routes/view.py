@@ -8,6 +8,8 @@ from app.blueprints.admin import bp
 from app.config import Config
 from app.models.employee import Employee
 from app.models.job import Job
+from app.models.medicine import Medicine
+from app.models.medicine_stock import MedicineStock
 from app.models.permission import Permission
 from app.models.role import Role
 
@@ -16,6 +18,8 @@ entities: Dict = {
     "employee": Employee,
     "permission": Permission,
     "role": Role,
+    "medicine": Medicine,
+    "medicine_stock": MedicineStock,
 }
 
 

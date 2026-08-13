@@ -1,0 +1,30 @@
+<div
+  class="modal fade"
+  id="EditMedicineStockModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="EditMedicineStockModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card card-plain">
+          <div class="card-header pb-0 text-left">
+            <h5 data-modal-title>
+              {{ _("UPDATE_MEDICINE_STOCK_INFORMATION_MSG") }}
+            </h5>
+
+            <p class="mb-0" data-modal-description>
+              {{ _("UPDATE_MEDICINE_STOCK_DESCRIPTION_MODAL_MSG") }}
+            </p>
+          </div>
+
+          <div class="card-body">
+            {% include "admin/components/forms/update/medicine-stock.html" %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
