@@ -1,0 +1,18 @@
+<ul class="list-group">
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("id_LABEL") }}:</strong> &nbsp;{{ role.id }}
+  </li>
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("NAME_LABEL") }}:</strong> &nbsp;{{ role.name }}
+  </li>
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("DESCRIPTION_LABEL") }}:</strong> &nbsp;{{ role.description or 'N/A'
+    }}
+  </li>
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("CREATED_AT_SUCCESS_MSG") }}:</strong> &nbsp;{{ role.display_created_at }}
+  </li>
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("UPDATED_AT_SUCCESS_MSG") }}:</strong> &nbsp;{{ role.display_updated_at }}
+  </li>
+</ul>

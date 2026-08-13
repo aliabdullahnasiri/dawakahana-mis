@@ -1,0 +1,684 @@
+import { initAllMovingTabs } from "./script.js";
+
+const LIMIT = 50;
+const FIRST_PAGE = 1;
+
+async function fetchTableData(tableElement, page, limit) {
+  let url = tableElement.dataset.getRows;
+  let params = new URLSearchParams();
+
+  params.set("page", page || tableElement.dataset.page || FIRST_PAGE);
+  params.set("limit", limit || tableElement.dataset.limit || LIMIT);
+
+  url = url.concat(String.fromCharCode(63)).concat(params.toString());
+
+  let response = await fetch(url);
+
+  if (response.status == 403) throw Error("403 ERROR");
+
+  if (response.ok) {
+    let data = await response.json();
+
+    return [data, response.status];
+  }
+
+  return [undefined, response.status];
+}
+
+async function initTable(tableElement, theadElement, tbodyElement) {
+  let [data] = await fetchTableData(tableElement, FIRST_PAGE);
+
+  if (data) {
+    let cols = data?.cols;
+    let rows = data?.rows;
+
+    for (const [id, _] of cols) {
+      if (id == "is_deletable") {
+        document.is_deletable_column_exists = true;
+
+        cols = cols.slice(1);
+      }
+      break;
+    }
+
+    if (cols) {
+      theadElement.innerHTML = "";
+      initTableHeader(theadElement, cols);
+    }
+
+    if (rows) {
+      tbodyElement.innerHTML = "";
+      addTableRows(tableElement, tbodyElement, rows);
+    }
+
+    tableElement.dataset.page = 2;
+  }
+}
+
+async function loadRows() {
+  if (window.tableLoading) return;
+
+  window.tableLoading = true;
+
+  let table = document.querySelector("table[data-type=dynamic]");
+
+  if (table) {
+    let tbody = table.querySelector("tbody");
+    showSkeletonRow(tbody);
+
+    try {
+      let [data] = await fetchTableData(
+        table,
+        table.dataset.page,
+        table.dataset.limit,
+      );
+
+      removeSkeletonRow(tbody);
+
+      let rows = data?.rows;
+
+      if (rows.length !== 0) {
+        addTableRows(table, tbody, rows, false);
+
+        table.dataset.page = 1 + +table.dataset.page;
+      }
+
+      window.tableLoading = false;
+    } catch (error) {
+      table.dataset.completed = "true";
+    }
+  }
+}
+
+function showSkeletonRow(tbody) {
+  let sk = document.createElement("tr");
+  sk.classList.value = "row-skeleton";
+
+  tbody.append(sk);
+}
+
+function removeSkeletonRow(tbody) {
+  tbody.querySelectorAll("tr[data-role=skeleton]").forEach((element) => {
+    element.remove();
+  });
+}
+
+function addActionButtons(tableElement, trElement, is_deletable = true) {
+  let tdElement = document.createElement("td");
+
+  tdElement.classList.value = "align-middle";
+
+  if (tableElement.dataset.deleteRow) {
+    let deleteLinkElement = document.createElement("a");
+
+    deleteLinkElement.dataset.role = "delete";
+    deleteLinkElement.innerHTML = `<i class="material-symbols-rounded fs-5">delete</i>`;
+
+    deleteLinkElement.setAttribute("aria-disabled", is_deletable);
+
+    tdElement.append(deleteLinkElement);
+  }
+  if (tableElement.dataset.editRowModalId) {
+    let editLinkElement = document.createElement("a");
+    editLinkElement.dataset.role = "edit";
+    editLinkElement.dataset.bsToggle = "modal";
+    editLinkElement.dataset.bsPlacement = "top";
+    editLinkElement.ariaLabel = "Edit Modal";
+    editLinkElement.dataset.bsOriginalTitle = "Edit Modal";
+    editLinkElement.dataset.bsTarget = tableElement.dataset.editRowModalId;
+    editLinkElement.innerHTML = `<i class="material-symbols-rounded fs-5">edit</i>`;
+
+    tdElement.append(editLinkElement);
+  }
+
+  if (tableElement.dataset.viewRowModalId) {
+    let viewLinkElement = document.createElement("a");
+    viewLinkElement.dataset.role = "view";
+    viewLinkElement.dataset.bsToggle = "modal";
+    viewLinkElement.dataset.bsPlacement = "top";
+    viewLinkElement.ariaLabel = "View Modal";
+    viewLinkElement.dataset.bsOriginalTitle = "View Modal";
+    viewLinkElement.dataset.bsTarget = tableElement.dataset.viewRowModalId;
+    viewLinkElement.innerHTML = `<i class="material-symbols-rounded fs-5">visibility</i>`;
+
+    tdElement.append(viewLinkElement);
+  }
+
+  tdElement.querySelectorAll("a").forEach((element) => {
+    element.classList.value =
+      "text-secondary font-weight-bold text-xs m-1 btn btn-sm text-white";
+
+    element.classList.add(
+      element.dataset.role == "delete" ? "btn-danger" : "btn-info",
+    );
+
+    element.href = "javascript:;";
+  });
+
+  trElement.append(tdElement);
+}
+
+function addCheckBox(trElement, disabled = true) {
+  let tdElement = document.createElement("td");
+  let divElement = document.createElement("div");
+  let inputElement = document.createElement("input");
+
+  tdElement.classList.value = "checkbox-td text-center";
+
+  divElement.classList.value = "form-check form-check-info p-0";
+
+  inputElement.type = "checkbox";
+  inputElement.name = "delete";
+  inputElement.dataset.role = "multiple-delete";
+  inputElement.classList.add("form-check-input");
+
+  if (disabled) inputElement.setAttribute("disabled", disabled);
+
+  divElement.append(inputElement);
+  tdElement.append(divElement);
+  trElement.append(tdElement);
+}
+
+function resetForm(formElement) {
+  const inputGroupElement = formElement.querySelectorAll(".input-group");
+
+  Array.from(inputGroupElement).forEach((inputGroupElement) => {
+    let input = inputGroupElement.querySelector("input,textarea");
+
+    if (input) input.value = null;
+
+    inputGroupElement.classList.remove("is-filled");
+    inputGroupElement.classList.remove("is-valid");
+    inputGroupElement.classList.remove("is-invalid");
+  });
+
+  Array.from(formElement.querySelectorAll("div.errors")).forEach((element) =>
+    element.remove(),
+  );
+
+  Array.from(
+    formElement.querySelectorAll("div.multi-value-input div.values span"),
+  ).forEach((element) => element.remove());
+}
+
+function deleteRows(tableElement, tbodyElement, ids) {
+  if (ids && ids?.length > 0) {
+    const URL = tableElement.dataset.deleteRow;
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Array.from(ids).forEach((id) => {
+          if (id != undefined) {
+            let trElement = tbodyElement.querySelector(
+              "tr[data-id='%s']".replace("%s", id),
+            );
+
+            fetch(URL.replace("-1", id), {
+              method: "delete",
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.status == 200) {
+                  delete document.ids[
+                    document.ids.findIndex((value) => value == id)
+                  ];
+
+                  trElement.classList.add("row-deleting");
+
+                  trElement.addEventListener(
+                    "animationend",
+                    () => {
+                      trElement.remove();
+
+                      if (tbodyElement.querySelectorAll("tr").length == 0) {
+                        addNoRowLabel(
+                          tableElement.querySelector("thead"),
+                          tbodyElement,
+                        );
+                      }
+                    },
+                    { once: true },
+                  );
+                }
+              });
+          }
+        });
+      }
+    });
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Something went wrong!",
+    });
+  }
+}
+
+function deleteRow(rowElement) {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let tableElement = rowElement.closest("table");
+      let tbodyElement = tableElement.querySelector("tbody");
+      let theadElement = tableElement.querySelector("thead");
+
+      let url = tableElement.dataset.deleteRow?.replace(
+        String.fromCharCode(64),
+        rowElement.dataset.id,
+      );
+
+      fetch(url, {
+        method: "delete",
+      })
+        .then((response) => {
+          return response.json();
+        })
+
+        .then((data) => {
+          if (data.status == 200) {
+            Swal.fire({
+              title: data?.title,
+              text: data?.message,
+              icon: data?.category,
+            });
+
+            rowElement.classList.add("row-deleting");
+
+            rowElement.addEventListener(
+              "animationend",
+              () => {
+                rowElement.remove();
+
+                if (tbodyElement.querySelectorAll("tr").length == 0) {
+                  addNoRowLabel(theadElement, tbodyElement);
+                }
+              },
+              { once: true },
+            );
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
+          }
+        });
+    }
+  });
+}
+
+function addTableRow(tableElement, theadElement, tbodyElement, id) {
+  deleteNoRowLabel(tbodyElement);
+
+  let url = tableElement.dataset.getRow.replace("-1", id);
+  fetch(url, { method: "get" })
+    .then((response) => response.json())
+    .then((data) => {
+      let row = [];
+      let is_deletable = data?.is_deletable || true;
+
+      Array.from(
+        theadElement.querySelector("tr").querySelectorAll("th"),
+      ).forEach((thElement) => {
+        row.push(data[thElement.dataset.name]);
+      });
+
+      let trElement = document.createElement("tr");
+      let tdElement;
+
+      trElement.dataset.id = id;
+
+      if (tableElement.dataset.deleteRow) addCheckBox(trElement, !is_deletable);
+
+      row.forEach((value, index) => {
+        if (value !== undefined) {
+          tdElement = document.createElement("td");
+
+          if (
+            (index == 1 && tableElement.dataset.deleteRow) ||
+            (index == 0 && !tableElement.dataset.deleteRow)
+          ) {
+            tdElement.classList.value = "text-xs align-middle text-center";
+          } else {
+            tdElement.classList.add("text-xs");
+          }
+
+          tdElement.innerHTML = value;
+
+          trElement.append(tdElement);
+        }
+      });
+
+      addActionButtons(tableElement, trElement, is_deletable);
+
+      tbodyElement.append(trElement);
+    });
+}
+
+function reloadRow(tableElement, theadElement, rowElement) {
+  const dataID = rowElement.dataset.id;
+
+  let thElement, trElement, indexOf, url;
+
+  url = tableElement.dataset.getRow.replace(String.fromCharCode(64), dataID);
+
+  fetch(url, {
+    method: "get",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      Object.entries(data).forEach(([key, value]) => {
+        thElement = theadElement.querySelector(
+          "th[data-name='%s']".replace("%s", key),
+        );
+
+        if (thElement) {
+          trElement = thElement.closest("tr");
+          indexOf = Array.from(trElement.children).indexOf(thElement);
+
+          rowElement.children[indexOf].innerHTML = value;
+        }
+      });
+    });
+}
+
+function addTableRows(tableElement, tbodyElement, rows, empty = true) {
+  let trElement;
+  let tdElement;
+
+  if (empty) tbodyElement.innerHTML = "";
+
+  if (rows.length > 0) {
+    let deletable = true;
+
+    Array.from(rows).forEach((row) => {
+      if (document.is_deletable_column_exists) {
+        deletable = row[0];
+        row = row.slice(1);
+      }
+
+      trElement = document.createElement("tr");
+
+      if (tableElement.dataset.deleteRow) addCheckBox(trElement, !deletable);
+
+      Array.from(row).forEach((item, index) => {
+        tdElement = document.createElement("td");
+        tdElement.classList.value = "text-xs";
+
+        if (!index) {
+          tdElement.classList.add("align-middle");
+          tdElement.classList.add("text-center");
+
+          trElement.setAttribute("data-id", item);
+        }
+
+        tdElement.innerHTML = item;
+
+        trElement.append(tdElement);
+      });
+
+      addActionButtons(tableElement, trElement, deletable);
+
+      tbodyElement.append(trElement);
+    });
+  } else {
+    addNoRowLabel(tableElement.querySelector("thead"), tbodyElement);
+  }
+}
+
+function initTableHeader(theadElement, cols) {
+  let tableElement = theadElement.closest("table[data-type=dynamic]");
+  let trElement = document.createElement("tr");
+  let thElement;
+
+  cols = [...cols, ["action", null]];
+
+  if (tableElement.dataset.deleteRow) {
+    cols = [["checkbox", null], ...cols];
+  }
+
+  Array.from(cols).forEach(([id, name], index) => {
+    thElement = document.createElement("th");
+
+    thElement.classList.value =
+      "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7";
+
+    if ((tableElement.dataset.deleteRow && index <= 1) || index == 0) {
+      thElement.classList.add("align-middle");
+      thElement.classList.add("text-center");
+    }
+
+    thElement.dataset.name = id;
+
+    thElement.innerHTML = name;
+
+    trElement.append(thElement);
+  });
+
+  theadElement.append(trElement);
+}
+
+function addNoRowLabel(theadElement, tbodyElement) {
+  if (!tbodyElement.querySelector("tr.no-rows-label")) {
+    let trElement = document.createElement("tr");
+    let tdElement = document.createElement("td");
+    let thCounts = theadElement
+      .querySelector("tr")
+      .querySelectorAll("th").length;
+
+    trElement.classList.add("no-rows-label");
+
+    tdElement.classList.value = "text-center py-4";
+    tdElement.innerHTML = "No rows yet — add one above.";
+    tdElement.colSpan = thCounts;
+
+    trElement.append(tdElement);
+    tbodyElement.append(trElement);
+  }
+}
+
+function deleteNoRowLabel(tbodyElement) {
+  let trElement = tbodyElement.querySelector("tr.no-rows-label");
+
+  if (trElement) trElement.remove();
+}
+
+function viewRow(tableElement, row) {
+  const rowID = row.dataset.id;
+  const viewURL = tableElement.dataset.viewRow.replace(
+    String.fromCharCode(64),
+    rowID,
+  );
+  const viewModalID = tableElement.dataset.viewRowModalId;
+  const viewModalElement = document.querySelector(viewModalID);
+  const viewModalBodyElement = viewModalElement.querySelector("div.modal-body");
+
+  fetch(viewURL, { method: "GET" })
+    .then((response) => response.text())
+    .then((data) => {
+      viewModalBodyElement.innerHTML = data;
+      setTimeout(function () {
+        initAllMovingTabs();
+      }, 25);
+    });
+}
+
+function initTableControl(tableElement, theadElement, tbodyElement) {
+  let headerElement = tableElement
+    .closest("div.card")
+    ?.querySelector("div.card-header");
+  let addButtonElement = headerElement.querySelector("[data-bs-role='add']");
+  let deleteButtonElement = headerElement.querySelector(
+    "[data-bs-role='multiple-delete']",
+  );
+  let reloadButtonElement = headerElement.querySelector(
+    "[data-bs-role=refresh]",
+  );
+  let searchInputElement = headerElement.querySelector(
+    "input[data-bs-role=search]",
+  );
+  let formElement;
+
+  if (addButtonElement)
+    if (tableElement.dataset.addRowModalId) {
+      formElement = document.querySelector(
+        addButtonElement.dataset.bsTarget?.concat(" form"),
+      );
+
+      addButtonElement.setAttribute(
+        "data-bs-target",
+        tableElement.dataset.addRowModalId,
+      );
+
+      if (formElement)
+        addButtonElement.addEventListener("click", function () {
+          resetForm(formElement);
+        });
+    } else {
+      addButtonElement.setAttribute("disabled", true);
+    }
+
+  if (deleteButtonElement)
+    if (!tableElement.dataset.deleteRow)
+      deleteButtonElement.setAttribute("disabled", true);
+
+  if (reloadButtonElement)
+    reloadButtonElement.addEventListener("click", function () {
+      initTable(tableElement, theadElement, tbodyElement);
+    });
+
+  if (searchInputElement) {
+    let timer;
+    searchInputElement.addEventListener("input", (event) => {
+      clearTimeout(timer);
+
+      const searchTerm = event.target.value.toLowerCase();
+
+      timer = setTimeout(() => {
+        Array.from(tbodyElement.querySelectorAll("tr")).forEach((row) => {
+          const text = row.textContent.toLowerCase();
+
+          row.style.display = text.includes(searchTerm) ? "" : "none";
+        });
+      }, 500);
+    });
+  }
+}
+
+(function () {
+  let tableElement = document.querySelector("table[data-type=dynamic]");
+
+  if (!tableElement) return;
+
+  const theadElement = tableElement.querySelector("thead");
+  const tbodyElement = tableElement.querySelector("tbody");
+
+  initTableControl(tableElement, theadElement, tbodyElement);
+  initTable(tableElement, theadElement, tbodyElement);
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    const table = target.closest("table[data-type='dynamic']");
+
+    if (!document.ids) document.ids = [];
+
+    if (table) {
+      const allowedTags = ["A", "INPUT", "I"];
+      if (!allowedTags.includes(target.tagName)) return;
+
+      const row = target.closest("tr");
+      const role = target.closest("[data-role]")?.dataset?.role;
+
+      switch (role) {
+        case "delete":
+          deleteRow(row);
+          break;
+
+        case "view":
+          viewRow(table, row);
+          break;
+
+        case "multiple-delete": {
+          const id = row.dataset.id;
+          const isChecked = target.checked;
+
+          if (isChecked && !document.ids.includes(id)) {
+            document.ids.push(id);
+          } else if (!isChecked) {
+            document.ids = document.ids.filter((x) => x !== id);
+          }
+
+          break;
+        }
+      }
+
+      return;
+    }
+
+    const btn = target.closest("[data-bs-role='multiple-delete']");
+    if (!btn) return;
+
+    const card = btn.closest("div.card");
+    const tableInCard = card?.querySelector("table[data-type='dynamic']");
+    const tbody = tableInCard?.querySelector("tbody");
+
+    if (document.ids.length > 0) {
+      deleteRows(tableInCard, tbody, document.ids);
+    }
+  });
+
+  document.addEventListener("afterSubmit", (event) => {
+    const form = event.target;
+    const d = event.detail;
+
+    if (!form) return;
+
+    let modal = event.target.closest("div.modal");
+
+    if (modal) {
+      let selector = "[data-bs-target='#%s']".replace("%s", modal.id);
+      let target = document.querySelector(selector);
+      let cardElement = target?.closest(
+        "div.card:has(table[data-type=dynamic])",
+      );
+
+      if (cardElement) {
+        let tableElement = cardElement.querySelector("table");
+        let theadElement = tableElement.querySelector("thead");
+        let tbodyElement = tableElement.querySelector("tbody");
+
+        if (tableElement && theadElement && tbodyElement)
+          if (!form.hasAttribute("data-get")) {
+            if (d.id != undefined) {
+              addTableRow(tableElement, theadElement, tbodyElement, d.id);
+            }
+          } else {
+            const id = form.querySelector("input[id=id]")?.value;
+
+            if (id) {
+              const row = tableElement.querySelector(
+                "tr[data-id='%s']".replace("%s", id),
+              );
+
+              if (row) reloadRow(tableElement, theadElement, row);
+            }
+          }
+      }
+    }
+  });
+}).call();

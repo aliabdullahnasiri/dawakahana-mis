@@ -1,0 +1,854 @@
+# English translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-08-13 09:57+0430\n"
+"PO-Revision-Date: 2026-08-13 09:58+0430\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: src/app/translations_stub.py:10
+msgid "Ali Abdullah Nasiri"
+msgstr "Ali Abdullah Nasiri"
+
+#: src/app/translations_stub.py:12
+msgid "PS_LABEL"
+msgstr "Pashto"
+
+#: src/app/translations_stub.py:13
+msgid "FA_LABEL"
+msgstr "Persian"
+
+#: src/app/translations_stub.py:14
+msgid "EN_LABEL"
+msgstr "English"
+
+#: src/app/blueprints/admin/routes/dashboard.py:16
+#: src/app/blueprints/api/routes/navbar.py:14
+#: src/app/templates/admin/pages/dashboard.html:6
+msgid "DASHBOARD_LABEL"
+msgstr "Dashboard"
+
+#: src/app/blueprints/admin/routes/employee.py:17
+#: src/app/blueprints/api/routes/navbar.py:55
+#: src/app/templates/admin/views/job.html:94
+#: src/app/templates/admin/views/job.html:121
+msgid "EMPLOYEES_LABEL"
+msgstr "Employees"
+
+#: src/app/blueprints/admin/routes/job.py:15
+#: src/app/blueprints/api/routes/navbar.py:47
+msgid "JOBS_LABEL"
+msgstr "Jobs"
+
+#: src/app/blueprints/admin/routes/permissions.py:17
+#: src/app/blueprints/api/routes/navbar.py:28 src/app/forms/role.py:34
+#: src/app/templates/admin/views/roles.html:31
+#: src/app/templates/admin/views/roles.html:91
+#: src/app/templates/admin/views/tabs/permissions.html:5
+msgid "PERMISSIONS_LABEL"
+msgstr "Permissions"
+
+#: src/app/blueprints/admin/routes/profile.py:14
+msgid "PROFILE_LABEL"
+msgstr "Profile"
+
+#: src/app/blueprints/admin/routes/roles.py:15
+#: src/app/blueprints/api/routes/navbar.py:36 src/app/forms/user.py:81
+#: src/app/templates/admin/views/permissions.html:31
+#: src/app/templates/admin/views/permissions.html:91
+#: src/app/templates/admin/views/tabs/roles.html:5
+msgid "ROLES_LABEL"
+msgstr "Roles"
+
+#: src/app/blueprints/admin/routes/user.py:19
+#: src/app/blueprints/api/routes/navbar.py:21
+#: src/app/templates/admin/views/permissions.html:50
+#: src/app/templates/admin/views/permissions.html:79
+#: src/app/templates/admin/views/roles.html:50
+#: src/app/templates/admin/views/roles.html:79
+#: src/app/templates/admin/views/tabs/users.html:5
+msgid "USERS_LABEL"
+msgstr "Users"
+
+#: src/app/blueprints/admin/routes/view.py:40
+msgid "ROW_WAS_NOT_FOUND_MSG"
+msgstr "Row was not found"
+
+#: src/app/blueprints/admin/routes/view.py:45
+msgid "TEMPLATE_WAS_NOT_FOUND_MSG"
+msgstr "Template was not found"
+
+#: src/app/blueprints/api/routes/employee.py:20
+#: src/app/blueprints/api/routes/permission.py:16
+#: src/app/blueprints/api/routes/user.py:19 src/app/forms/user.py:98
+msgid "ID_LABEL"
+msgstr "ID"
+
+#: src/app/blueprints/api/routes/employee.py:21
+#: src/app/templates/admin/views/tables/employees.html:12
+msgid "EMPLOYEE_LABEL"
+msgstr "Employee"
+
+#: src/app/blueprints/api/routes/employee.py:22
+#: src/app/blueprints/api/routes/user.py:22 src/app/forms/user.py:61
+#: src/app/templates/admin/pages/profile.html:74
+#: src/app/templates/admin/views/information/employee.html:24
+#: src/app/templates/admin/views/tables/users.html:22
+msgid "BIRTHDAY_LABEL"
+msgstr "Birthday"
+
+#: src/app/blueprints/api/routes/employee.py:23
+#: src/app/blueprints/api/routes/user.py:23
+#: src/app/templates/admin/views/information/employee.html:29
+msgid "AGE_LABEL"
+msgstr "Age"
+
+#: src/app/blueprints/api/routes/employee.py:24 src/app/forms/employee.py:46
+#: src/app/templates/admin/views/information/employee.html:33
+#: src/app/templates/admin/views/tables/employees.html:22
+msgid "HIRE_DATE_LABEL"
+msgstr "Hire Date"
+
+#: src/app/blueprints/api/routes/employee.py:25 src/app/forms/employee.py:39
+#: src/app/templates/admin/views/employee.html:60
+#: src/app/templates/admin/views/tables/employees.html:17
+msgid "SALARY_LABEL"
+msgstr "Salary"
+
+#: src/app/blueprints/api/routes/employee.py:87
+#: src/app/blueprints/api/routes/employee.py:111
+msgid "EMPLOYEE_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"
+msgstr "Employee with the given ID was not found"
+
+#: src/app/blueprints/api/routes/employee.py:168
+msgid "EMPLOYEE_ADDED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Employee added successfully"
+
+#: src/app/blueprints/api/routes/employee.py:169
+msgid "ADDED_LABEL"
+msgstr "Added"
+
+#: src/app/blueprints/api/routes/employee.py:221
+#: src/app/blueprints/api/routes/profile.py:66
+#: src/app/blueprints/api/routes/user.py:163
+msgid "GOOD_JOB_LABEL"
+msgstr "Good Job"
+
+#: src/app/blueprints/api/routes/employee.py:222
+msgid "EMPLOYEE_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Employee updated successfully"
+
+#: src/app/blueprints/api/routes/employee.py:245
+#: src/app/blueprints/api/routes/job.py:196
+#: src/app/blueprints/api/routes/role.py:184
+#: src/app/blueprints/api/routes/user.py:184
+msgid "DELETED_SUCCESS_MSG"
+msgstr "Deleted"
+
+#: src/app/blueprints/api/routes/employee.py:246
+msgid "EMPLOYEE_DELETED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Employee deleted successfully"
+
+#: src/app/blueprints/api/routes/employee.py:250
+#: src/app/blueprints/api/routes/job.py:201
+#: src/app/blueprints/api/routes/role.py:195
+#: src/app/blueprints/api/routes/user.py:190
+msgid "ERROR_ERROR"
+msgstr "Error"
+
+#: src/app/blueprints/api/routes/employee.py:251
+msgid "EMPLOYEE_NOT_FOUND_MSG"
+msgstr "Employee not found"
+
+#: src/app/blueprints/api/routes/job.py:17
+#: src/app/blueprints/api/routes/role.py:17
+#: src/app/templates/admin/views/information/employee.html:3
+#: src/app/templates/admin/views/information/job.html:3
+#: src/app/templates/admin/views/information/permission.html:3
+#: src/app/templates/admin/views/information/role.html:3
+#: src/app/templates/admin/views/tables/permissions.html:7
+#: src/app/templates/admin/views/tables/roles.html:7
+msgid "id_LABEL"
+msgstr "ID"
+
+#: src/app/blueprints/api/routes/job.py:18 src/app/forms/job.py:10
+msgid "JOB_TITLE_LABEL"
+msgstr "Job Title"
+
+#: src/app/blueprints/api/routes/job.py:19
+#: src/app/templates/admin/views/information/job.html:12
+msgid "MIN_SALARY_LABEL"
+msgstr "Min Salary"
+
+#: src/app/blueprints/api/routes/job.py:20
+#: src/app/templates/admin/views/information/job.html:15
+msgid "MAX_SALARY_LABEL"
+msgstr "Max Salary"
+
+#: src/app/blueprints/api/routes/job.py:84
+#: src/app/blueprints/api/routes/job.py:108
+msgid "JOB_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"
+msgstr "Job with the given ID was not found"
+
+#: src/app/blueprints/api/routes/job.py:135
+msgid "JOB_ADDED_LABEL"
+msgstr "Job Added"
+
+#: src/app/blueprints/api/routes/job.py:136
+msgid "JOB_ADDED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Job added successfully"
+
+#: src/app/blueprints/api/routes/job.py:169
+#: src/app/blueprints/api/routes/permission.py:136
+#: src/app/blueprints/api/routes/role.py:157
+msgid "UPDATED_SUCCESS_MSG"
+msgstr "Updated"
+
+#: src/app/blueprints/api/routes/job.py:170
+msgid "JOB_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Job updated successfully"
+
+#: src/app/blueprints/api/routes/job.py:173
+#: src/app/blueprints/api/routes/permission.py:140
+#: src/app/blueprints/api/routes/role.py:161
+msgid "NOT_FOUND_LABEL"
+msgstr "Not Found"
+
+#: src/app/blueprints/api/routes/job.py:174
+msgid "JOB_RECORD_NOT_FOUND_MSG"
+msgstr "Job record not found"
+
+#: src/app/blueprints/api/routes/job.py:197
+msgid "JOB_DELETED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Job deleted successfully"
+
+#: src/app/blueprints/api/routes/job.py:202
+msgid "JOB_NOT_FOUND_MSG"
+msgstr "Job not found"
+
+#: src/app/blueprints/api/routes/navbar.py:43
+msgid "CTI_MANAGEMENT_TITLE"
+msgstr "CTI Management"
+
+#: src/app/blueprints/api/routes/navbar.py:65
+msgid "ACCOUNT_TITLE"
+msgstr "Account"
+
+#: src/app/blueprints/api/routes/navbar.py:69
+msgid "PROFILE_TITLE"
+msgstr "Profile"
+
+#: src/app/blueprints/api/routes/permission.py:17
+#: src/app/blueprints/api/routes/role.py:18 src/app/forms/permission.py:17
+#: src/app/forms/role.py:11 src/app/forms/role.py:57
+#: src/app/templates/admin/views/information/permission.html:6
+#: src/app/templates/admin/views/information/role.html:6
+#: src/app/templates/admin/views/tables/files.html:12
+#: src/app/templates/admin/views/tables/permissions.html:12
+#: src/app/templates/admin/views/tables/roles.html:12
+msgid "NAME_LABEL"
+msgstr "Name"
+
+#: src/app/blueprints/api/routes/permission.py:83
+#: src/app/blueprints/api/routes/permission.py:107
+msgid "PERMISSION_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"
+msgstr "Permission with the given ID was not found"
+
+#: src/app/blueprints/api/routes/permission.py:137
+msgid "PERMISSION_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Permission updated successfully"
+
+#: src/app/blueprints/api/routes/permission.py:138
+msgid "SUCCESS_SUCCESS_MSG"
+msgstr "Success"
+
+#: src/app/blueprints/api/routes/permission.py:141
+msgid "PERMISSION_RECORD_NOT_FOUND_MSG"
+msgstr "Permission record not found"
+
+#: src/app/blueprints/api/routes/profile.py:67
+#: src/app/blueprints/api/routes/user.py:164
+msgid "USER_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "User updated successfully"
+
+#: src/app/blueprints/api/routes/role.py:82
+#: src/app/blueprints/api/routes/role.py:106
+msgid "ROLE_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"
+msgstr "Role with the given ID was not found"
+
+#: src/app/blueprints/api/routes/role.py:158
+msgid "ROLE_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Role updated successfully"
+
+#: src/app/blueprints/api/routes/role.py:162
+msgid "ROLE_RECORD_NOT_FOUND_MSG"
+msgstr "Role record not found"
+
+#: src/app/blueprints/api/routes/role.py:185
+msgid "ROLE_HAS_BEEN_DELETED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Role has been deleted successfully"
+
+#: src/app/blueprints/api/routes/role.py:189
+msgid "WARNING_WARNING"
+msgstr "Warning"
+
+#: src/app/blueprints/api/routes/role.py:190
+msgid "PRIMARY_ROLES_CANNOT_BE_DELETED_ERROR"
+msgstr "Primary roles cannot be deleted"
+
+#: src/app/blueprints/api/routes/role.py:196
+msgid "ROLE_NOT_FOUND_MSG"
+msgstr "Role not found"
+
+#: src/app/blueprints/api/routes/role.py:237
+msgid "ROLE_ADDED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Role added successfully"
+
+#: src/app/blueprints/api/routes/role.py:238
+msgid "ROLE_ADDED_LABEL"
+msgstr "Role Added"
+
+#: src/app/blueprints/api/routes/user.py:20
+#: src/app/templates/admin/views/tables/users.html:12
+msgid "USER_LABEL"
+msgstr "User"
+
+#: src/app/blueprints/api/routes/user.py:21
+msgid "USER_NAME_LABEL"
+msgstr "Username"
+
+#: src/app/blueprints/api/routes/user.py:86
+#: src/app/blueprints/api/routes/user.py:113
+msgid "USER_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"
+msgstr "User with the given ID was not found"
+
+#: src/app/blueprints/api/routes/user.py:185
+msgid "USER_DELETED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "User deleted successfully"
+
+#: src/app/blueprints/api/routes/user.py:191
+msgid "USER_NOT_FOUND_MSG"
+msgstr "User not found"
+
+#: src/app/blueprints/api/routes/user.py:236
+msgid "USER_ADDED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "User added successfully"
+
+#: src/app/blueprints/api/routes/user.py:237
+msgid "USER_ADDED_LABEL"
+msgstr "User Added"
+
+#: src/app/forms/__init__.py:65
+msgid "THIS_VALUE_MUST_BE_UNIQUE_MSG"
+msgstr "This value must be unique"
+
+#: src/app/forms/__init__.py:98
+msgid "CHOICE_AN_OPTION_LABEL"
+msgstr "Choose an option"
+
+#: src/app/forms/employee.py:17 src/app/forms/job.py:48
+msgid "JOB_ID_LABEL"
+msgstr "Job ID"
+
+#: src/app/forms/employee.py:20
+msgid "THIS_FIELD_MUST_BE_8_CHARACTERS_MSG"
+msgstr "This field must be 8 characters"
+
+#: src/app/forms/employee.py:33
+msgid "ADDRESS_LABEL"
+msgstr "Address"
+
+#: src/app/forms/employee.py:35 src/app/forms/job.py:13
+#: src/app/forms/permission.py:20 src/app/forms/role.py:14
+#: src/app/forms/role.py:23 src/app/forms/role.py:60
+msgid "THIS_FIELD_CANNOT_EXCEED_255_CHARACTERS_MSG"
+msgstr "This field cannot exceed 255 characters"
+
+#: src/app/forms/employee.py:43 src/app/forms/job.py:30 src/app/forms/job.py:39
+msgid "VALUE_MUST_BE_AT_LEAST_MIN_S_MSG"
+msgstr "Value must be at least %(min)s"
+
+#: src/app/forms/employee.py:47 src/app/forms/user.py:93
+msgid "ADD_LABEL"
+msgstr "Add"
+
+#: src/app/forms/employee.py:52
+msgid "EMPLOYEE_ID_LABEL"
+msgstr "Employee ID"
+
+#: src/app/forms/employee.py:54 src/app/forms/employee.py:60
+#: src/app/forms/job.py:12 src/app/forms/job.py:29 src/app/forms/job.py:38
+#: src/app/forms/job.py:50 src/app/forms/login.py:12 src/app/forms/login.py:17
+#: src/app/forms/permission.py:12 src/app/forms/permission.py:19
+#: src/app/forms/role.py:13 src/app/forms/role.py:53 src/app/forms/signup.py:13
+#: src/app/forms/signup.py:21 src/app/forms/signup.py:29
+#: src/app/forms/signup.py:36 src/app/forms/user.py:23 src/app/forms/user.py:36
+#: src/app/forms/user.py:43 src/app/forms/user.py:51 src/app/forms/user.py:58
+#: src/app/forms/user.py:99
+msgid "THIS_FIELD_IS_REQUIRED_ERROR"
+msgstr "This field is required"
+
+#: src/app/forms/employee.py:58
+msgid "USER_ID_LABEL"
+msgstr "User ID"
+
+#: src/app/forms/employee.py:63 src/app/forms/login.py:17
+#: src/app/forms/profile.py:9 src/app/forms/signup.py:27
+#: src/app/forms/user.py:57 src/app/forms/user.py:102
+msgid "PASSWORD_LABEL"
+msgstr "Password"
+
+#: src/app/forms/employee.py:64 src/app/forms/profile.py:10
+#: src/app/forms/user.py:104
+msgid "UPDATE_LABEL"
+msgstr "Update"
+
+#: src/app/forms/job.py:18
+msgid "JOB_DESCRIPTION_LABEL"
+msgstr "Job Description"
+
+#: src/app/forms/job.py:21
+msgid "THIS_FIELD_CANNOT_EXCEED_2000_CHARACTERS_MSG"
+msgstr "This field cannot exceed 2000 characters"
+
+#: src/app/forms/job.py:26 src/app/templates/admin/views/job.html:38
+msgid "MINIMUM_SALARY_LABEL"
+msgstr "Minimum Salary"
+
+#: src/app/forms/job.py:35 src/app/templates/admin/views/job.html:66
+msgid "MAXIMUM_SALARY_LABEL"
+msgstr "Maximum Salary"
+
+#: src/app/forms/job.py:43
+msgid "ADD_JOB_LABEL"
+msgstr "Add Job"
+
+#: src/app/forms/job.py:54
+msgid "UPDATE_JOB_LABEL"
+msgstr "Update Job"
+
+#: src/app/forms/login.py:10 src/app/forms/signup.py:19
+#: src/app/forms/user.py:49 src/app/templates/admin/pages/profile.html:70
+#: src/app/templates/admin/views/information/employee.html:20
+msgid "EMAIL_LABEL"
+msgstr "Email"
+
+#: src/app/forms/login.py:13 src/app/forms/signup.py:22
+#: src/app/forms/user.py:52
+msgid "ENTER_A_VALID_EMAIL_ADDRESS_PLACEHOLDER"
+msgstr "Enter a valid email address"
+
+#: src/app/forms/login.py:19
+msgid "LOG_IN_LABEL"
+msgstr "Log In"
+
+#: src/app/forms/permission.py:10
+msgid "PERMISSION_ID_LABEL"
+msgstr "Permission ID"
+
+#: src/app/forms/permission.py:25 src/app/forms/role.py:20
+#: src/app/templates/admin/views/information/job.html:9
+#: src/app/templates/admin/views/information/permission.html:9
+#: src/app/templates/admin/views/information/role.html:9
+msgid "DESCRIPTION_LABEL"
+msgstr "Description"
+
+#: src/app/forms/permission.py:28
+msgid "THIS_FIELD_CANNOT_EXCEED_2500_CHARACTERS_MSG"
+msgstr "This field cannot exceed 2500 characters"
+
+#: src/app/forms/permission.py:32
+msgid "UPDATE_PERMISSION_LABEL"
+msgstr "Update Permission"
+
+#: src/app/forms/role.py:28
+msgid "DEFAULT_ROLE_ASSIGNED_AUTOMATICALLY_TO_NEW_USERS_MSG"
+msgstr "Default role assigned automatically to new users"
+
+#: src/app/forms/role.py:46
+msgid "ADD_ROLE_LABEL"
+msgstr "Add Role"
+
+#: src/app/forms/role.py:51
+msgid "ROLE_ID_LABEL"
+msgstr "Role ID"
+
+#: src/app/forms/role.py:64
+msgid "UPDATE_ROLE_LABEL"
+msgstr "Update Role"
+
+#: src/app/forms/signup.py:11 src/app/forms/user.py:41
+#: src/app/templates/admin/views/tables/users.html:17
+msgid "USERNAME_LABEL"
+msgstr "Username"
+
+#: src/app/forms/signup.py:14 src/app/forms/user.py:24 src/app/forms/user.py:30
+#: src/app/forms/user.py:37 src/app/forms/user.py:44
+msgid "THIS_FIELD_CANNOT_EXCEED_50_CHARACTERS_MSG"
+msgstr "This field cannot exceed 50 characters"
+
+#: src/app/forms/signup.py:15 src/app/forms/user.py:45
+msgid "USERNAME_ALREADY_TAKEN_MSG"
+msgstr "Username already taken"
+
+#: src/app/forms/signup.py:23 src/app/forms/user.py:53
+msgid "EMAIL_ALREADY_REGISTERED_MSG"
+msgstr "Email already registered"
+
+#: src/app/forms/signup.py:30
+msgid "THIS_FIELD_MUST_BE_AT_LEAST_6_CHARACTERS_MSG"
+msgstr "This field must be at least 6 characters"
+
+#: src/app/forms/signup.py:34
+msgid "CONFIRM_PASSWORD_WARNING"
+msgstr "Confirm Password"
+
+#: src/app/forms/signup.py:37
+msgid "PASSWORDS_MUST_MATCH_MSG"
+msgstr "Passwords must match"
+
+#: src/app/forms/signup.py:40
+msgid "SIGN_UP_LABEL"
+msgstr "Sign Up"
+
+#: src/app/forms/user.py:21 src/app/templates/admin/pages/profile.html:55
+#: src/app/templates/admin/views/information/employee.html:7
+msgid "FIRST_NAME_LABEL"
+msgstr "First Name"
+
+#: src/app/forms/user.py:28 src/app/templates/admin/pages/profile.html:60
+#: src/app/templates/admin/views/information/employee.html:11
+msgid "MIDDLE_NAME_LABEL"
+msgstr "Middle Name"
+
+#: src/app/forms/user.py:34 src/app/templates/admin/pages/profile.html:65
+#: src/app/templates/admin/views/information/employee.html:16
+msgid "LAST_NAME_LABEL"
+msgstr "Last Name"
+
+#: src/app/forms/user.py:63
+msgid "UPLOAD_NEW_PROFILE_PICTURE_MSG"
+msgstr "Upload a new profile picture"
+
+#: src/app/forms/user.py:65 src/app/templates/admin/views/tabs/files.html:5
+msgid "FILES_LABEL"
+msgstr "Files"
+
+#: src/app/forms/user.py:67 src/app/templates/admin/views/employee.html:82
+msgid "PHONE_LABEL"
+msgstr "Phone"
+
+#: src/app/forms/user.py:73
+msgid "DUPLICATE_ENTRY_FOR_PHONE_NUMBER_MSG"
+msgstr "Duplicate entry for phone number"
+
+#: src/app/templates/admin/components/aside.html:64
+msgid "LOGOUT_LABEL"
+msgstr "Logout"
+
+#: src/app/templates/admin/components/fixed-plugin.html:8
+msgid "UI_CONFIGURATOR_LABEL"
+msgstr "UI Configurator"
+
+#: src/app/templates/admin/components/fixed-plugin.html:9
+msgid "SEE_OUR_DASHBOARD_OPTIONS_MSG"
+msgstr "See our dashboard options"
+
+#: src/app/templates/admin/components/fixed-plugin.html:22
+msgid "SIDEBAR_COLORS_LABEL"
+msgstr "Sidebar Colors"
+
+#: src/app/templates/admin/components/fixed-plugin.html:60
+msgid "SIDENAV_TYPE_PLACEHOLDER"
+msgstr "Sidenav Type"
+
+#: src/app/templates/admin/components/fixed-plugin.html:62
+msgid "CHOOSE_BETWEEN_DIFFERENT_SIDENAV_TYPES_PLACEHOLDER"
+msgstr "Choose between different sidenav types"
+
+#: src/app/templates/admin/components/fixed-plugin.html:71
+msgid "DARK_LABEL"
+msgstr "Dark"
+
+#: src/app/templates/admin/components/fixed-plugin.html:78
+msgid "TRANSPARENT_LABEL"
+msgstr "Transparent"
+
+#: src/app/templates/admin/components/fixed-plugin.html:85
+msgid "WHITE_LABEL"
+msgstr "White"
+
+#: src/app/templates/admin/components/fixed-plugin.html:90
+msgid "LANGUAGE_LABEL"
+msgstr "Language"
+
+#: src/app/templates/admin/components/fixed-plugin.html:91
+msgid "CHOOSE_BETWEEN_DIFFERENT_LANGUAGE_MSG"
+msgstr "Choose between different languages"
+
+#: src/app/templates/admin/components/fixed-plugin.html:105
+msgid "YOU_CAN_CHANGE_THE_SIDENAV_TYPE_JUST_ON_DESKTOP_VIEW_PLACEHOLDER"
+msgstr "You can change the sidenav type just on desktop view"
+
+#: src/app/templates/admin/components/fixed-plugin.html:110
+msgid "LIGHT_DARK_MSG"
+msgstr "Light / Dark"
+
+#: src/app/templates/admin/components/footer.html:13
+msgid "MADE_WITH_LABEL"
+msgstr "Made with"
+
+#: src/app/templates/admin/components/footer.html:17
+msgid "BY_LABEL"
+msgstr "by"
+
+#: src/app/templates/admin/components/footer.html:21
+msgid "FOR_LABEL"
+msgstr "for"
+
+#: src/app/templates/admin/components/nav.html:7
+msgid "PAGES_LABEL"
+msgstr "Pages"
+
+#: src/app/templates/admin/components/charts/weekly-users.html:4
+msgid "WEEEKLY_WEBSITE_USERS_MSG"
+msgstr "Weekly Website Users"
+
+#: src/app/templates/admin/components/charts/weekly-users.html:5
+#: src/app/templates/admin/components/charts/weekly-views.html:5
+msgid "LAST_7_DAYS_MSG"
+msgstr "Last 7 days"
+
+#: src/app/templates/admin/components/charts/weekly-users.html:24
+#: src/app/templates/admin/components/charts/weekly-views.html:24
+msgid "THAN_LAST_WEEK_MSG"
+msgstr "than last week"
+
+#: src/app/templates/admin/components/charts/weekly-views.html:4
+msgid "WEEEKLY_WEBSITE_VIEWS_MSG"
+msgstr "Weekly Website Views"
+
+#: src/app/templates/admin/components/modals/add/employee.html:14
+msgid "ADD_NEW_EMPLOYEE_MSG"
+msgstr "Add New Employee"
+
+#: src/app/templates/admin/components/modals/add/employee.html:16
+msgid "FILL_IN_THE_EMPLOYEE_S_DETAILS_BELOW_TO_CREATE_A_NEW_EMPLOYEE_MSG"
+msgstr "Fill in the employee's details below to create a new employee"
+
+#: src/app/templates/admin/components/modals/add/job.html:14
+msgid "ADD_NEW_JOB_MSG"
+msgstr "Add New Job"
+
+#: src/app/templates/admin/components/modals/add/job.html:16
+msgid "FILL_IN_THE_JOB_S_DETAILS_BELOW_TO_CREATE_A_NEW_JOB_MSG"
+msgstr "Fill in the job's details below to create a new job"
+
+#: src/app/templates/admin/components/modals/add/role.html:14
+msgid "ADD_NEW_ROLE_MSG"
+msgstr "Add New Role"
+
+#: src/app/templates/admin/components/modals/add/role.html:16
+msgid "FILL_IN_THE_ROLE_S_DETAILS_BELOW_TO_CREATE_A_NEW_ROLE_MSG"
+msgstr "Fill in the role's details below to create a new role"
+
+#: src/app/templates/admin/components/modals/add/user.html:14
+msgid "ADD_NEW_USER_MSG"
+msgstr "Add New User"
+
+#: src/app/templates/admin/components/modals/add/user.html:16
+msgid "FILL_IN_THE_USER_S_DETAILS_BELOW_TO_CREATE_A_NEW_ACCOUNT_MSG"
+msgstr "Fill in the user's details below to create a new account"
+
+#: src/app/templates/admin/components/modals/update/employee.html:14
+msgid "UPDATE_EMPLOYEE_INFORMATION_MSG"
+msgstr "Update Employee Information"
+
+#: src/app/templates/admin/components/modals/update/employee.html:16
+msgid "UPDATE_EMPLOYEE_DESCRIPTION_MODAL_MSG"
+msgstr "Update the employee's information"
+
+#: src/app/templates/admin/components/modals/update/job.html:14
+msgid "UPDATE_JOB_INFORMATION_MSG"
+msgstr "Update Job Information"
+
+#: src/app/templates/admin/components/modals/update/job.html:16
+msgid "UPDATE_JOB_DESCRIPTION_MODAL_MSG"
+msgstr "Update the job's information"
+
+#: src/app/templates/admin/components/modals/update/permission.html:15
+msgid "UPDATE_PERMISSION_INFORMATION_MSG"
+msgstr "Update Permission Information"
+
+#: src/app/templates/admin/components/modals/update/permission.html:18
+msgid "UPDATE_PERMISSION_DESCRIPTION_MODAL_MSG"
+msgstr "Update the permission's information"
+
+#: src/app/templates/admin/components/modals/update/profile.html:14
+msgid "UPDATE_PROFILE_INFORMATION_MSG"
+msgstr "Update Profile Information"
+
+#: src/app/templates/admin/components/modals/update/profile.html:16
+msgid "UPDATE_PROFILE_DESCRIPTION_MODAL_MSG"
+msgstr "Update your profile information"
+
+#: src/app/templates/admin/components/modals/update/role.html:14
+msgid "UPDATE_ROLE_INFORMATION_MSG"
+msgstr "Update Role Information"
+
+#: src/app/templates/admin/components/modals/update/role.html:16
+msgid "UPDATE_ROLE_DESCRIPTION_MODAL_MSG"
+msgstr "Update the role's information"
+
+#: src/app/templates/admin/components/modals/update/user.html:14
+msgid "UPDATE_USER_INFORMATION_MSG"
+msgstr "Update User Information"
+
+#: src/app/templates/admin/components/modals/update/user.html:16
+msgid "UPDATE_USER_DESCRIPTION_MODAL_MSG"
+msgstr "Update the user's information"
+
+#: src/app/templates/admin/components/tables/header/header.html:32
+msgid "SEARCH_PLACEHOLDER"
+msgstr "Search"
+
+#: src/app/templates/admin/pages/profile.html:48
+msgid "PROFILE_INFORMATION_LABEL"
+msgstr "Profile Information"
+
+#: src/app/templates/admin/views/employee.html:29
+msgid "EMPLOYEE_INFORMATION_LABEL"
+msgstr "Employee Information"
+
+#: src/app/templates/admin/views/employee.html:41
+#: src/app/templates/admin/views/job.html:20
+msgid "JOB_INFORMATION_LABEL"
+msgstr "Job Information"
+
+#: src/app/templates/admin/views/job.html:52
+msgid "MINIMUM_SALARY_IN_THIS_JOB_MSG"
+msgstr "Minimum salary in this job"
+
+#: src/app/templates/admin/views/job.html:80
+msgid "MAXIMUM_SALARY_IN_THIS_JOB_MSG"
+msgstr "Maximum salary in this job"
+
+#: src/app/templates/admin/views/job.html:107
+msgid "ACTIVE_STAFF_COUNT_MSG"
+msgstr "Active staff count"
+
+#: src/app/templates/admin/views/permissions.html:4
+msgid "PERMISSION_LABEL"
+msgstr "Permission"
+
+#: src/app/templates/admin/views/permissions.html:14
+msgid "PERMISSION_INFORMATION_LABEL"
+msgstr "Permission Information"
+
+#: src/app/templates/admin/views/roles.html:4
+msgid "ROLE_LABEL"
+msgstr "Role"
+
+#: src/app/templates/admin/views/roles.html:14
+msgid "ROLE_INFORMATION_LABEL"
+msgstr "Role Information"
+
+#: src/app/templates/admin/views/information/employee.html:38
+#: src/app/templates/admin/views/information/job.html:18
+#: src/app/templates/admin/views/information/permission.html:17
+#: src/app/templates/admin/views/information/role.html:13
+msgid "CREATED_AT_SUCCESS_MSG"
+msgstr "Created at"
+
+#: src/app/templates/admin/views/information/employee.html:42
+#: src/app/templates/admin/views/information/job.html:21
+#: src/app/templates/admin/views/information/permission.html:21
+#: src/app/templates/admin/views/information/role.html:16
+msgid "UPDATED_AT_SUCCESS_MSG"
+msgstr "Updated at"
+
+#: src/app/templates/admin/views/information/job.html:6
+msgid "TITLE_LABEL"
+msgstr "Title"
+
+#: src/app/templates/admin/views/information/permission.html:13
+msgid "PERMISSION_CODE_LABEL"
+msgstr "Permission Code"
+
+#: src/app/templates/admin/views/tables/employees.html:7
+#: src/app/templates/admin/views/tables/files.html:7
+#: src/app/templates/admin/views/tables/users.html:7
+msgid "ID"
+msgstr "ID"
+
+#: src/app/templates/admin/views/tables/employees.html:57
+msgid "NO_EMPLOYEES_YET_MSG"
+msgstr "No employees yet"
+
+#: src/app/templates/admin/views/tables/files.html:17
+msgid "SIZE_LABEL"
+msgstr "Size"
+
+#: src/app/templates/admin/views/tables/files.html:22
+msgid "UPLOADED_LABEL"
+msgstr "Uploaded"
+
+#: src/app/templates/admin/views/tables/files.html:39
+msgid "NO_FILES_YET_MSG"
+msgstr "No files yet"
+
+#: src/app/templates/admin/views/tables/permissions.html:17
+msgid "CODE_LABEL"
+msgstr "Code"
+
+#: src/app/templates/admin/views/tables/permissions.html:31
+msgid "NO_PERMISSIONS_YET_MSG"
+msgstr "No permissions yet"
+
+#: src/app/templates/admin/views/tables/roles.html:25
+msgid "NO_ROLES_YET_MSG"
+msgstr "No roles yet"
+
+#: src/app/templates/admin/views/tables/users.html:53
+msgid "NO_USERS_YET_MSG"
+msgstr "No users yet"
+
+#: src/app/templates/auth/login.html:4 src/app/templates/auth/signup.html:63
+msgid "LOGIN_LABEL"
+msgstr "Login"
+
+#: src/app/templates/auth/login.html:33
+msgid "HELLO_WELCOME_LABEL"
+msgstr "Hello, welcome"
+
+#: src/app/templates/auth/login.html:34
+msgid "DON_T_HAVE_AN_ACCOUNT_MSG"
+msgstr "Don't have an account?"
+
+#: src/app/templates/auth/login.html:35
+msgid "REGISTER_LABEL"
+msgstr "Register"
+
+#: src/app/templates/auth/signup.html:4
+msgid "REGISTRATION_LABEL"
+msgstr "Registration"
+
+#: src/app/templates/auth/signup.html:61
+msgid "WELCOME_BACK_LABEL"
+msgstr "Welcome back"
+
+#: src/app/templates/auth/signup.html:62
+msgid "ALREADY_HAVE_AN_ACCOUNT_MSG"
+msgstr "Already have an account?"

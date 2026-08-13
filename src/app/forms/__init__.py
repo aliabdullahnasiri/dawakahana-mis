@@ -1,0 +1,118 @@
+import json
+import re
+from operator import and_
+from typing import List, Self
+
+from flask import url_for
+from flask_babel import gettext as _
+from flask_babel import lazy_gettext as _l
+from flask_wtf import FlaskForm
+from wtforms import SelectField, SelectMultipleField, ValidationError
+
+
+class MustBeUnique:
+    def __init__(
+        self: Self, model, name, message=None, col="id", field="id", f=None
+    ) -> None:
+        self.model = model
+        self.name = name
+        self.col = col
+        self.field = field
+        self.f = f
+        self.message = message
+
+    def __call__(self, form, field):
+        vals: List = []
+
+        try:
+            vals = json.loads(field.data)
+        except:
+            vals.append(field.data)
+
+        _f: str = self.field
+
+        if self.model.__name__ not in form.__class__.__name__:
+            _f = f"{self.model.__name__.lower()}_{self.field}"
+
+            if not hasattr(form, _f):
+                if self.f and hasattr(form, self.f):
+                    _f = self.f
+                else:
+                    _f = self.field
+
+        for val in vals:
+            if (
+                self.model.query.filter(
+                    and_(
+                        (
+                            getattr(self.model, self.col)
+                            != (
+                                getattr(
+                                    getattr(form, _f),
+                                    "data",
+                                )
+                            )
+                        ),
+                        getattr(self.model, self.name) == val,
+                    )
+                ).count()
+                if "Update" in form.__class__.__name__
+                else self.model.query.filter(
+                    getattr(self.model, self.name) == val,
+                ).count()
+            ):
+                raise ValidationError(
+                    _(self.message or "THIS_VALUE_MUST_BE_UNIQUE_MSG")
+                )
+
+
+class Form(FlaskForm):
+    def __new__(cls, *args, **kwargs) -> Self:
+        return super().__new__(cls, *args, **kwargs)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Translate all field labels so individual form files don't need to call _ for each label
+        for _field in getattr(self, "_fields", {}).values():
+            try:
+                if _field.render_kw and (
+                    endpoint := _field.render_kw.get("data-fetch-api")
+                ):
+                    _field.render_kw["data-fetch-api"] = url_for(endpoint)
+            except:
+                ...
+
+            try:
+                if isinstance(_field.label.text, str):
+                    _field.label.text = _l(_field.label.text)
+            except:
+                ...
+
+            try:
+                if isinstance(_field, (SelectField, SelectMultipleField)):
+                    if not _field.render_kw:
+                        _field.render_kw = {}
+
+                    _field.render_kw["data-none-selected-text"] = _l(
+                        "CHOICE_AN_OPTION_LABEL"
+                    )
+
+                    _field.choices = [
+                        (value, _l(label)) for value, label in _field.choices
+                    ]
+            except:
+                pass
+
+    def validate(self, *args, **kwargs):
+        # Run the standard WTForms validation
+        success = super().validate(*args, **kwargs)
+
+        # If validation fails, intercept and translate the error messages
+        if not success:
+            for field in self:
+                if field.errors:
+                    # Pass each raw string error through gettext
+                    field.errors = [_(error) for error in field.errors]
+
+        return success

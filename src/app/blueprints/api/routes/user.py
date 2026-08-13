@@ -1,0 +1,244 @@
+import json
+from typing import Dict, List, Tuple, Union
+
+from flask import Response, request, url_for
+from flask_babel import gettext as g
+
+from app.blueprints.api import bp
+from app.cls import ColumnID, ColumnName
+from app.const import DEFAULT_AVATAR
+from app.extensions.console import console
+from app.extensions.db import db
+from app.forms.user import AddUserForm, UpdateUserForm
+from app.func import render_td
+from app.models.permission import Permission
+from app.models.role import Role
+from app.models.user import User, permission_required
+
+cols: List[Tuple[ColumnID, ColumnName]] = [
+    (ColumnID("id"), ColumnName(g("ID_LABEL"))),
+    (ColumnID("temp_user"), ColumnName(g("USER_LABEL"))),
+    (ColumnID("user_name"), ColumnName(g("USER_NAME_LABEL"))),
+    (ColumnID("birthday"), ColumnName(g("BIRTHDAY_LABEL"))),
+    (ColumnID("age"), ColumnName(g("AGE_LABEL"))),
+]
+
+
+@bp.get("/fetch/users")
+@permission_required(Permission.get("FETCH_USERS"))
+def fetch_users() -> Response:
+    users: List[User] = [user.to_dict() for user in User.query.all()]
+
+    response: Response = Response(
+        json.dumps(users), headers={"Content-Type": "application/json"}
+    )
+    response.status_code = 200
+
+    return response
+
+
+@bp.get("/fetch/rows/users")
+@permission_required(Permission.get("FETCH_USERS"))
+def fetch_users_rows() -> Response:
+    users: List[User] = User.query.all()
+
+    rows: List[List] = []
+
+    for user in users:
+        row = [render_td(col_id, user) for col_id, _ in cols]
+        rows.append(row)
+
+    dct: Dict = {
+        "cols": [(col_id, g(col_name)) for col_id, col_name in cols],
+        "rows": rows,
+    }
+
+    response: Response = Response(
+        json.dumps(dct),
+        status=200,
+        headers={"Content-Type": "application/json"},
+    )
+
+    return response
+
+
+@bp.get("/fetch/row/user/<int:id>")
+@permission_required(Permission.get("FETCH_USER"))
+def fetch_user_row(id) -> Response:
+    response: Response = Response()
+
+    user: Union[User, None] = User.query.filter_by(id=id).first()
+
+    if user:
+        response.response = json.dumps(
+            {
+                key: val
+                for key, val in zip(
+                    [col_id for col_id, _ in cols],
+                    [render_td(col_id, user) for col_id, _ in cols],
+                )
+            }
+        )
+        response.status_code = 200
+
+    else:
+        dct = {
+            "message": g("USER_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"),
+            "category": "error",
+        }
+
+        response.response = json.dumps(dct)
+        response.status_code = 404
+
+    return response
+
+
+@bp.get("/fetch/user/<int:id>")
+@permission_required(Permission.get("FETCH_USER"))
+def fetch_user(id) -> Response:
+    user = User.query.filter_by(id=id).first()
+
+    if user:
+        response: Response = Response(
+            json.dumps(user.to_dict()),
+            status=200,
+            headers={"Content-Type": "application/json"},
+        )
+
+        return response
+
+    return Response(
+        json.dumps(
+            {
+                "message": g("USER_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"),
+                "category": "error",
+            }
+        ),
+        headers={"Content-Type": "application/json"},
+        status=404,
+    )
+
+
+@bp.post("/update/user")
+@permission_required(Permission.get("FETCH_USER") | Permission.get("UPDATE_USER"))
+def update_user(user=None) -> Response:
+    form = UpdateUserForm()
+
+    response: Dict = {}
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(id=form.id.data).first()
+
+        if user:
+            user.first_name = form.first_name.data
+            user.middle_name = form.middle_name.data
+            user.last_name = form.last_name.data
+            user.user_name = form.user_name.data
+            user.email = form.email.data
+            user.birthday = form.birthday.data
+
+            if passwd := form.password.data:
+                user.set_password(passwd)
+
+            if files := request.form.get("files"):
+                try:
+                    user.update_files(json.loads(files))
+                except json.JSONDecodeError as err:
+                    console.print(err)
+
+            if form.phones.data:
+                user.update_phones(json.loads(form.phones.data))
+
+            if form.roles.data:
+                user.update_roles(
+                    roles=[
+                        role
+                        for id in json.loads(form.roles.data)
+                        if (role := Role.query.filter_by(id=id).scalar())
+                    ]
+                )
+
+            db.session.commit()
+
+            response["title"] = g("GOOD_JOB_LABEL")
+            response["message"] = g("USER_UPDATED_SUCCESSFULLY_SUCCESS_MSG")
+            response["category"] = "success"
+
+    else:
+        response["errors"] = form.errors
+
+    return Response(
+        json.dumps(response), headers={"Content-Type": "application/json"}, status=200
+    )
+
+
+@bp.delete("/delete/user/<int:id>")
+@permission_required(Permission.get("FETCH_USER") | Permission.get("DELETE_USER"))
+def delete_user(id):
+    response = {}
+
+    if user := User.query.filter_by(id=id).first():
+        db.session.delete(user)
+        db.session.commit()
+
+        response["title"] = g("DELETED_SUCCESS_MSG")
+        response["message"] = g("USER_DELETED_SUCCESSFULLY_SUCCESS_MSG")
+        response["category"] = "success"
+        response["status"] = 200
+
+    else:
+        response["title"] = g("ERROR_ERROR")
+        response["message"] = g("USER_NOT_FOUND_MSG")
+        response["category"] = "error"
+        response["status"] = 404
+
+    return Response(
+        json.dumps(response),
+        status=response["status"],
+        headers={"Content-Type": "application/json"},
+    )
+
+
+@bp.post("/add/user")
+@permission_required(Permission.get("CREATE_USER"))
+def add_user() -> Response:
+    form = AddUserForm()
+
+    response: Dict = {}
+
+    if form.validate_on_submit():
+        user = User()
+
+        user.first_name = form.first_name.data
+        user.middle_name = form.middle_name.data
+        user.last_name = form.last_name.data
+        user.user_name = form.user_name.data
+        user.email = form.email.data
+        user.birthday = form.birthday.data
+        user.avatar_path = url_for("static", filename=DEFAULT_AVATAR)
+
+        if form.password.data:
+            user.set_password(form.password.data)
+
+        db.session.add(user)
+
+        if files := request.form.get("files"):
+            try:
+                user.update_files(json.loads(files))
+            except json.JSONDecodeError as err:
+                console.print(err)
+
+        if passwd := form.password.data:
+            user.set_password(passwd)
+
+        db.session.commit()
+
+        response["message"] = g("USER_ADDED_SUCCESSFULLY_SUCCESS_MSG")
+        response["title"] = g("USER_ADDED_LABEL")
+        response["category"] = "success"
+        response["id"] = getattr(user, "id")
+
+    else:
+        response["errors"] = form.errors
+
+    return Response(json.dumps(response))

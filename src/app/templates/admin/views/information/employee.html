@@ -1,0 +1,45 @@
+<ul class="list-group">
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("id_LABEL") }}:</strong> &nbsp;{{ employee.id }}
+  </li>
+
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("FIRST_NAME_LABEL") }}:</strong> &nbsp;{{ employee.user.first_name }}
+  </li>
+
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("MIDDLE_NAME_LABEL") }}:</strong> &nbsp;{{ employee.user.middle_name
+    }}
+  </li>
+
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("LAST_NAME_LABEL") }}:</strong> &nbsp;{{ employee.user.last_name }}
+  </li>
+
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("EMAIL_LABEL") }}:</strong> &nbsp;{{ employee.user.email }}
+  </li>
+
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("BIRTHDAY_LABEL") }}:</strong> &nbsp;{{
+    employee.user.display_birthday }}
+  </li>
+
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("AGE_LABEL") }}:</strong> &nbsp;{{ employee.user.age }}
+  </li>
+
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("HIRE_DATE_LABEL") }}:</strong> &nbsp;{{ employee.display_hire_date
+    }}
+  </li>
+
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("CREATED_AT_SUCCESS_MSG") }}:</strong> &nbsp;{{ employee.display_created_at
+    }}
+  </li>
+  <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+    <strong>{{ _("UPDATED_AT_SUCCESS_MSG") }}:</strong> &nbsp;{{ employee.display_updated_at
+    }}
+  </li>
+</ul>
