@@ -106,6 +106,7 @@ function removeSkeletonRow(tbody) {
 function addActionButtons(tableElement, trElement, is_deletable = true) {
   let tdElement = document.createElement("td");
 
+
   tdElement.classList.value = "align-middle";
 
   if (tableElement.dataset.deleteRow) {
@@ -375,7 +376,7 @@ function reloadRow(tableElement, theadElement, rowElement) {
 
   let thElement, trElement, indexOf, url;
 
-  url = tableElement.dataset.getRow.replace(String.fromCharCode(64), dataID);
+  url = tableElement.dataset.getRow.replace("-1", dataID);
 
   fetch(url, {
     method: "get",
@@ -501,7 +502,7 @@ function deleteNoRowLabel(tbodyElement) {
 function viewRow(tableElement, row) {
   const rowID = row.dataset.id;
   const viewURL = tableElement.dataset.viewRow.replace(
-    String.fromCharCode(64),
+    "-1",
     rowID,
   );
   const viewModalID = tableElement.dataset.viewRowModalId;

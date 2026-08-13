@@ -12,7 +12,7 @@ class Role(db.Model):
     name = db.Column(db.String(64), unique=True)
     description = db.Column(db.String(2500), nullable=True)
     default = db.Column(db.Boolean, default=False, index=True)
-    primary = db.Column(db.Boolean, default=True)
+    primary = db.Column(db.Boolean, default=False)
 
     permissions = db.relationship(
         "Permission",
@@ -72,5 +72,6 @@ class Role(db.Model):
                 )
             ],
             "readonly": readonly,
+            "is_deletable": not self.primary,
             **call(getattr(super(), "to_dict")),
         }

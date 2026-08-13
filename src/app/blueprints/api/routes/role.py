@@ -13,8 +13,9 @@ from app.models.permission import Permission
 from app.models.role import Role
 from app.models.user import permission_required
 
-cols: List[Tuple[ColumnID, ColumnName]] = [
-    (ColumnID("id"), ColumnName(g("id_LABEL"))),
+cols: List[Tuple[ColumnID, ColumnName | None]] = [
+    (ColumnID("is_deletable"), None),
+    (ColumnID("id"), ColumnName(g("ID_LABEL"))),
     (ColumnID("name"), ColumnName(g("NAME_LABEL"))),
 ]
 

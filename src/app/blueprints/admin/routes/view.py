@@ -44,3 +44,5 @@ def view(entity: str, id: int) -> Response:
     else:
         response.response = json.dumps({"error": _("TEMPLATE_WAS_NOT_FOUND_MSG")})
         response.status_code = 404
+
+    return response
