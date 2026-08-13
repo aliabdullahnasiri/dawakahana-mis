@@ -1,5 +1,5 @@
 import { createListSectionItem, resetForm } from "./form.js";
-import { createLoader, transformAllMovingTab } from "./script.js";
+import { createLoader, transformAllMovingTab, initAllMovingTabs } from "./script.js";
 
 (function () {
   document.addEventListener("show.bs.modal", (event) => {
@@ -203,14 +203,19 @@ import { createLoader, transformAllMovingTab } from "./script.js";
 
     modalDialog.append(loaderElement);
 
-    setInterval(() => {
+
+
+    let interval = setInterval(() => {
       let modalBody = modalDialog.querySelector(".modal-body");
 
       if (modalBody.innerHTML) {
         loaderElement.classList.add("fade");
         setTimeout(() => {
           loaderElement.remove();
+          transformAllMovingTab()
+          clearInterval(interval)
         }, 50);
+
       }
     }, 1000);
   });
