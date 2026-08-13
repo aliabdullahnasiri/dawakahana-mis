@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-13 09:57+0430\n"
+"POT-Creation-Date: 2026-08-13 12:38+0430\n"
 "PO-Revision-Date: 2026-08-13 09:58+0430\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -92,6 +92,7 @@ msgstr "Template was not found"
 
 #: src/app/blueprints/api/routes/employee.py:20
 #: src/app/blueprints/api/routes/permission.py:16
+#: src/app/blueprints/api/routes/role.py:18
 #: src/app/blueprints/api/routes/user.py:19 src/app/forms/user.py:98
 msgid "ID_LABEL"
 msgstr "ID"
@@ -152,7 +153,7 @@ msgstr "Employee updated successfully"
 
 #: src/app/blueprints/api/routes/employee.py:245
 #: src/app/blueprints/api/routes/job.py:196
-#: src/app/blueprints/api/routes/role.py:184
+#: src/app/blueprints/api/routes/role.py:185
 #: src/app/blueprints/api/routes/user.py:184
 msgid "DELETED_SUCCESS_MSG"
 msgstr "Deleted"
@@ -163,7 +164,7 @@ msgstr "Employee deleted successfully"
 
 #: src/app/blueprints/api/routes/employee.py:250
 #: src/app/blueprints/api/routes/job.py:201
-#: src/app/blueprints/api/routes/role.py:195
+#: src/app/blueprints/api/routes/role.py:196
 #: src/app/blueprints/api/routes/user.py:190
 msgid "ERROR_ERROR"
 msgstr "Error"
@@ -173,7 +174,6 @@ msgid "EMPLOYEE_NOT_FOUND_MSG"
 msgstr "Employee not found"
 
 #: src/app/blueprints/api/routes/job.py:17
-#: src/app/blueprints/api/routes/role.py:17
 #: src/app/templates/admin/views/information/employee.html:3
 #: src/app/templates/admin/views/information/job.html:3
 #: src/app/templates/admin/views/information/permission.html:3
@@ -212,7 +212,7 @@ msgstr "Job added successfully"
 
 #: src/app/blueprints/api/routes/job.py:169
 #: src/app/blueprints/api/routes/permission.py:136
-#: src/app/blueprints/api/routes/role.py:157
+#: src/app/blueprints/api/routes/role.py:158
 msgid "UPDATED_SUCCESS_MSG"
 msgstr "Updated"
 
@@ -222,7 +222,7 @@ msgstr "Job updated successfully"
 
 #: src/app/blueprints/api/routes/job.py:173
 #: src/app/blueprints/api/routes/permission.py:140
-#: src/app/blueprints/api/routes/role.py:161
+#: src/app/blueprints/api/routes/role.py:162
 msgid "NOT_FOUND_LABEL"
 msgstr "Not Found"
 
@@ -239,8 +239,8 @@ msgid "JOB_NOT_FOUND_MSG"
 msgstr "Job not found"
 
 #: src/app/blueprints/api/routes/navbar.py:43
-msgid "CTI_MANAGEMENT_TITLE"
-msgstr "CTI Management"
+msgid "MANAGEMENT_LABEL"
+msgstr "Management"
 
 #: src/app/blueprints/api/routes/navbar.py:65
 msgid "ACCOUNT_TITLE"
@@ -251,7 +251,7 @@ msgid "PROFILE_TITLE"
 msgstr "Profile"
 
 #: src/app/blueprints/api/routes/permission.py:17
-#: src/app/blueprints/api/routes/role.py:18 src/app/forms/permission.py:17
+#: src/app/blueprints/api/routes/role.py:19 src/app/forms/permission.py:17
 #: src/app/forms/role.py:11 src/app/forms/role.py:57
 #: src/app/templates/admin/views/information/permission.html:6
 #: src/app/templates/admin/views/information/role.html:6
@@ -283,40 +283,40 @@ msgstr "Permission record not found"
 msgid "USER_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr "User updated successfully"
 
-#: src/app/blueprints/api/routes/role.py:82
-#: src/app/blueprints/api/routes/role.py:106
+#: src/app/blueprints/api/routes/role.py:83
+#: src/app/blueprints/api/routes/role.py:107
 msgid "ROLE_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"
 msgstr "Role with the given ID was not found"
 
-#: src/app/blueprints/api/routes/role.py:158
+#: src/app/blueprints/api/routes/role.py:159
 msgid "ROLE_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr "Role updated successfully"
 
-#: src/app/blueprints/api/routes/role.py:162
+#: src/app/blueprints/api/routes/role.py:163
 msgid "ROLE_RECORD_NOT_FOUND_MSG"
 msgstr "Role record not found"
 
-#: src/app/blueprints/api/routes/role.py:185
+#: src/app/blueprints/api/routes/role.py:186
 msgid "ROLE_HAS_BEEN_DELETED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr "Role has been deleted successfully"
 
-#: src/app/blueprints/api/routes/role.py:189
+#: src/app/blueprints/api/routes/role.py:190
 msgid "WARNING_WARNING"
 msgstr "Warning"
 
-#: src/app/blueprints/api/routes/role.py:190
+#: src/app/blueprints/api/routes/role.py:191
 msgid "PRIMARY_ROLES_CANNOT_BE_DELETED_ERROR"
 msgstr "Primary roles cannot be deleted"
 
-#: src/app/blueprints/api/routes/role.py:196
+#: src/app/blueprints/api/routes/role.py:197
 msgid "ROLE_NOT_FOUND_MSG"
 msgstr "Role not found"
 
-#: src/app/blueprints/api/routes/role.py:237
+#: src/app/blueprints/api/routes/role.py:238
 msgid "ROLE_ADDED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr "Role added successfully"
 
-#: src/app/blueprints/api/routes/role.py:238
+#: src/app/blueprints/api/routes/role.py:239
 msgid "ROLE_ADDED_LABEL"
 msgstr "Role Added"
 
@@ -358,13 +358,9 @@ msgstr "This value must be unique"
 msgid "CHOICE_AN_OPTION_LABEL"
 msgstr "Choose an option"
 
-#: src/app/forms/employee.py:17 src/app/forms/job.py:48
+#: src/app/forms/employee.py:18 src/app/forms/job.py:48
 msgid "JOB_ID_LABEL"
 msgstr "Job ID"
-
-#: src/app/forms/employee.py:20
-msgid "THIS_FIELD_MUST_BE_8_CHARACTERS_MSG"
-msgstr "This field must be 8 characters"
 
 #: src/app/forms/employee.py:33
 msgid "ADDRESS_LABEL"
@@ -852,3 +848,13 @@ msgstr "Welcome back"
 #: src/app/templates/auth/signup.html:62
 msgid "ALREADY_HAVE_AN_ACCOUNT_MSG"
 msgstr "Already have an account?"
+
+#~ msgid "CTI_MANAGEMENT_TITLE"
+#~ msgstr "CTI Management"
+
+#~ msgid "THIS_FIELD_MUST_BE_8_CHARACTERS_MSG"
+#~ msgstr "This field must be 8 characters"
+
+#~ msgid "DAWAKAHANA_MIS_LABEL"
+#~ msgstr "Dawa Khana MIS"
+

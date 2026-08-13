@@ -40,7 +40,7 @@ ITEMS: List[Dict] = [
     },
     {
         "type": "section",
-        "title": _("CTI_MANAGEMENT_TITLE"),
+        "title": _("MANAGEMENT_LABEL"),
         "items": [
             {
                 "type": "item",
