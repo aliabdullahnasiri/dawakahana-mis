@@ -278,7 +278,7 @@ function deleteRow(rowElement) {
       let theadElement = tableElement.querySelector("thead");
 
       let url = tableElement.dataset.deleteRow?.replace(
-        String.fromCharCode(64),
+        "-1",
         rowElement.dataset.id,
       );
 

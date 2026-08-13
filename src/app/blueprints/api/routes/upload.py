@@ -65,6 +65,8 @@ def upload() -> Response:
             }
         )
 
+    print(lst)
+
     response.response = json.dumps(lst)
 
     return response
