@@ -3,6 +3,7 @@ from wtforms import (
     DateField,
     DecimalField,
     HiddenField,
+    IntegerField,
     PasswordField,
     StringField,
     SubmitField,
@@ -13,11 +14,10 @@ from app.forms.user import AddUserForm, UpdateUserForm
 
 
 class AddEmployeeForm(AddUserForm):
-    job_id = StringField(
+    job_id = IntegerField(
         _("JOB_ID_LABEL"),
         validators=[
             Optional(),
-            Length(min=8, max=8, message=_("THIS_FIELD_MUST_BE_8_CHARACTERS_MSG")),
         ],
         render_kw={
             "data-auto-complete": "true",

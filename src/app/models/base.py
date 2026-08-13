@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
 import jdatetime
@@ -7,6 +7,7 @@ from sqlalchemy import Column, Date, DateTime, event, extract, func
 from sqlalchemy.ext.declarative import declared_attr
 
 from app.extensions.db import db
+from app.func import convert_to_gregorian
 
 
 class Base(db.Model):
@@ -36,14 +37,19 @@ class Base(db.Model):
             if hasattr(self, column_name):
                 column = getattr(self.__class__, column_name, None)
                 value = getattr(self, column_name, None)
-                if column and value:
-                    # check if column is date or datetime
-                    if hasattr(column, "type") and isinstance(
-                        column.type, (Date, DateTime)
-                    ):
-                        return jdatetime.date.fromgregorian(date=value).strftime(
-                            "%Y/%m/%d"
-                        )
+                if column and value and hasattr(column, "type"):
+                    try:
+                        # check if column is date or datetime
+                        if isinstance(column.type, Date):
+                            return jdatetime.date.fromgregorian(date=value).strftime(
+                                "%Y-%m-%d"
+                            )
+                        elif isinstance(column.type, DateTime):
+                            return jdatetime.datetime.fromgregorian(
+                                datetime=value
+                            ).strftime("%Y-%m-%d %H:%M:%S")
+                    except ValueError:
+                        pass
 
                     return str(value)
 
@@ -196,6 +202,9 @@ class Base(db.Model):
     def __setattr__(self, name: str, value: Any, /) -> None:
         if type(value) is str and not value:
             value = None
+
+        if isinstance(value, date):
+            value = convert_to_gregorian(value)
 
         return super().__setattr__(name, value)
 

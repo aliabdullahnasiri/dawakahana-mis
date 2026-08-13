@@ -1,6 +1,8 @@
 import pathlib
 import re
+from datetime import date, datetime
 
+import jdatetime
 from flask import render_template, request, session
 
 from app.config import Config
@@ -78,3 +80,16 @@ def get_locale():
 
     # 3. Fall back to the browser's preferred language
     return request.accept_languages.best_match(LANGUAGES)
+
+
+def convert_to_gregorian(value: date):
+    if isinstance(value, date):
+        year = value.year
+
+        # Jalali year range (practical check)
+        if 1200 <= year <= 1500:
+            return jdatetime.date.fromisoformat(
+                date.strftime(value, "%Y-%m-%d")
+            ).togregorian()
+
+        return value
