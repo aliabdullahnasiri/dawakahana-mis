@@ -1,3 +1,7 @@
+from datetime import date
+
+from dateutil.relativedelta import relativedelta
+
 from app.extensions.db import db
 from app.models.base import Base
 
@@ -30,6 +34,17 @@ class MedicineStock(Base):
             "selling_price": self.display_selling_price,
             **getattr(super(), "to_dict")(),
         }
+
+    @staticmethod
+    def get_expiring_medicines(months=5):
+        today = date.today()
+        limit_date = today + relativedelta(months=months)
+
+        return MedicineStock.query.filter(
+            MedicineStock.expiry_date <= limit_date,
+            MedicineStock.expiry_date >= today,
+            MedicineStock.quantity > 0,
+        )
 
     def __repr__(self):
         return (
