@@ -75,18 +75,6 @@ ITEMS: List[Dict] = [
             },
         ],
     },
-    {
-        "type": "section",
-        "title": _("ACCOUNT_TITLE"),
-        "items": [
-            {
-                "type": "item",
-                "title": _("PROFILE_TITLE"),
-                "icon": "person",
-                "endpoint": "admin.profile",
-            },
-        ],
-    },
 ]
 
 

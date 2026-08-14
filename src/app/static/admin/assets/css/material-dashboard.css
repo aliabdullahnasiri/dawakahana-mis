@@ -24842,8 +24842,8 @@ hr.horizontal.gray-light {
 }
 
 .navbar-vertical .navbar-nav .nav-link .avatar {
-  width: 1.875rem;
-  height: 1.875rem;
+  width: 1.875rem !important;
+  height: 1.875rem !important;
 }
 
 .navbar-vertical .navbar-nav .nav-sm .nav-link {
@@ -25754,7 +25754,7 @@ hr.horizontal.gray-light {
   -webkit-font-smoothing: antialiased;
   font-family: "Font Awesome 5 Free";
   font-weight: 700;
-  content: "\f107";
+  content: "⌄";
   margin-left: auto;
   color: rgba(206, 212, 218, 0.7);
   transition: all 0.2s ease-in-out;
@@ -25768,7 +25768,7 @@ hr.horizontal.gray-light {
 
 .navbar-vertical .navbar-nav .nav-link[data-bs-toggle=collapse][aria-expanded=true]:after {
   color: #CED4DA;
-  transform: rotate(180deg);
+  /* transform: rotate(180deg); */
 }
 
 .navbar-vertical .navbar-nav .nav-link[data-bs-toggle=collapse].active:after {

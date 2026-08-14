@@ -444,12 +444,48 @@ div.dropdown-menu {
   height: 100px;
 }
 
-hr.horizontal {
-  background: #c6c6c6c6 !important;
-}
-
 .dark-version .card hr.horizontal {
   background-color: #262626 !important;
+}
+
+hr.horizontal {
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 0, 0, 0.4),
+    transparent
+  ) !important;
+}
+
+.dark-version hr.horizontal {
+  background-image: linear-gradient(
+    90deg,
+    hsla(0, 0%, 100%, 0),
+    #fff,
+    hsla(0, 0%, 100%, 0)
+  ) !important;
+}
+
+.bg-gradient-dark hr.horizontal {
+  background-image: linear-gradient(
+    90deg,
+    hsla(0, 0%, 100%, 0),
+    #fff,
+    hsla(0, 0%, 100%, 0)
+  ) !important;
+}
+
+.bg-white hr.horizontal {
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    rgb(0 0 0 / 50%),
+    transparent
+  ) !important;
+}
+
+a.navbar-brand.px-4.py-3.m-0.my-1.text-center:focus-visible {
+  outline: 0;
 }
 
 ul.nav.nav-pills.nav-fill {
