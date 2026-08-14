@@ -20,9 +20,7 @@ class StockMovement(Base):
 
     stock_id = db.Column(db.Integer, db.ForeignKey("medicine_stock.id"), nullable=True)
 
-    movement_type = db.Column(
-        db.Enum("PURCHASE", "SALE", "RETURN", "ADJUSTMENT", "EXPIRED"), nullable=False
-    )
+    movement_type = db.Column(db.Enum(StockMovementType), nullable=False)
 
     quantity = db.Column(db.Integer, nullable=False)
 
