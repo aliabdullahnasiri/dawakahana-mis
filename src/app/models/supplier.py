@@ -18,6 +18,8 @@ class Supplier(Base):
 
     is_active = db.Column(db.Boolean, default=True)
 
+    invoices = db.relationship("Invoice", back_populates="supplier", lazy="dynamic")
+
     def to_dict(self):
 
         return {
