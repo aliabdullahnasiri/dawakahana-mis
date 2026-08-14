@@ -1,0 +1,233 @@
+<div class="row">
+  <!-- Users -->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card mb-2">
+      <div class="card-header p-2 ps-3">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-sm mb-0 text-capitalize">{{ _("USERS_LABEL") }}</p>
+
+            <h4 class="mb-0">{{ User.count() }}</h4>
+          </div>
+
+          <div
+            class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg"
+          >
+            <i class="material-symbols-rounded opacity-10"> people </i>
+          </div>
+        </div>
+      </div>
+
+      <hr class="dark horizontal my-0" />
+
+      <div class="card-footer p-2 ps-3">
+        <p class="mb-0 text-sm">{{ _("SYSTEM_USERS_MSG") }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employees -->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card mb-2">
+      <div class="card-header p-2 ps-3">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-sm mb-0 text-capitalize">
+              {{ _("EMPLOYEES_LABEL") }}
+            </p>
+
+            <h4 class="mb-0">{{ Employee.count() }}</h4>
+          </div>
+
+          <div
+            class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg"
+          >
+            <i class="material-symbols-rounded opacity-10"> badge </i>
+          </div>
+        </div>
+      </div>
+
+      <hr class="dark horizontal my-0" />
+
+      <div class="card-footer p-2 ps-3">
+        <p class="mb-0 text-sm">{{ _("REGISTERED_EMPLOYEES_MSG") }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jobs -->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card mb-2">
+      <div class="card-header p-2 ps-3">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-sm mb-0 text-capitalize">{{ _("JOBS_LABEL") }}</p>
+
+            <h4 class="mb-0">{{ Job.count() }}</h4>
+          </div>
+
+          <div
+            class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg"
+          >
+            <i class="material-symbols-rounded opacity-10"> work </i>
+          </div>
+        </div>
+      </div>
+
+      <hr class="dark horizontal my-0" />
+
+      <div class="card-footer p-2 ps-3">
+        <p class="mb-0 text-sm">{{ _("AVAILABLE_JOB_POSITIONS_MSG") }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roles -->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card mb-2">
+      <div class="card-header p-2 ps-3">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-sm mb-0 text-capitalize">{{ _("ROLES_LABEL") }}</p>
+
+            <h4 class="mb-0">{{ Role.count() }}</h4>
+          </div>
+
+          <div
+            class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg"
+          >
+            <i class="material-symbols-rounded opacity-10">
+              admin_panel_settings
+            </i>
+          </div>
+        </div>
+      </div>
+
+      <hr class="dark horizontal my-0" />
+
+      <div class="card-footer p-2 ps-3">
+        <p class="mb-0 text-sm">{{ _("USER_ROLES_MSG") }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medicines -->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card mb-2">
+      <div class="card-header p-2 ps-3">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-sm mb-0 text-capitalize">
+              {{ _("MEDICINES_LABEL") }}
+            </p>
+
+            <h4 class="mb-0">{{ Medicine.count() }}</h4>
+          </div>
+
+          <div
+            class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg"
+          >
+            <i class="material-symbols-rounded opacity-10"> medication </i>
+          </div>
+        </div>
+      </div>
+
+      <hr class="dark horizontal my-0" />
+
+      <div class="card-footer p-2 ps-3">
+        <p class="mb-0 text-sm">{{ _("TOTAL_REGISTERED_MEDICINES_MSG") }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medicine Stock -->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card mb-2">
+      <div class="card-header p-2 ps-3">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-sm mb-0 text-capitalize">
+              {{ _("MEDICINE_STOCK_LABEL") }}
+            </p>
+
+            <h4 class="mb-0">{{ MedicineStock.count() }}</h4>
+          </div>
+
+          <div
+            class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg"
+          >
+            <i class="material-symbols-rounded opacity-10"> inventory </i>
+          </div>
+        </div>
+      </div>
+
+      <hr class="dark horizontal my-0" />
+
+      <div class="card-footer p-2 ps-3">
+        <p class="mb-0 text-sm">{{ _("CURRENT_STOCK_BATCHES_MSG") }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expiring Medicines -->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card mb-2">
+      <div class="card-header p-2 ps-3">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-sm mb-0 text-capitalize">
+              {{ _("EXPIRING_MEDICINES_LABEL") }}
+            </p>
+
+            <h4 class="mb-0 text-danger">{{ expiry_medicines.count() }}</h4>
+          </div>
+
+          <div
+            class="icon icon-md icon-shape bg-gradient-danger shadow-danger shadow text-center border-radius-lg"
+          >
+            <i class="material-symbols-rounded opacity-10"> warning </i>
+          </div>
+        </div>
+      </div>
+
+      <hr class="dark horizontal my-0" />
+
+      <div class="card-footer p-2 ps-3">
+        <p class="mb-0 text-sm">
+          {{ _("MEDICINES_NEAR_EXPIRY_MSG") }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Low Stock -->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card mb-2">
+      <div class="card-header p-2 ps-3">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-sm mb-0 text-capitalize">
+              {{ _("LOW_STOCK_LABEL") }}
+            </p>
+
+            <h4 class="mb-0 text-warning">{{ low_stock|length }}</h4>
+          </div>
+
+          <div
+            class="icon icon-md icon-shape bg-gradient-warning shadow-warning shadow text-center border-radius-lg"
+          >
+            <i class="material-symbols-rounded opacity-10"> inventory_2 </i>
+          </div>
+        </div>
+      </div>
+
+      <hr class="dark horizontal my-0" />
+
+      <div class="card-footer p-2 ps-3">
+        <p class="mb-0 text-sm">
+          {{ _("MEDICINES_NEED_RESTOCK_MSG") }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
