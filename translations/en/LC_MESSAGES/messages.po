@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-14 11:15+0430\n"
+"POT-Creation-Date: 2026-08-14 18:19+0430\n"
 "PO-Revision-Date: 2026-08-13 09:58+0430\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -40,15 +40,19 @@ msgid "DASHBOARD_LABEL"
 msgstr "Dashboard"
 
 #: src/app/blueprints/admin/routes/employees.py:17
-#: src/app/blueprints/api/routes/navbar.py:78
+#: src/app/blueprints/api/routes/navbar.py:94
 #: src/app/templates/admin/components/rows/dashboard-stats.html:36
 #: src/app/templates/admin/views/job.html:94
 #: src/app/templates/admin/views/job.html:121
 msgid "EMPLOYEES_LABEL"
 msgstr "Employees"
 
+#: src/app/blueprints/admin/routes/invoices.py:16
+msgid "INVOICES_LABEL"
+msgstr "Invoices"
+
 #: src/app/blueprints/admin/routes/jobs.py:15
-#: src/app/blueprints/api/routes/navbar.py:70
+#: src/app/blueprints/api/routes/navbar.py:86
 #: src/app/templates/admin/components/rows/dashboard-stats.html:64
 msgid "JOBS_LABEL"
 msgstr "Jobs"
@@ -101,15 +105,17 @@ msgstr "Suppliers"
 msgid "USERS_LABEL"
 msgstr "Users"
 
-#: src/app/blueprints/admin/routes/view.py:46
+#: src/app/blueprints/admin/routes/view.py:48
 msgid "ROW_WAS_NOT_FOUND_MSG"
 msgstr "Row was not found"
 
-#: src/app/blueprints/admin/routes/view.py:51
+#: src/app/blueprints/admin/routes/view.py:53
 msgid "TEMPLATE_WAS_NOT_FOUND_MSG"
 msgstr "Template was not found"
 
+#: src/app/blueprints/api/routes/customer.py:17
 #: src/app/blueprints/api/routes/employee.py:20
+#: src/app/blueprints/api/routes/invoice.py:21
 #: src/app/blueprints/api/routes/medicine.py:17
 #: src/app/blueprints/api/routes/medicine_stock.py:17
 #: src/app/blueprints/api/routes/permission.py:16
@@ -120,6 +126,94 @@ msgstr "Template was not found"
 #: src/app/forms/user.py:98
 msgid "ID_LABEL"
 msgstr "ID"
+
+#: src/app/blueprints/api/routes/customer.py:18 src/app/forms/customer.py:12
+msgid "CUSTOMER_NAME_LABEL"
+msgstr "Customer Name"
+
+#: src/app/blueprints/api/routes/customer.py:19 src/app/forms/customer.py:21
+msgid "PHONE_NUMBER_LABEL"
+msgstr "Phone Number"
+
+#: src/app/blueprints/api/routes/customer.py:20
+#: src/app/blueprints/api/routes/supplier.py:21 src/app/forms/customer.py:29
+#: src/app/forms/login.py:10 src/app/forms/signup.py:19
+#: src/app/forms/supplier.py:22 src/app/forms/user.py:49
+#: src/app/templates/admin/pages/profile.html:70
+#: src/app/templates/admin/views/information/employee.html:20
+msgid "EMAIL_LABEL"
+msgstr "Email"
+
+#: src/app/blueprints/api/routes/customer.py:21
+#: src/app/blueprints/api/routes/supplier.py:22
+msgid "STATUS_LABEL"
+msgstr "Status"
+
+#: src/app/blueprints/api/routes/customer.py:92
+#: src/app/blueprints/api/routes/customer.py:118
+msgid "CUSTOMER_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"
+msgstr "Customer with the given ID was not found."
+
+#: src/app/blueprints/api/routes/customer.py:148
+msgid "CUSTOMER_ADDED_LABEL"
+msgstr "Customer Added"
+
+#: src/app/blueprints/api/routes/customer.py:149
+msgid "CUSTOMER_ADDED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Customer added successfully."
+
+#: src/app/blueprints/api/routes/customer.py:186
+#: src/app/blueprints/api/routes/job.py:169
+#: src/app/blueprints/api/routes/permission.py:136
+#: src/app/blueprints/api/routes/role.py:158
+msgid "UPDATED_SUCCESS_MSG"
+msgstr "Updated"
+
+#: src/app/blueprints/api/routes/customer.py:187
+msgid "CUSTOMER_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Customer updated successfully."
+
+#: src/app/blueprints/api/routes/customer.py:192
+#: src/app/blueprints/api/routes/job.py:173
+#: src/app/blueprints/api/routes/permission.py:140
+#: src/app/blueprints/api/routes/role.py:162
+msgid "NOT_FOUND_LABEL"
+msgstr "Not Found"
+
+#: src/app/blueprints/api/routes/customer.py:193
+msgid "CUSTOMER_RECORD_NOT_FOUND_MSG"
+msgstr "Customer record not found."
+
+#: src/app/blueprints/api/routes/customer.py:220
+#: src/app/blueprints/api/routes/employee.py:245
+#: src/app/blueprints/api/routes/invoice.py:181
+#: src/app/blueprints/api/routes/job.py:196
+#: src/app/blueprints/api/routes/medicine.py:203
+#: src/app/blueprints/api/routes/medicine_stock.py:205
+#: src/app/blueprints/api/routes/role.py:185
+#: src/app/blueprints/api/routes/supplier.py:206
+#: src/app/blueprints/api/routes/user.py:184
+msgid "DELETED_SUCCESS_MSG"
+msgstr "Deleted"
+
+#: src/app/blueprints/api/routes/customer.py:221
+msgid "CUSTOMER_DELETED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Customer deleted successfully."
+
+#: src/app/blueprints/api/routes/customer.py:227
+#: src/app/blueprints/api/routes/employee.py:250
+#: src/app/blueprints/api/routes/job.py:201
+#: src/app/blueprints/api/routes/medicine.py:209
+#: src/app/blueprints/api/routes/medicine_stock.py:212
+#: src/app/blueprints/api/routes/role.py:196
+#: src/app/blueprints/api/routes/supplier.py:216
+#: src/app/blueprints/api/routes/user.py:190
+msgid "ERROR_ERROR"
+msgstr "Error"
+
+#: src/app/blueprints/api/routes/customer.py:228
+msgid "CUSTOMER_NOT_FOUND_MSG"
+msgstr "Customer not found."
 
 #: src/app/blueprints/api/routes/employee.py:21
 #: src/app/templates/admin/views/tables/employees.html:12
@@ -177,33 +271,47 @@ msgstr "Good Job"
 msgid "EMPLOYEE_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr "Employee updated successfully"
 
-#: src/app/blueprints/api/routes/employee.py:245
-#: src/app/blueprints/api/routes/job.py:196
-#: src/app/blueprints/api/routes/medicine.py:203
-#: src/app/blueprints/api/routes/medicine_stock.py:205
-#: src/app/blueprints/api/routes/role.py:185
-#: src/app/blueprints/api/routes/supplier.py:206
-#: src/app/blueprints/api/routes/user.py:184
-msgid "DELETED_SUCCESS_MSG"
-msgstr "Deleted"
-
 #: src/app/blueprints/api/routes/employee.py:246
 msgid "EMPLOYEE_DELETED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr "Employee deleted successfully"
 
-#: src/app/blueprints/api/routes/employee.py:250
-#: src/app/blueprints/api/routes/job.py:201
-#: src/app/blueprints/api/routes/medicine.py:209
-#: src/app/blueprints/api/routes/medicine_stock.py:212
-#: src/app/blueprints/api/routes/role.py:196
-#: src/app/blueprints/api/routes/supplier.py:216
-#: src/app/blueprints/api/routes/user.py:190
-msgid "ERROR_ERROR"
-msgstr "Error"
-
 #: src/app/blueprints/api/routes/employee.py:251
 msgid "EMPLOYEE_NOT_FOUND_MSG"
 msgstr "Employee not found"
+
+#: src/app/blueprints/api/routes/invoice.py:22 src/app/forms/invoice.py:31
+msgid "INVOICE_NUMBER_LABEL"
+msgstr "Invoice Number"
+
+#: src/app/blueprints/api/routes/invoice.py:23 src/app/forms/invoice.py:19
+msgid "INVOICE_TYPE_LABEL"
+msgstr "Invoice Type"
+
+#: src/app/blueprints/api/routes/invoice.py:24
+msgid "TOTAL_AMOUNT_LABEL"
+msgstr "Total Amount"
+
+#: src/app/blueprints/api/routes/invoice.py:25 src/app/forms/invoice.py:76
+msgid "PAID_AMOUNT_LABEL"
+msgstr "Paid Amount"
+
+#: src/app/blueprints/api/routes/invoice.py:26
+msgid "REMAINING_AMOUNT_LABEL"
+msgstr "Remaining Amount"
+
+#: src/app/blueprints/api/routes/invoice.py:27
+msgid "DATE_LABEL"
+msgstr "Date"
+
+#: src/app/blueprints/api/routes/invoice.py:84
+#: src/app/blueprints/api/routes/invoice.py:116
+#: src/app/blueprints/api/routes/invoice.py:192
+msgid "INVOICE_NOT_FOUND_MSG"
+msgstr "Invoice not found."
+
+#: src/app/blueprints/api/routes/invoice.py:182
+msgid "INVOICE_DELETED_SUCCESSFULLY_MSG"
+msgstr "Invoice deleted successfully."
 
 #: src/app/blueprints/api/routes/job.py:17
 #: src/app/templates/admin/views/information/employee.html:3
@@ -242,21 +350,9 @@ msgstr "Job Added"
 msgid "JOB_ADDED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr "Job added successfully"
 
-#: src/app/blueprints/api/routes/job.py:169
-#: src/app/blueprints/api/routes/permission.py:136
-#: src/app/blueprints/api/routes/role.py:158
-msgid "UPDATED_SUCCESS_MSG"
-msgstr "Updated"
-
 #: src/app/blueprints/api/routes/job.py:170
 msgid "JOB_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr "Job updated successfully"
-
-#: src/app/blueprints/api/routes/job.py:173
-#: src/app/blueprints/api/routes/permission.py:140
-#: src/app/blueprints/api/routes/role.py:162
-msgid "NOT_FOUND_LABEL"
-msgstr "Not Found"
 
 #: src/app/blueprints/api/routes/job.py:174
 msgid "JOB_RECORD_NOT_FOUND_MSG"
@@ -360,6 +456,14 @@ msgstr "Medicine stock not found"
 msgid "MANAGEMENT_LABEL"
 msgstr "Management"
 
+#: src/app/blueprints/api/routes/navbar.py:70 src/app/forms/invoice.py:55
+msgid "CUSTOMER_LABEL"
+msgstr "Customer"
+
+#: src/app/blueprints/api/routes/navbar.py:78
+msgid "INVOICE_LABEL"
+msgstr "Invoice"
+
 #: src/app/blueprints/api/routes/permission.py:17
 #: src/app/blueprints/api/routes/role.py:19 src/app/forms/permission.py:17
 #: src/app/forms/role.py:11 src/app/forms/role.py:57
@@ -443,17 +547,6 @@ msgstr "Company Name"
 msgid "PHONE_LABEL"
 msgstr "Phone"
 
-#: src/app/blueprints/api/routes/supplier.py:21 src/app/forms/login.py:10
-#: src/app/forms/signup.py:19 src/app/forms/supplier.py:22
-#: src/app/forms/user.py:49 src/app/templates/admin/pages/profile.html:70
-#: src/app/templates/admin/views/information/employee.html:20
-msgid "EMAIL_LABEL"
-msgstr "Email"
-
-#: src/app/blueprints/api/routes/supplier.py:22
-msgid "STATUS_LABEL"
-msgstr "Status"
-
 #: src/app/blueprints/api/routes/supplier.py:85
 #: src/app/blueprints/api/routes/supplier.py:106
 #: src/app/blueprints/api/routes/supplier.py:218
@@ -518,37 +611,10 @@ msgstr "This value must be unique"
 msgid "CHOICE_AN_OPTION_LABEL"
 msgstr "Choose an option"
 
-#: src/app/forms/employee.py:18 src/app/forms/job.py:48
-msgid "JOB_ID_LABEL"
-msgstr "Job ID"
-
-#: src/app/forms/employee.py:33 src/app/forms/supplier.py:24
-msgid "ADDRESS_LABEL"
-msgstr "Address"
-
-#: src/app/forms/employee.py:35 src/app/forms/job.py:13
-#: src/app/forms/medicine.py:27 src/app/forms/medicine.py:35
-#: src/app/forms/medicine.py:43 src/app/forms/permission.py:20
-#: src/app/forms/role.py:14 src/app/forms/role.py:23 src/app/forms/role.py:60
-#: src/app/forms/supplier.py:14
-msgid "THIS_FIELD_CANNOT_EXCEED_255_CHARACTERS_MSG"
-msgstr "This field cannot exceed 255 characters"
-
-#: src/app/forms/employee.py:43 src/app/forms/job.py:30 src/app/forms/job.py:39
-msgid "VALUE_MUST_BE_AT_LEAST_MIN_S_MSG"
-msgstr "Value must be at least %(min)s"
-
-#: src/app/forms/employee.py:47 src/app/forms/medicine.py:65
-#: src/app/forms/medicine_stock.py:71 src/app/forms/supplier.py:28
-#: src/app/forms/user.py:93
-msgid "ADD_LABEL"
-msgstr "Add"
-
-#: src/app/forms/employee.py:52
-msgid "EMPLOYEE_ID_LABEL"
-msgstr "Employee ID"
-
+#: src/app/forms/customer.py:14 src/app/forms/customer.py:57
 #: src/app/forms/employee.py:54 src/app/forms/employee.py:60
+#: src/app/forms/invoice.py:20 src/app/forms/invoice.py:33
+#: src/app/forms/invoice.py:72 src/app/forms/invoice.py:103
 #: src/app/forms/job.py:12 src/app/forms/job.py:29 src/app/forms/job.py:38
 #: src/app/forms/job.py:50 src/app/forms/login.py:12 src/app/forms/login.py:17
 #: src/app/forms/medicine.py:26 src/app/forms/medicine.py:71
@@ -565,6 +631,59 @@ msgstr "Employee ID"
 msgid "THIS_FIELD_IS_REQUIRED_ERROR"
 msgstr "This field is required"
 
+#: src/app/forms/customer.py:32
+msgid "INVALID_EMAIL_ERROR"
+msgstr "Invalid email address."
+
+#: src/app/forms/customer.py:38 src/app/forms/employee.py:33
+#: src/app/forms/supplier.py:24
+msgid "ADDRESS_LABEL"
+msgstr "Address"
+
+#: src/app/forms/customer.py:45 src/app/forms/medicine.py:61
+#: src/app/forms/supplier.py:26
+#: src/app/templates/admin/components/tables/td/is_active.html:2
+msgid "ACTIVE_LABEL"
+msgstr "Active"
+
+#: src/app/forms/customer.py:49
+msgid "ADD_CUSTOMER_LABEL"
+msgstr "Add Customer"
+
+#: src/app/forms/customer.py:55
+msgid "CUSTOMER_UID_LABEL"
+msgstr "Customer UID"
+
+#: src/app/forms/customer.py:61
+msgid "UPDATE_CUSTOMER_LABEL"
+msgstr "Update Customer"
+
+#: src/app/forms/employee.py:18 src/app/forms/job.py:48
+msgid "JOB_ID_LABEL"
+msgstr "Job ID"
+
+#: src/app/forms/employee.py:35 src/app/forms/job.py:13
+#: src/app/forms/medicine.py:27 src/app/forms/medicine.py:35
+#: src/app/forms/medicine.py:43 src/app/forms/permission.py:20
+#: src/app/forms/role.py:14 src/app/forms/role.py:23 src/app/forms/role.py:60
+#: src/app/forms/supplier.py:14
+msgid "THIS_FIELD_CANNOT_EXCEED_255_CHARACTERS_MSG"
+msgstr "This field cannot exceed 255 characters"
+
+#: src/app/forms/employee.py:43 src/app/forms/job.py:30 src/app/forms/job.py:39
+msgid "VALUE_MUST_BE_AT_LEAST_MIN_S_MSG"
+msgstr "Value must be at least %(min)s"
+
+#: src/app/forms/employee.py:47 src/app/forms/invoice.py:96
+#: src/app/forms/medicine.py:65 src/app/forms/medicine_stock.py:71
+#: src/app/forms/supplier.py:28 src/app/forms/user.py:93
+msgid "ADD_LABEL"
+msgstr "Add"
+
+#: src/app/forms/employee.py:52
+msgid "EMPLOYEE_ID_LABEL"
+msgstr "Employee ID"
+
 #: src/app/forms/employee.py:58
 msgid "USER_ID_LABEL"
 msgstr "User ID"
@@ -575,11 +694,58 @@ msgstr "User ID"
 msgid "PASSWORD_LABEL"
 msgstr "Password"
 
-#: src/app/forms/employee.py:64 src/app/forms/medicine.py:82
-#: src/app/forms/medicine_stock.py:81 src/app/forms/profile.py:10
-#: src/app/forms/supplier.py:38 src/app/forms/user.py:104
+#: src/app/forms/employee.py:64 src/app/forms/invoice.py:106
+#: src/app/forms/medicine.py:82 src/app/forms/medicine_stock.py:81
+#: src/app/forms/profile.py:10 src/app/forms/supplier.py:38
+#: src/app/forms/user.py:104
 msgid "UPDATE_LABEL"
 msgstr "Update"
+
+#: src/app/forms/invoice.py:22
+msgid "PURCHASE_LABEL"
+msgstr "Purchase"
+
+#: src/app/forms/invoice.py:23
+msgid "SALE_LABEL"
+msgstr "Sale"
+
+#: src/app/forms/invoice.py:24
+msgid "PURCHASE_RETURN_LABEL"
+msgstr "Purchase Return"
+
+#: src/app/forms/invoice.py:25
+msgid "SALE_RETURN_LABEL"
+msgstr "Sale Return"
+
+#: src/app/forms/invoice.py:34 src/app/forms/medicine.py:14
+#: src/app/forms/medicine.py:51 src/app/forms/medicine.py:78
+#: src/app/forms/medicine_stock.py:35
+msgid "THIS_FIELD_CANNOT_EXCEED_100_CHARACTERS_MSG"
+msgstr "This field cannot exceed 100 characters"
+
+#: src/app/forms/invoice.py:39
+msgid "SUPPLIER_LABEL"
+msgstr "Supplier"
+
+#: src/app/forms/invoice.py:71
+msgid "INVOICE_ITEMS_LABEL"
+msgstr "Invoice Items"
+
+#: src/app/forms/invoice.py:81
+msgid "PAYMENT_METHOD_LABEL"
+msgstr "Payment Method"
+
+#: src/app/forms/invoice.py:83
+msgid "CASH_LABEL"
+msgstr "Cash"
+
+#: src/app/forms/invoice.py:89
+msgid "NOTE_LABEL"
+msgstr "Note"
+
+#: src/app/forms/invoice.py:102
+msgid "INVOICE_ID_LABEL"
+msgstr "Invoice ID"
 
 #: src/app/forms/job.py:18
 msgid "JOB_DESCRIPTION_LABEL"
@@ -614,11 +780,6 @@ msgstr "Enter a valid email address"
 msgid "LOG_IN_LABEL"
 msgstr "Log In"
 
-#: src/app/forms/medicine.py:14 src/app/forms/medicine.py:51
-#: src/app/forms/medicine.py:78 src/app/forms/medicine_stock.py:35
-msgid "THIS_FIELD_CANNOT_EXCEED_100_CHARACTERS_MSG"
-msgstr "This field cannot exceed 100 characters"
-
 #: src/app/forms/medicine.py:18
 msgid "BARCODE_ALREADY_EXISTS_MSG"
 msgstr "Barcode already exists"
@@ -634,11 +795,6 @@ msgstr "Generic Name"
 #: src/app/templates/admin/views/information/role.html:9
 msgid "DESCRIPTION_LABEL"
 msgstr "Description"
-
-#: src/app/forms/medicine.py:61 src/app/forms/supplier.py:26
-#: src/app/templates/admin/components/tables/td/is_active.html:2
-msgid "ACTIVE_LABEL"
-msgstr "Active"
 
 #: src/app/forms/medicine_stock.py:17
 msgid "MEDICINE_ID_LABEL"
@@ -805,7 +961,7 @@ msgstr "Made with"
 msgid "BY_LABEL"
 msgstr "by"
 
-#: src/app/templates/admin/components/nav.html:7
+#: src/app/templates/admin/components/nav.html:8
 msgid "PAGES_LABEL"
 msgstr "Pages"
 
@@ -827,6 +983,22 @@ msgstr "than last week"
 msgid "WEEEKLY_WEBSITE_VIEWS_MSG"
 msgstr "Weekly Website Views"
 
+#: src/app/templates/admin/components/forms/add/invoice.html:14
+msgid "INVOICE_INFORMATION_LABEL"
+msgstr "Invoice Information"
+
+#: src/app/templates/admin/components/forms/add/invoice.html:16
+msgid "INVOICE_INFORMATION_DESC"
+msgstr "Enter the invoice details below."
+
+#: src/app/templates/admin/components/modals/add/customer.html:13
+msgid "ADD_NEW_CUSTOMER_MSG"
+msgstr "Add New Customer"
+
+#: src/app/templates/admin/components/modals/add/customer.html:16
+msgid "CREATE_NEW_CUSTOMER_DESCRIPTION_MSG"
+msgstr "Fill in the customer details below to create a new customer."
+
 #: src/app/templates/admin/components/modals/add/employee.html:14
 msgid "ADD_NEW_EMPLOYEE_MSG"
 msgstr "Add New Employee"
@@ -834,6 +1006,14 @@ msgstr "Add New Employee"
 #: src/app/templates/admin/components/modals/add/employee.html:16
 msgid "FILL_IN_THE_EMPLOYEE_S_DETAILS_BELOW_TO_CREATE_A_NEW_EMPLOYEE_MSG"
 msgstr "Fill in the employee's details below to create a new employee"
+
+#: src/app/templates/admin/components/modals/add/invoice.html:13
+msgid "ADD_NEW_INVOICE_MSG"
+msgstr "Add New Invoice"
+
+#: src/app/templates/admin/components/modals/add/invoice.html:16
+msgid "CREATE_NEW_INVOICE_DESCRIPTION_MSG"
+msgstr "Fill in the invoice details below to create a new invoice."
 
 #: src/app/templates/admin/components/modals/add/job.html:14
 msgid "ADD_NEW_JOB_MSG"
@@ -883,6 +1063,14 @@ msgstr "Add New User"
 msgid "FILL_IN_THE_USER_S_DETAILS_BELOW_TO_CREATE_A_NEW_ACCOUNT_MSG"
 msgstr "Fill in the user's details below to create a new account"
 
+#: src/app/templates/admin/components/modals/update/customer.html:13
+msgid "UPDATE_CUSTOMER_INFORMATION_MSG"
+msgstr "Update Customer Information"
+
+#: src/app/templates/admin/components/modals/update/customer.html:16
+msgid "UPDATE_CUSTOMER_DESCRIPTION_MSG"
+msgstr "Update the customer's information below."
+
 #: src/app/templates/admin/components/modals/update/employee.html:14
 msgid "UPDATE_EMPLOYEE_INFORMATION_MSG"
 msgstr "Update Employee Information"
@@ -890,6 +1078,14 @@ msgstr "Update Employee Information"
 #: src/app/templates/admin/components/modals/update/employee.html:16
 msgid "UPDATE_EMPLOYEE_DESCRIPTION_MODAL_MSG"
 msgstr "Update the employee's information"
+
+#: src/app/templates/admin/components/modals/update/invoice.html:13
+msgid "UPDATE_INVOICE_INFORMATION_MSG"
+msgstr "Update Invoice Information"
+
+#: src/app/templates/admin/components/modals/update/invoice.html:16
+msgid "UPDATE_INVOICE_DESCRIPTION_MSG"
+msgstr "Update the invoice's information below."
 
 #: src/app/templates/admin/components/modals/update/job.html:14
 msgid "UPDATE_JOB_INFORMATION_MSG"
