@@ -8,7 +8,7 @@ from flask_babel import gettext as g
 from app.blueprints.api import bp
 from app.cls import ColumnID, ColumnName
 from app.extensions.db import db
-from app.forms.invoice import AddInvoiceForm, UpdateInvoiceForm
+from app.forms.invoice import AddInvoiceForm, AddInvoiceItemForm, UpdateInvoiceForm
 from app.func import render_td
 from app.models.invoice import Invoice, InvoiceType
 from app.models.invoice_item import InvoiceItem
@@ -134,6 +134,22 @@ def add_invoice():
 
     else:
 
+        response["errors"] = form.errors
+
+    return Response(
+        json.dumps(response),
+        status=200,
+    )
+
+
+@bp.post("/add/invoice-item")
+@permission_required(Permission.get("CREATE_INVOICE_ITEM"))
+def add_invoice_item():
+    form = AddInvoiceItemForm()
+
+    response: Dict = {}
+
+    if not form.validate_on_submit():
         response["errors"] = form.errors
 
     return Response(

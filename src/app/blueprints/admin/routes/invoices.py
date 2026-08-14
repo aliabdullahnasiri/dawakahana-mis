@@ -2,7 +2,7 @@ from flask import render_template
 from flask_babel import gettext as _
 
 from app.blueprints.admin import bp
-from app.forms.invoice import AddInvoiceForm, UpdateInvoiceForm
+from app.forms.invoice import AddInvoiceForm, AddInvoiceItemForm, UpdateInvoiceForm
 from app.models.permission import Permission
 from app.models.user import permission_required
 
@@ -17,5 +17,6 @@ def invoices():
         form={
             "a": AddInvoiceForm(),
             "u": UpdateInvoiceForm(),
+            "add_invoice_item_form": AddInvoiceItemForm(),
         },
     )
