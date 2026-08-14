@@ -21,8 +21,9 @@ class Customer(Base):
     invoices = db.relationship("Invoice", back_populates="customer", lazy="dynamic")
 
     transactions = db.relationship(
-        "CustomerTransaction", back_populates="customer", lazy="dynamic"
+        "Transaction", back_populates="customer", lazy="dynamic"
     )
+
     invoices = db.relationship("Invoice", back_populates="customer", lazy="dynamic")
 
     def to_dict(self) -> dict:

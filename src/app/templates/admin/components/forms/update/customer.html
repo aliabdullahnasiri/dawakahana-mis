@@ -1,0 +1,77 @@
+{% with f = form.u %}
+
+<form
+  autocomplete="off"
+  method="POST"
+  action="{{ url_for('api.update_customer') }}"
+  data-get="{{ url_for('api.fetch_customer', id=-1) }}"
+>
+  {{ f.hidden_tag() }}
+
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="my-2">
+            <div class="input-group input-group-outline">
+              {{ f.name.label(class="form-label") }} {{
+              f.name(class="form-control") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="my-2">
+            <div class="input-group input-group-outline">
+              {{ f.phone.label(class="form-label") }} {{
+              f.phone(class="form-control") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="my-2">
+            <div class="input-group input-group-outline">
+              {{ f.email.label(class="form-label") }} {{
+              f.email(class="form-control") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="my-2">
+            <div class="input-group input-group-outline">
+              {{ f.address.label(class="form-label") }} {{
+              f.address(class="form-control") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="mt-2 mx-3">
+            <div class="form-check form-check-info ps-0">
+              {{ f.is_active(class="form-check-input") }} {{
+              f.is_active.label(class="form-check-label") }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-0">
+    <div class="text-center">
+      {{ f.submit( class="btn bg-gradient-info btn-lg w-100 mt-4 mb-0" ) }}
+    </div>
+  </div>
+</form>
+
+{% endwith %}

@@ -67,6 +67,22 @@ ITEMS: List[Dict] = [
             },
             {
                 "type": "item",
+                "title": _("CUSTOMER_LABEL"),
+                "icon": None,
+                "endpoint": "admin.customers",
+                "permissions": Permission.get("FETCH_CUSTOMER")
+                | Permission.get("FETCH_CUSTOMERS"),
+            },
+            {
+                "type": "item",
+                "title": _("INVOICE_LABEL"),
+                "icon": None,
+                "endpoint": "admin.invoices",
+                "permissions": Permission.get("FETCH_INVOICE")
+                | Permission.get("FETCH_INVOICES"),
+            },
+            {
+                "type": "item",
                 "title": _("JOBS_LABEL"),
                 "icon": None,
                 "endpoint": "admin.jobs",

@@ -3,59 +3,18 @@
 <form
   autocomplete="off"
   method="POST"
-  action="{{ url_for('api.add_invoice') }}"
+  action="{{ url_for('api.add_customer') }}"
 >
   {{ f.hidden_tag() }}
 
   <div class="row justify-content-center">
-    <!-- Invoice Information -->
-    <div class="col-6">
-      <div class="card-header p-2">
-        <h6 class="m-0">{{ _("INVOICE_INFORMATION_LABEL") }}</h6>
-        <p class="text-sm text-muted mb-2">
-          {{ _("INVOICE_INFORMATION_DESC") }}
-        </p>
-      </div>
-
+    <div class="col-12">
       <div class="row">
         <div class="col-md-12">
           <div class="my-2">
             <div class="input-group input-group-outline">
-              {{ f.invoice_number.label(class="form-label") }} {{
-              f.invoice_number(class="form-control") }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12">
-          <div class="mb-2">
-            <div class="px-2 py-0 my-0">
-              {{ f.invoice_type.label(class="form-label mx-0") }}
-            </div>
-
-            {{ f.invoice_type( class="form-control", data_style="btn border text-auto" ) }}
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12">
-          <div class="my-2">
-            <div class="input-group input-group-outline">
-              {{ f.supplier_id.label(class="form-label") }} {{ f.supplier_id(
-              class="form-control" ) }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="my-2">
-            <div class="input-group input-group-outline">
-              {{ f.customer_id.label(class="form-label") }} {{ f.customer_id(
-              class="form-control" ) }}
+              {{ f.name.label(class="form-label") }} {{
+              f.name(class="form-control") }}
             </div>
           </div>
         </div>
@@ -65,16 +24,49 @@
         <div class="col-md-12">
           <div class="my-2">
             <div class="input-group input-group-outline">
-              {{ f.paid_amount.label(class="form-label") }} {{ f.paid_amount(
-              class="form-control" ) }}
+              {{ f.phone.label(class="form-label") }} {{
+              f.phone(class="form-control") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="my-2">
+            <div class="input-group input-group-outline">
+              {{ f.email.label(class="form-label") }} {{
+              f.email(class="form-control") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="my-2">
+            <div class="input-group input-group-outline">
+              {{ f.address.label(class="form-label") }} {{
+              f.address(class="form-control") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="mt-2 mx-3">
+            <div class="form-check form-check-info ps-0">
+              {{ f.is_active(class="form-check-input") }} {{
+              f.is_active.label(class="form-check-label") }}
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-6"></div>
   </div>
-  <div class="row my-3">
+
+  <div class="row mt-0">
     <div class="text-center">
       {{ f.submit( class="btn bg-gradient-info btn-lg w-100 mt-4 mb-0" ) }}
     </div>

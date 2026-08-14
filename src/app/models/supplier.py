@@ -20,6 +20,10 @@ class Supplier(Base):
 
     invoices = db.relationship("Invoice", back_populates="supplier", lazy="dynamic")
 
+    transactions = db.relationship(
+        "Transaction", back_populates="supplier", lazy="dynamic"
+    )
+
     def to_dict(self):
 
         return {

@@ -7,7 +7,14 @@ from app.models.base import Base
 class InvoiceType(enum.Enum):
     PURCHASE = "PURCHASE"
     SALE = "SALE"
-    RETURN = "RETURN"
+    PURCHASE_RETURN = "PURCHASE_RETURN"
+    SALE_RETURN = "SALE_RETURN"
+
+
+class PaymentStatus(enum.Enum):
+    PAID = "PAID"
+    PARTIAL = "PARTIAL"
+    UNPAID = "UNPAID"
 
 
 class Invoice(Base):
@@ -22,13 +29,7 @@ class Invoice(Base):
 
     customer_id = db.Column(db.Integer, db.ForeignKey("customers.id"), nullable=True)
 
-    total_amount = db.Column(db.Numeric(10, 2), default=0)
-
-    paid_amount = db.Column(db.Numeric(10, 2), default=0)
-
-    remaining_amount = db.Column(db.Numeric(10, 2), default=0)
-
-    payment_status = db.Column(db.String(50), default="PAID")
+    payment_status = db.Column(db.Enum(PaymentStatus), default=PaymentStatus.UNPAID)
 
     invoice_date = db.Column(db.DateTime, nullable=False)
 
@@ -42,17 +43,18 @@ class Invoice(Base):
 
     customer = db.relationship("Customer", back_populates="invoices")
 
-    transactions = db.relationship("CustomerTransaction", back_populates="invoice")
+    transactions = db.relationship(
+        "Transaction", back_populates="invoice", lazy="dynamic"
+    )
+
+    user = db.relationship("User")
 
     def to_dict(self):
 
         return {
             "invoice_number": self.invoice_number,
-            "invoice_type": self.invoice_type,
-            "total_amount": self.total_amount,
-            "paid_amount": self.paid_amount,
-            "remaining_amount": self.remaining_amount,
-            "payment_status": self.payment_status,
+            "invoice_type": self.invoice_type.value,
+            "payment_status": self.payment_status.value,
             "invoice_date": self.invoice_date,
             **getattr(super(), "to_dict")(),
         }

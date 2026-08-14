@@ -6,6 +6,7 @@ from flask_babel import gettext as _
 
 from app.blueprints.admin import bp
 from app.config import Config
+from app.models.customer import Customer
 from app.models.employee import Employee
 from app.models.job import Job
 from app.models.medicine import Medicine
@@ -22,6 +23,7 @@ entities: Dict = {
     "medicine": Medicine,
     "medicine_stock": MedicineStock,
     "supplier": Supplier,
+    "customer": Customer,
 }
 
 
