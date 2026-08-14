@@ -12,6 +12,7 @@ from app.models.medicine import Medicine
 from app.models.medicine_stock import MedicineStock
 from app.models.permission import Permission
 from app.models.role import Role
+from app.models.supplier import Supplier
 
 entities: Dict = {
     "job": Job,
@@ -20,6 +21,7 @@ entities: Dict = {
     "role": Role,
     "medicine": Medicine,
     "medicine_stock": MedicineStock,
+    "supplier": Supplier,
 }
 
 

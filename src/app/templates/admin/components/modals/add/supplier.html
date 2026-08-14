@@ -1,0 +1,30 @@
+<div
+  class="modal fade"
+  id="AddSupplierModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="AddSupplierModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card card-plain">
+          <div class="card-header pb-0 text-left">
+            <h5 data-modal-title>{{ _("ADD_NEW_SUPPLIER_MSG") }}</h5>
+
+            <p class="mb-0" data-modal-description>
+              {{
+              _("FILL_IN_THE_SUPPLIER_DETAILS_BELOW_TO_CREATE_A_NEW_SUPPLIER_MSG")
+              }}
+            </p>
+          </div>
+
+          <div class="card-body">
+            {% include "admin/components/forms/add/supplier.html" %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

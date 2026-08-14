@@ -59,6 +59,14 @@ ITEMS: List[Dict] = [
             },
             {
                 "type": "item",
+                "title": _("SUPPLIERS_LABEL"),
+                "icon": None,
+                "endpoint": "admin.suppliers",
+                "permissions": Permission.get("FETCH_SUPPLIERS")
+                | Permission.get("FETCH_SUPPLIER"),
+            },
+            {
+                "type": "item",
                 "title": _("JOBS_LABEL"),
                 "icon": None,
                 "endpoint": "admin.jobs",

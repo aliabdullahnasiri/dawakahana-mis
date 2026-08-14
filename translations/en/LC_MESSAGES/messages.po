@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-14 08:46+0430\n"
+"POT-Creation-Date: 2026-08-14 11:15+0430\n"
 "PO-Revision-Date: 2026-08-13 09:58+0430\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -39,21 +39,21 @@ msgstr "English"
 msgid "DASHBOARD_LABEL"
 msgstr "Dashboard"
 
-#: src/app/blueprints/admin/routes/employee.py:17
-#: src/app/blueprints/api/routes/navbar.py:70
+#: src/app/blueprints/admin/routes/employees.py:17
+#: src/app/blueprints/api/routes/navbar.py:78
 #: src/app/templates/admin/components/rows/dashboard-stats.html:36
 #: src/app/templates/admin/views/job.html:94
 #: src/app/templates/admin/views/job.html:121
 msgid "EMPLOYEES_LABEL"
 msgstr "Employees"
 
-#: src/app/blueprints/admin/routes/job.py:15
-#: src/app/blueprints/api/routes/navbar.py:62
+#: src/app/blueprints/admin/routes/jobs.py:15
+#: src/app/blueprints/api/routes/navbar.py:70
 #: src/app/templates/admin/components/rows/dashboard-stats.html:64
 msgid "JOBS_LABEL"
 msgstr "Jobs"
 
-#: src/app/blueprints/admin/routes/medicine_stock.py:17
+#: src/app/blueprints/admin/routes/medicine_stocks.py:17
 #: src/app/blueprints/api/routes/navbar.py:54
 msgid "MEDICINE_STOCKS_LABEL"
 msgstr "Medicine Stocks"
@@ -85,7 +85,12 @@ msgstr "Profile"
 msgid "ROLES_LABEL"
 msgstr "Roles"
 
-#: src/app/blueprints/admin/routes/user.py:19
+#: src/app/blueprints/admin/routes/suppliers.py:18
+#: src/app/blueprints/api/routes/navbar.py:62
+msgid "SUPPLIERS_LABEL"
+msgstr "Suppliers"
+
+#: src/app/blueprints/admin/routes/users.py:19
 #: src/app/blueprints/api/routes/navbar.py:20
 #: src/app/templates/admin/components/rows/dashboard-stats.html:8
 #: src/app/templates/admin/views/permission.html:50
@@ -96,11 +101,11 @@ msgstr "Roles"
 msgid "USERS_LABEL"
 msgstr "Users"
 
-#: src/app/blueprints/admin/routes/view.py:44
+#: src/app/blueprints/admin/routes/view.py:46
 msgid "ROW_WAS_NOT_FOUND_MSG"
 msgstr "Row was not found"
 
-#: src/app/blueprints/admin/routes/view.py:49
+#: src/app/blueprints/admin/routes/view.py:51
 msgid "TEMPLATE_WAS_NOT_FOUND_MSG"
 msgstr "Template was not found"
 
@@ -109,8 +114,10 @@ msgstr "Template was not found"
 #: src/app/blueprints/api/routes/medicine_stock.py:17
 #: src/app/blueprints/api/routes/permission.py:16
 #: src/app/blueprints/api/routes/role.py:18
+#: src/app/blueprints/api/routes/supplier.py:17
 #: src/app/blueprints/api/routes/user.py:19 src/app/forms/medicine.py:70
-#: src/app/forms/medicine_stock.py:77 src/app/forms/user.py:98
+#: src/app/forms/medicine_stock.py:77 src/app/forms/supplier.py:34
+#: src/app/forms/user.py:98
 msgid "ID_LABEL"
 msgstr "ID"
 
@@ -175,6 +182,7 @@ msgstr "Employee updated successfully"
 #: src/app/blueprints/api/routes/medicine.py:203
 #: src/app/blueprints/api/routes/medicine_stock.py:205
 #: src/app/blueprints/api/routes/role.py:185
+#: src/app/blueprints/api/routes/supplier.py:206
 #: src/app/blueprints/api/routes/user.py:184
 msgid "DELETED_SUCCESS_MSG"
 msgstr "Deleted"
@@ -188,6 +196,7 @@ msgstr "Employee deleted successfully"
 #: src/app/blueprints/api/routes/medicine.py:209
 #: src/app/blueprints/api/routes/medicine_stock.py:212
 #: src/app/blueprints/api/routes/role.py:196
+#: src/app/blueprints/api/routes/supplier.py:216
 #: src/app/blueprints/api/routes/user.py:190
 msgid "ERROR_ERROR"
 msgstr "Error"
@@ -351,14 +360,6 @@ msgstr "Medicine stock not found"
 msgid "MANAGEMENT_LABEL"
 msgstr "Management"
 
-#: src/app/blueprints/api/routes/navbar.py:80
-msgid "ACCOUNT_TITLE"
-msgstr "Account"
-
-#: src/app/blueprints/api/routes/navbar.py:84
-msgid "PROFILE_TITLE"
-msgstr "Profile"
-
 #: src/app/blueprints/api/routes/permission.py:17
 #: src/app/blueprints/api/routes/role.py:19 src/app/forms/permission.py:17
 #: src/app/forms/role.py:11 src/app/forms/role.py:57
@@ -429,6 +430,56 @@ msgstr "Role added successfully"
 msgid "ROLE_ADDED_LABEL"
 msgstr "Role Added"
 
+#: src/app/blueprints/api/routes/supplier.py:18 src/app/forms/supplier.py:11
+msgid "SUPPLIER_NAME_LABEL"
+msgstr "Supplier Name"
+
+#: src/app/blueprints/api/routes/supplier.py:19 src/app/forms/supplier.py:18
+msgid "COMPANY_NAME_LABEL"
+msgstr "Company Name"
+
+#: src/app/blueprints/api/routes/supplier.py:20 src/app/forms/supplier.py:20
+#: src/app/forms/user.py:67 src/app/templates/admin/views/employee.html:82
+msgid "PHONE_LABEL"
+msgstr "Phone"
+
+#: src/app/blueprints/api/routes/supplier.py:21 src/app/forms/login.py:10
+#: src/app/forms/signup.py:19 src/app/forms/supplier.py:22
+#: src/app/forms/user.py:49 src/app/templates/admin/pages/profile.html:70
+#: src/app/templates/admin/views/information/employee.html:20
+msgid "EMAIL_LABEL"
+msgstr "Email"
+
+#: src/app/blueprints/api/routes/supplier.py:22
+msgid "STATUS_LABEL"
+msgstr "Status"
+
+#: src/app/blueprints/api/routes/supplier.py:85
+#: src/app/blueprints/api/routes/supplier.py:106
+#: src/app/blueprints/api/routes/supplier.py:218
+msgid "SUPPLIER_NOT_FOUND_MSG"
+msgstr "Supplier not found."
+
+#: src/app/blueprints/api/routes/supplier.py:134
+msgid "SUPPLIER_ADDED_LABEL"
+msgstr "Supplier Added"
+
+#: src/app/blueprints/api/routes/supplier.py:136
+msgid "SUPPLIER_ADDED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Supplier added successfully."
+
+#: src/app/blueprints/api/routes/supplier.py:176
+msgid "UPDATED_SUCCESSFULLY_LABEL"
+msgstr "Updated Successfully"
+
+#: src/app/blueprints/api/routes/supplier.py:178
+msgid "SUPPLIER_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Supplier updated successfully."
+
+#: src/app/blueprints/api/routes/supplier.py:208
+msgid "SUPPLIER_DELETED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr "Supplier deleted successfully."
+
 #: src/app/blueprints/api/routes/user.py:20
 #: src/app/templates/admin/views/tables/users.html:12
 msgid "USER_LABEL"
@@ -471,7 +522,7 @@ msgstr "Choose an option"
 msgid "JOB_ID_LABEL"
 msgstr "Job ID"
 
-#: src/app/forms/employee.py:33
+#: src/app/forms/employee.py:33 src/app/forms/supplier.py:24
 msgid "ADDRESS_LABEL"
 msgstr "Address"
 
@@ -479,6 +530,7 @@ msgstr "Address"
 #: src/app/forms/medicine.py:27 src/app/forms/medicine.py:35
 #: src/app/forms/medicine.py:43 src/app/forms/permission.py:20
 #: src/app/forms/role.py:14 src/app/forms/role.py:23 src/app/forms/role.py:60
+#: src/app/forms/supplier.py:14
 msgid "THIS_FIELD_CANNOT_EXCEED_255_CHARACTERS_MSG"
 msgstr "This field cannot exceed 255 characters"
 
@@ -487,7 +539,8 @@ msgid "VALUE_MUST_BE_AT_LEAST_MIN_S_MSG"
 msgstr "Value must be at least %(min)s"
 
 #: src/app/forms/employee.py:47 src/app/forms/medicine.py:65
-#: src/app/forms/medicine_stock.py:71 src/app/forms/user.py:93
+#: src/app/forms/medicine_stock.py:71 src/app/forms/supplier.py:28
+#: src/app/forms/user.py:93
 msgid "ADD_LABEL"
 msgstr "Add"
 
@@ -505,9 +558,10 @@ msgstr "Employee ID"
 #: src/app/forms/permission.py:19 src/app/forms/role.py:13
 #: src/app/forms/role.py:53 src/app/forms/signup.py:13
 #: src/app/forms/signup.py:21 src/app/forms/signup.py:29
-#: src/app/forms/signup.py:36 src/app/forms/user.py:23 src/app/forms/user.py:36
-#: src/app/forms/user.py:43 src/app/forms/user.py:51 src/app/forms/user.py:58
-#: src/app/forms/user.py:99
+#: src/app/forms/signup.py:36 src/app/forms/supplier.py:13
+#: src/app/forms/supplier.py:35 src/app/forms/user.py:23
+#: src/app/forms/user.py:36 src/app/forms/user.py:43 src/app/forms/user.py:51
+#: src/app/forms/user.py:58 src/app/forms/user.py:99
 msgid "THIS_FIELD_IS_REQUIRED_ERROR"
 msgstr "This field is required"
 
@@ -523,7 +577,7 @@ msgstr "Password"
 
 #: src/app/forms/employee.py:64 src/app/forms/medicine.py:82
 #: src/app/forms/medicine_stock.py:81 src/app/forms/profile.py:10
-#: src/app/forms/user.py:104
+#: src/app/forms/supplier.py:38 src/app/forms/user.py:104
 msgid "UPDATE_LABEL"
 msgstr "Update"
 
@@ -550,12 +604,6 @@ msgstr "Add Job"
 #: src/app/forms/job.py:54
 msgid "UPDATE_JOB_LABEL"
 msgstr "Update Job"
-
-#: src/app/forms/login.py:10 src/app/forms/signup.py:19
-#: src/app/forms/user.py:49 src/app/templates/admin/pages/profile.html:70
-#: src/app/templates/admin/views/information/employee.html:20
-msgid "EMAIL_LABEL"
-msgstr "Email"
 
 #: src/app/forms/login.py:13 src/app/forms/signup.py:22
 #: src/app/forms/user.py:52
@@ -587,7 +635,8 @@ msgstr "Generic Name"
 msgid "DESCRIPTION_LABEL"
 msgstr "Description"
 
-#: src/app/forms/medicine.py:61
+#: src/app/forms/medicine.py:61 src/app/forms/supplier.py:26
+#: src/app/templates/admin/components/tables/td/is_active.html:2
 msgid "ACTIVE_LABEL"
 msgstr "Active"
 
@@ -692,15 +741,11 @@ msgstr "Upload a new profile picture"
 msgid "FILES_LABEL"
 msgstr "Files"
 
-#: src/app/forms/user.py:67 src/app/templates/admin/views/employee.html:82
-msgid "PHONE_LABEL"
-msgstr "Phone"
-
 #: src/app/forms/user.py:73
 msgid "DUPLICATE_ENTRY_FOR_PHONE_NUMBER_MSG"
 msgstr "Duplicate entry for phone number"
 
-#: src/app/templates/admin/components/aside.html:64
+#: src/app/templates/admin/components/aside.html:87
 msgid "LOGOUT_LABEL"
 msgstr "Logout"
 
@@ -822,6 +867,14 @@ msgstr "Add New Role"
 msgid "FILL_IN_THE_ROLE_S_DETAILS_BELOW_TO_CREATE_A_NEW_ROLE_MSG"
 msgstr "Fill in the role's details below to create a new role"
 
+#: src/app/templates/admin/components/modals/add/supplier.html:14
+msgid "ADD_NEW_SUPPLIER_MSG"
+msgstr "Add New Supplier"
+
+#: src/app/templates/admin/components/modals/add/supplier.html:18
+msgid "FILL_IN_THE_SUPPLIER_DETAILS_BELOW_TO_CREATE_A_NEW_SUPPLIER_MSG"
+msgstr "Fill in the supplier details below to create a new supplier."
+
 #: src/app/templates/admin/components/modals/add/user.html:14
 msgid "ADD_NEW_USER_MSG"
 msgstr "Add New User"
@@ -886,6 +939,14 @@ msgstr "Update Role Information"
 msgid "UPDATE_ROLE_DESCRIPTION_MODAL_MSG"
 msgstr "Update the role's information"
 
+#: src/app/templates/admin/components/modals/update/supplier.html:14
+msgid "UPDATE_SUPPLIER_INFORMATION_MSG"
+msgstr "Update Supplier Information"
+
+#: src/app/templates/admin/components/modals/update/supplier.html:17
+msgid "UPDATE_SUPPLIER_DESCRIPTION_MODAL_MSG"
+msgstr "Update the supplier's information below."
+
 #: src/app/templates/admin/components/modals/update/user.html:14
 msgid "UPDATE_USER_INFORMATION_MSG"
 msgstr "Update User Information"
@@ -942,14 +1003,19 @@ msgstr "Medicines that need restocking"
 msgid "SEARCH_PLACEHOLDER"
 msgstr "Search"
 
+#: src/app/templates/admin/components/tables/td/is_active.html:4
+msgid "INACTIVE_LABEL"
+msgstr "Inactive"
+
 #: src/app/templates/admin/pages/dashboard.html:8
 msgid "PHARMACY_ANALYTICS_LABEL"
 msgstr "Pharmacy Analytics"
 
-
 #: src/app/templates/admin/pages/dashboard.html:12
 msgid "PHARMACY_ANALYTICS_DESCRIPTION_MSG"
-msgstr "Monitor medicine inventory, sales performance, stock status, and financial activities."
+msgstr ""
+"Monitor medicine inventory, sales performance, stock status, and "
+"financial activities."
 
 #: src/app/templates/admin/pages/profile.html:48
 msgid "PROFILE_INFORMATION_LABEL"
@@ -1092,3 +1158,8 @@ msgstr "Already have an account?"
 #~ msgid "FOR_LABEL"
 #~ msgstr "for"
 
+#~ msgid "ACCOUNT_TITLE"
+#~ msgstr "Account"
+
+#~ msgid "PROFILE_TITLE"
+#~ msgstr "Profile"
