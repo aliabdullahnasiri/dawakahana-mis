@@ -7,7 +7,7 @@ from wtforms import (
     StringField,
     SubmitField,
 )
-from wtforms.validators import DataRequired, Length, Optional
+from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
 from app.forms import Form
 from app.models.invoice import InvoiceType
@@ -25,14 +25,6 @@ class AddInvoiceForm(Form):
             (InvoiceType.SALE_RETURN.value, _("SALE_RETURN_LABEL")),
         ],
         render_kw={"data-group-switcher": "true"},
-    )
-
-    invoice_number = StringField(
-        _("INVOICE_NUMBER_LABEL"),
-        validators=[
-            DataRequired(message=_("THIS_FIELD_IS_REQUIRED_ERROR")),
-            Length(max=100, message=_("THIS_FIELD_CANNOT_EXCEED_100_CHARACTERS_MSG")),
-        ],
     )
 
     supplier_id = IntegerField(
@@ -94,6 +86,45 @@ class AddInvoiceForm(Form):
     )
 
     submit = SubmitField(_("ADD_LABEL"))
+
+
+class AddInvoiceItemForm(Form):
+    medicine_id = IntegerField(
+        _("MEDICINE_ID_LABEL"),
+        validators=[DataRequired(message=_("THIS_FIELD_IS_REQUIRED_ERROR"))],
+        render_kw={
+            "data-auto-complete": "true",
+            "data-fetch-api": "api.autocomplete",
+            "data-model-name": "Medicine",
+            "data-select-val": "id",
+            "data-search-col": "name",
+            "data-template": "medicines.html",
+        },
+    )
+
+    quantity = IntegerField(
+        _("QUANTITY_LABEL"),
+        validators=[
+            DataRequired(message=_("THIS_FIELD_IS_REQUIRED_ERROR")),
+            NumberRange(
+                min=0,
+                message=_("VALUE_MUST_BE_GREATER_THAN_ZERO_MSG"),
+            ),
+        ],
+    )
+
+    unit_price = IntegerField(
+        _("UNIT_PRICE_LABEL"),
+        validators=[
+            DataRequired(message=_("THIS_FIELD_IS_REQUIRED_ERROR")),
+            NumberRange(
+                min=0,
+                message=_("VALUE_MUST_BE_GREATER_THAN_ZERO_MSG"),
+            ),
+        ],
+    )
+
+    submit = SubmitField(_("ADD_INVOICE_ITEM_LABEL"))
 
 
 class UpdateInvoiceForm(AddInvoiceForm):
