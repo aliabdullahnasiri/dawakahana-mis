@@ -3,6 +3,7 @@ from flask_babel import gettext as _
 
 from app.blueprints.admin import bp
 from app.models.base import Base
+from app.models.medicine_stock import MedicineStock
 from app.models.permission import Permission
 from app.models.user import permission_required
 
@@ -14,5 +15,7 @@ def dashboard():
     return render_template(
         "admin/pages/dashboard.html",
         title=_("DASHBOARD_LABEL"),
-        **{cls.__name__: cls for cls in Base.__subclasses__()}
+        expiry_medicines=MedicineStock.get_expiring_medicines(5),
+        low_stock=MedicineStock.query.filter(MedicineStock.quantity <= 10).all(),
+        **{cls.__name__: cls for cls in Base.__subclasses__()},
     )
