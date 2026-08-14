@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-13 21:20+0430\n"
+"POT-Creation-Date: 2026-08-14 08:46+0430\n"
 "PO-Revision-Date: 2026-08-13 09:58+0430\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -34,14 +34,14 @@ msgstr "Persian"
 msgid "EN_LABEL"
 msgstr "English"
 
-#: src/app/blueprints/admin/routes/dashboard.py:16
+#: src/app/blueprints/admin/routes/dashboard.py:17
 #: src/app/blueprints/api/routes/navbar.py:13
-#: src/app/templates/admin/pages/dashboard.html:6
 msgid "DASHBOARD_LABEL"
 msgstr "Dashboard"
 
 #: src/app/blueprints/admin/routes/employee.py:17
 #: src/app/blueprints/api/routes/navbar.py:70
+#: src/app/templates/admin/components/rows/dashboard-stats.html:36
 #: src/app/templates/admin/views/job.html:94
 #: src/app/templates/admin/views/job.html:121
 msgid "EMPLOYEES_LABEL"
@@ -49,6 +49,7 @@ msgstr "Employees"
 
 #: src/app/blueprints/admin/routes/job.py:15
 #: src/app/blueprints/api/routes/navbar.py:62
+#: src/app/templates/admin/components/rows/dashboard-stats.html:64
 msgid "JOBS_LABEL"
 msgstr "Jobs"
 
@@ -59,6 +60,7 @@ msgstr "Medicine Stocks"
 
 #: src/app/blueprints/admin/routes/medicines.py:17
 #: src/app/blueprints/api/routes/navbar.py:46
+#: src/app/templates/admin/components/rows/dashboard-stats.html:121
 msgid "MEDICINES_LABEL"
 msgstr "Medicines"
 
@@ -76,6 +78,7 @@ msgstr "Profile"
 
 #: src/app/blueprints/admin/routes/roles.py:15
 #: src/app/blueprints/api/routes/navbar.py:35 src/app/forms/user.py:81
+#: src/app/templates/admin/components/rows/dashboard-stats.html:91
 #: src/app/templates/admin/views/permission.html:31
 #: src/app/templates/admin/views/permission.html:91
 #: src/app/templates/admin/views/tabs/roles.html:5
@@ -84,6 +87,7 @@ msgstr "Roles"
 
 #: src/app/blueprints/admin/routes/user.py:19
 #: src/app/blueprints/api/routes/navbar.py:20
+#: src/app/templates/admin/components/rows/dashboard-stats.html:8
 #: src/app/templates/admin/views/permission.html:50
 #: src/app/templates/admin/views/permission.html:79
 #: src/app/templates/admin/views/role.html:50
@@ -92,11 +96,11 @@ msgstr "Roles"
 msgid "USERS_LABEL"
 msgstr "Users"
 
-#: src/app/blueprints/admin/routes/view.py:42
+#: src/app/blueprints/admin/routes/view.py:44
 msgid "ROW_WAS_NOT_FOUND_MSG"
 msgstr "Row was not found"
 
-#: src/app/blueprints/admin/routes/view.py:47
+#: src/app/blueprints/admin/routes/view.py:49
 msgid "TEMPLATE_WAS_NOT_FOUND_MSG"
 msgstr "Template was not found"
 
@@ -890,9 +894,62 @@ msgstr "Update User Information"
 msgid "UPDATE_USER_DESCRIPTION_MODAL_MSG"
 msgstr "Update the user's information"
 
+#: src/app/templates/admin/components/rows/dashboard-stats.html:24
+msgid "SYSTEM_USERS_MSG"
+msgstr "Total system users"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:53
+msgid "REGISTERED_EMPLOYEES_MSG"
+msgstr "Total registered employees"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:80
+msgid "AVAILABLE_JOB_POSITIONS_MSG"
+msgstr "Available job positions"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:109
+msgid "USER_ROLES_MSG"
+msgstr "Available user roles"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:138
+msgid "TOTAL_REGISTERED_MEDICINES_MSG"
+msgstr "Total registered medicines"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:150
+msgid "MEDICINE_STOCK_LABEL"
+msgstr "Medicine Stock"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:167
+msgid "CURRENT_STOCK_BATCHES_MSG"
+msgstr "Current medicine stock batches"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:179
+msgid "EXPIRING_MEDICINES_LABEL"
+msgstr "Expiring Medicines"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:197
+msgid "MEDICINES_NEAR_EXPIRY_MSG"
+msgstr "Medicines close to expiry"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:210
+msgid "LOW_STOCK_LABEL"
+msgstr "Low Stock"
+
+#: src/app/templates/admin/components/rows/dashboard-stats.html:228
+msgid "MEDICINES_NEED_RESTOCK_MSG"
+msgstr "Medicines that need restocking"
+
 #: src/app/templates/admin/components/tables/header/header.html:32
 msgid "SEARCH_PLACEHOLDER"
 msgstr "Search"
+
+#: src/app/templates/admin/pages/dashboard.html:8
+msgid "PHARMACY_ANALYTICS_LABEL"
+msgstr "Pharmacy Analytics"
+
+
+#: src/app/templates/admin/pages/dashboard.html:12
+msgid "PHARMACY_ANALYTICS_DESCRIPTION_MSG"
+msgstr "Monitor medicine inventory, sales performance, stock status, and financial activities."
 
 #: src/app/templates/admin/pages/profile.html:48
 msgid "PROFILE_INFORMATION_LABEL"
@@ -1034,3 +1091,4 @@ msgstr "Already have an account?"
 
 #~ msgid "FOR_LABEL"
 #~ msgstr "for"
+
