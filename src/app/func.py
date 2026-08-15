@@ -1,6 +1,6 @@
 import pathlib
 import re
-from datetime import date, datetime
+from datetime import date
 
 import jdatetime
 from flask import render_template, request, session

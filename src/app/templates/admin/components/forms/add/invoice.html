@@ -95,6 +95,7 @@
               </button>
               <button
                 class="btn btn-success m-0 mx-2"
+                type="button"
                 data-bs-role="add"
                 data-bs-toggle="modal"
                 data-bs-placement="top"
@@ -122,16 +123,9 @@
 
                   <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-middle text-center"
-                    data-name="medicine_id"
+                    data-name="medicine"
                   >
                     {{ _("MEDICINE_LABEL") }}
-                  </th>
-
-                  <th
-                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-middle text-center"
-                    data-name="batch_number"
-                  >
-                    {{ _("BATCH_NUMBER_LABEL") }}
                   </th>
 
                   <th
@@ -162,7 +156,7 @@
               </thead>
               <tbody>
                 <tr class="no-data">
-                  <td colspan="7" class="text-center">No data found</td>
+                  <td colspan="6" class="text-center">No data found</td>
                 </tr>
               </tbody>
               <tfoot>
@@ -177,11 +171,9 @@
 
                   <td>
                     <span class="text-sm font-weight-bolder" data-invoice-total>
-                      0.00 AF
+                      0.00
                     </span>
                   </td>
-
-                  <td></td>
                 </tr>
 
                 <tr>
@@ -198,11 +190,9 @@
                       class="text-sm font-weight-bolder text-success"
                       data-invoice-paid
                     >
-                      0.00 AF
+                      0.00
                     </span>
                   </td>
-
-                  <td></td>
                 </tr>
 
                 <tr>
@@ -219,11 +209,9 @@
                       class="text-sm font-weight-bolder text-danger"
                       data-invoice-remaining
                     >
-                      0.00 AF
+                      0.00
                     </span>
                   </td>
-
-                  <td></td>
                 </tr>
               </tfoot>
             </table>

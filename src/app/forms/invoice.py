@@ -11,8 +11,10 @@ from wtforms import (
 from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
 from app.forms import Form, ValidateID
+from app.forms.medicine_stock import AddMedicineStockForm
 from app.models.invoice import InvoiceType
 from app.models.medicine import Medicine
+from app.models.medicine_stock import MedicineStock
 
 
 class AddInvoiceForm(Form):
@@ -93,6 +95,31 @@ class AddInvoiceForm(Form):
 
 
 class AddInvoiceItemForm(Form):
+    invoice_type = HiddenField(
+        _("INVOICE_TYPE_LABEL"),
+        default=InvoiceType.PURCHASE.value,
+        validators=[DataRequired(message=_("THIS_FIELD_IS_REQUIRED_ERROR"))],
+    )
+
+    batch_number = StringField(
+        _("BATCH_NUMBER_LABEL"),
+        validators=[
+            Length(
+                max=100,
+                message=_("THIS_FIELD_CANNOT_EXCEED_100_CHARACTERS_MSG"),
+            ),
+        ],
+        default=None,
+        render_kw={
+            "data-auto-complete": "true",
+            "data-fetch-api": "api.autocomplete",
+            "data-model-name": "MedicineStock",
+            "data-select-val": "batch-number",
+            "data-search-col": "batch_number",
+            "data-template": "medicine_stocks.html",
+        },
+    )
+
     medicine_id = IntegerField(
         _("MEDICINE_ID_LABEL"),
         validators=[
@@ -133,8 +160,35 @@ class AddInvoiceItemForm(Form):
 
     submit = SubmitField(_("ADD_INVOICE_ITEM_LABEL"))
 
+    def validate_batch_number(self, field):
+        if self.invoice_type.data != InvoiceType.SALE_RETURN.value:
+            return
+
+        if not self.batch_number.data:
+            raise ValidationError(_("THIS_FIELD_IS_REQUIRED_ERROR"))
+
+        medicine_id = self.medicine_id.data
+
+        if not medicine_id:
+            return
+
+        stock = MedicineStock.query.filter_by(
+            medicine_id=medicine_id,
+            batch_number=field.data,
+        ).first()
+
+        if not stock:
+            raise ValidationError(_("BATCH_NUMBER_NOT_FOUND_MSG"))
+
+    def validate_invoice_type(self, field):
+        try:
+            InvoiceType(field.data)
+        except ValueError:
+            raise ValidationError(_("INVALID_INVOICE_TYPE_MSG"))
+
     def validate_quantity(self, field):
-        from app.models.medicine_stock import MedicineStock
+        if self.invoice_type.data != InvoiceType.SALE.value:
+            return
 
         medicine_id = self.medicine_id.data
 

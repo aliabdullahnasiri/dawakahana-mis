@@ -1,7 +1,8 @@
 from app.extensions.db import db
+from app.models.base import Base
 
 
-class Medicine(db.Model):
+class Medicine(Base):
     __tablename__ = "medicines"
 
     barcode = db.Column(db.String(100), unique=True, index=True)

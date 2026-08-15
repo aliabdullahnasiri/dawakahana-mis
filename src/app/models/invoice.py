@@ -1,4 +1,5 @@
 import enum
+from datetime import datetime
 
 from app.extensions.db import db
 from app.models.base import Base
@@ -50,7 +51,6 @@ class Invoice(Base):
     user = db.relationship("User")
 
     def to_dict(self):
-
         return {
             "invoice_number": self.invoice_number,
             "invoice_type": self.invoice_type.value,
@@ -58,3 +58,30 @@ class Invoice(Base):
             "invoice_date": self.invoice_date,
             **getattr(super(), "to_dict")(),
         }
+
+    @staticmethod
+    def generate_invoice_number(invoice_type: InvoiceType) -> str:
+        prefix = {
+            InvoiceType.PURCHASE: "PUR",
+            InvoiceType.SALE: "SAL",
+            InvoiceType.PURCHASE_RETURN: "PRT",
+            InvoiceType.SALE_RETURN: "SRT",
+        }[invoice_type]
+
+        date = datetime.now().strftime("%Y%m%d")
+
+        last_invoice = (
+            Invoice.query.filter(
+                Invoice.invoice_type == invoice_type,
+                Invoice.invoice_number.like(f"{prefix}-{date}-%"),
+            )
+            .order_by(Invoice.id.desc())
+            .first()
+        )
+
+        if last_invoice:
+            sequence = int(last_invoice.invoice_number.rsplit("-", 1)[1]) + 1
+        else:
+            sequence = 1
+
+        return f"{prefix}-{date}-{sequence:04d}"

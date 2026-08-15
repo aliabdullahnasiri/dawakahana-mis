@@ -39,7 +39,7 @@ class AddRoleForm(Form):
             "data-model-name": "Permission",
             "data-select-val": "id",
             "data-search-col": "name",
-            "data-template": "roles.html",
+            "data-template": "permissions.html",
         },
     )
 

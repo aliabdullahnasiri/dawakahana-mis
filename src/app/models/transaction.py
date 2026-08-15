@@ -8,7 +8,8 @@ class TransactionType(enum.Enum):
     SALE = "SALE"
     PURCHASE = "PURCHASE"
     PAYMENT = "PAYMENT"
-    RETURN = "RETURN"
+    PURCHASE_RETURN = "PURCHASE_RETURN"
+    SALE_RETURN = "SALE_RETURN"
     ADJUSTMENT = "ADJUSTMENT"
 
 

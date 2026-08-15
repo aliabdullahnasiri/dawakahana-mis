@@ -1,4 +1,6 @@
+import enum
 from datetime import date, datetime, timedelta, timezone
+from decimal import Decimal
 from typing import Any
 
 import jdatetime
@@ -37,6 +39,7 @@ class Base(db.Model):
             if hasattr(self, column_name):
                 column = getattr(self.__class__, column_name, None)
                 value = getattr(self, column_name, None)
+
                 if column and value and hasattr(column, "type"):
                     try:
                         # check if column is date or datetime
@@ -51,7 +54,13 @@ class Base(db.Model):
                     except ValueError:
                         pass
 
-                    return str(value)
+                if isinstance(value, enum.Enum):
+                    return value.value
+
+                if isinstance(value, Decimal):
+                    return float(value)
+
+                return value
 
         return super().__getattribute__(name)
 

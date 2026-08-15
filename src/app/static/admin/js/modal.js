@@ -8,11 +8,9 @@ import {
 
 (function () {
   document.addEventListener("show.bs.modal", (event) => {
-
     const form = event.target.querySelector("form");
 
-    if (event.target.dataset.onShowReset !== "false") 
-    if (form) resetForm(form);
+    if (event.target.dataset.onShowReset !== "false") if (form) resetForm(form);
   });
 
   document.addEventListener("show.bs.modal", (event) => {
@@ -195,7 +193,15 @@ import {
   });
 
   document.addEventListener("hidden.bs.modal", (event) => {
+    let modalID;
+    if ((modalID = event.target.dataset.onCloseOpen)) {
+      let modalElement = document.querySelector(modalID);
+      let nextModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+      nextModal.show();
+    }
+
     let b = event.target.closest("#ViewModal")?.querySelector(".modal-body");
+
     if (b) b.innerHTML = "";
   });
 }).call();
@@ -308,10 +314,12 @@ import {
 
         items.push({
           medicine_id: data.medicine_id,
+          batch_number: data.batch_number,
           quantity: data.quantity,
-          unit_price: data.unitPrice,
+          unit_price: data.unit_price,
           total_price: data.total_price,
         });
+        console.log(items);
 
         itemsInput.value = JSON.stringify(items);
       }

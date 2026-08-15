@@ -8,43 +8,45 @@
 
   <li
     class="p-2 item rounded-2 text-auto cursor-pointer"
-    data-id="{{ row.id }}"
+    data-batch-number="{{ row.batch_number }}"
   >
 
     <div class="d-flex px-0 py-1">
 
-      <!-- Customer avatar -->
+      <!-- Batch icon -->
       <div>
         <div
           class="avatar avatar-sm bg-gradient-info border-radius-lg d-flex align-items-center justify-content-center"
         >
-          <span class="text-white text-sm">
-            {{ row.name[0] }}
-          </span>
+          <i class="material-symbols-rounded text-white">
+            inventory_2
+          </i>
         </div>
       </div>
 
 
-      <!-- Customer information -->
+      <!-- Batch information -->
       <div class="d-flex flex-column justify-content-center ms-2">
 
         <h6 class="mb-0 text-sm text-start">
-          {{ row.name }}
+          {{ row.batch_number }}
         </h6>
-
-        {% if row.phone or row.email %}
 
         <p class="text-xs text-secondary mb-0 text-start">
 
-          {% if row.phone %}
-            <span>{{ row.phone }}</span>
-          {% elif row.email %}
-            <span>{{ row.email }}</span>
-          {% endif %}
+          <span>
+            {{ _("QUANTITY_LABEL") }}:
+            <strong>{{ row.quantity }}</strong>
+          </span>
+
+          <span class="mx-1">•</span>
+
+          <span>
+            {{ _("EXPIRY_DATE_LABEL") }}:
+            <strong>{{ row.expiry_date }}</strong>
+          </span>
 
         </p>
-
-        {% endif %}
 
       </div>
 

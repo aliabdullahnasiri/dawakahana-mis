@@ -15,11 +15,11 @@
 
       <div>
         <div
-          class="avatar avatar-sm bg-gradient-info border-radius-lg d-flex align-items-center justify-content-center"
+          class="avatar avatar-sm bg-gradient-warning border-radius-lg d-flex align-items-center justify-content-center"
         >
-          <span class="text-white text-sm">
-            {{ row.name[0] }}
-          </span>
+          <i class="material-symbols-rounded text-white">
+            lock
+          </i>
         </div>
       </div>
 
@@ -28,20 +28,6 @@
         <h6 class="mb-0 text-sm text-start">
           {{ row.name }}
         </h6>
-
-        {% if row.company_name or row.phone %}
-
-        <p class="text-xs text-secondary mb-0 text-start">
-
-          {% if row.company_name %}
-            <span>{{ row.company_name }}</span>
-          {% elif row.phone %}
-            <span>{{ row.phone }}</span>
-          {% endif %}
-
-        </p>
-
-        {% endif %}
 
       </div>
 

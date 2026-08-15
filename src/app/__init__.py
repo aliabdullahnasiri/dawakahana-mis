@@ -1,9 +1,11 @@
 import os
 import re
 import sys
+from json import JSONDecodeError
 from typing import Dict
 
-from flask import Flask, current_app, redirect, request, url_for
+from flask import Flask, current_app, jsonify, redirect, request, url_for
+from flask_babel import gettext as g
 from sqlalchemy import inspect
 
 import app.const as const
@@ -67,6 +69,18 @@ def create_app(config_class: type[Config] | None = None) -> Flask:
     app.register_blueprint(api_bp, url_prefix="/api")
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(admin_bp, url_prefix="/")
+
+    @app.errorhandler(JSONDecodeError)
+    def _(e):
+        return (
+            jsonify(
+                {
+                    "message": g("INVALID_JSON_MSG"),
+                    "category": "error",
+                }
+            ),
+            400,
+        )
 
     if "db" not in sys.argv:
         with app.app_context(), app.test_request_context():
