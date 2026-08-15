@@ -9,7 +9,6 @@ from flask_login import current_user
 
 from app.blueprints.api import bp
 from app.cls import ColumnID, ColumnName
-from app.extensions.console import console
 from app.extensions.db import db
 from app.forms.invoice import AddInvoiceForm, AddInvoiceItemForm, UpdateInvoiceForm
 from app.func import render_td
@@ -362,17 +361,13 @@ def add_invoice():
             response["id"] = invoice.id
 
         except (ValueError, KeyError, TypeError) as e:
-            print(e)
-
             db.session.rollback()
 
             response["title"] = g("ERROR_ERROR")
             response["message"] = str(e)
             response["category"] = "error"
 
-        except Exception as err:
-            print(err)
-
+        except Exception:
             db.session.rollback()
 
             response["title"] = g("ERROR_ERROR")
@@ -396,7 +391,6 @@ def add_invoice_item():
     response: Dict = {}
 
     form = AddInvoiceItemForm()
-    print(form.data)
 
     if form.validate_on_submit():
 
@@ -437,7 +431,6 @@ def add_invoice_item():
 
     else:
         response["errors"] = form.errors
-        print(form.errors)
 
     return Response(
         json.dumps(response),
