@@ -80,6 +80,52 @@ export function createLoader() {
   return divElement;
 }
 
+export function updateInvoiceModalStats(form) {
+  const invoiceTotalSpanElement = form.querySelector(
+    "span[data-invoice-total]",
+  );
+
+  const invoicePaidSpanElement = form.querySelector("span[data-invoice-paid]");
+
+  const invoiceRemainingSpanElement = form.querySelector(
+    "span[data-invoice-remaining]",
+  );
+
+  const itemsInput = form.querySelector("input#items");
+  const paidAmountInput = form.querySelector("input#paid_amount");
+
+  if (
+    !invoiceTotalSpanElement ||
+    !invoicePaidSpanElement ||
+    !invoiceRemainingSpanElement ||
+    !itemsInput ||
+    !paidAmountInput
+  ) {
+    return;
+  }
+
+  let items = [];
+
+  try {
+    items = JSON.parse(itemsInput.value || "[]");
+  } catch {
+    items = [];
+  }
+
+  const invoiceTotal = items.reduce(
+    (total, item) => total + Number(item.total_price || 0),
+    0,
+  );
+
+  const paidAmount = Number(paidAmountInput.value || 0);
+
+  const remainingAmount = Math.max(invoiceTotal - paidAmount, 0);
+
+  invoiceTotalSpanElement.textContent = invoiceTotal.toFixed(2) + " AF";
+  invoicePaidSpanElement.textContent = paidAmount.toFixed(2) + " AF";
+  invoiceRemainingSpanElement.textContent = remainingAmount.toFixed(2) + " AF";
+}
+
 (function () {
   document.addEventListener("DOMContentLoaded", () => {
     const loaderElement = document.querySelector("div[data-bs-role=loader]");
@@ -196,5 +242,63 @@ export function createLoader() {
 (function () {
   $(document).ready(function () {
     $("select").selectpicker();
+  });
+}).call(this);
+
+(function () {
+  let addInvoiceModalElement = document.querySelector("#AddInvoiceModal");
+
+  if (addInvoiceModalElement) {
+    let itemsInput = addInvoiceModalElement.querySelector("input#items");
+
+    addInvoiceModalElement.addEventListener("click", (event) => {
+      const target = event.target;
+
+      let items = JSON.parse(itemsInput.value || "[]");
+
+      if (target.closest("[data-bs-role='multiple-remove']")) {
+        let trElement;
+        let dataId;
+        let index;
+
+        for (const checkedElement of addInvoiceModalElement.querySelectorAll(
+          'tbody input[type="checkbox"]:checked',
+        )) {
+          trElement = checkedElement.closest("tr[data-id]");
+          dataId = trElement.dataset.id;
+
+          index = items.findIndex((item) => item.medicine_id === +dataId);
+
+          if (index !== -1) {
+            items.splice(index, 1);
+
+            trElement.remove();
+          }
+        }
+      } else if (target.closest("[data-bs-role=remove]")) {
+        let trElement = target.closest("tr[data-id]");
+        let dataId = trElement.dataset.id;
+
+        const index = items.findIndex((item) => item.medicine_id === +dataId);
+
+        if (index !== -1) {
+          items.splice(index, 1);
+
+          trElement.remove();
+        }
+
+        itemsInput.value = JSON.stringify(items);
+      }
+    });
+  }
+
+  document.addEventListener("keyup", (event) => {
+    const target = event.target;
+    const input = target.closest("input#paid_amount");
+
+    if (input){
+      let form = input.closest("form");
+      updateInvoiceModalStats(form);
+    }
   });
 }).call(this);

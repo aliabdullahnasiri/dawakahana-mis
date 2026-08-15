@@ -506,3 +506,7 @@ ul.nav.nav-pills.nav-fill {
     margin: 0 !important;
     color: gray !important;
 }
+  
+table tbody:has(tr:not(.no-data)) .no-data {
+    display: none;
+}

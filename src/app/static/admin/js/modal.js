@@ -1,45 +1,25 @@
 import { createListSectionItem, resetForm } from "./form.js";
-import { createLoader, transformAllMovingTab, initAllMovingTabs } from "./script.js";
+import {
+  createLoader,
+  transformAllMovingTab,
+  initAllMovingTabs,
+  updateInvoiceModalStats,
+} from "./script.js";
 
 (function () {
   document.addEventListener("show.bs.modal", (event) => {
-    transformAllMovingTab();
 
     const form = event.target.querySelector("form");
 
-    if (form) {
-      let label = event.target.getAttribute("aria-labelledby");
-
-      if (!label?.search(/^Add/)) {
-        form?.reset();
-
-        Array.from(
-          form.querySelectorAll("div.input-group,.form-control"),
-        ).forEach((input) => {
-          input?.classList.remove("focused");
-          input?.classList.remove("is-focused");
-          input?.classList.remove("is-filled");
-          input?.classList.remove("is-invalid");
-        });
-
-        Array.from(event.target.querySelectorAll("ul li[data-id]")).forEach(
-          (element) => {
-            element?.remove();
-          },
-        );
-
-        Array.from(form.querySelectorAll("div.errors")).forEach((element) => {
-          element.remove();
-        });
-      }
-    }
+    if (event.target.dataset.onShowReset !== "false") 
+    if (form) resetForm(form);
   });
 
   document.addEventListener("show.bs.modal", (event) => {
     const form = event.target.querySelector("form[data-get]");
 
     if (form) {
-      form?.reset();
+      resetForm(form);
 
       Array.from(form.querySelectorAll("input")).forEach((element) => {
         let groupElement = element.closest(".input-group");
@@ -186,24 +166,19 @@ import { createLoader, transformAllMovingTab, initAllMovingTabs } from "./script
     }
   });
 
-  document.addEventListener("hidden.bs.modal", (event) => {
-    const form = event.target.querySelector("form");
-
-    if (form) resetForm(form);
-  });
+  document.addEventListener("hidden.bs.modal", (event) => {});
 }).call();
 
 (function () {
   document.addEventListener("show.bs.modal", (event) => {
     let modalDialog = event.target.querySelector(".modal-dialog");
 
-    if (event.relatedTarget.getAttribute("aria-label") !== "View Modal") return;
+    if (event?.relatedTarget?.getAttribute("aria-label") !== "View Modal")
+      return;
 
     let loaderElement = createLoader();
 
     modalDialog.append(loaderElement);
-
-
 
     let interval = setInterval(() => {
       let modalBody = modalDialog.querySelector(".modal-body");
@@ -212,10 +187,9 @@ import { createLoader, transformAllMovingTab, initAllMovingTabs } from "./script
         loaderElement.classList.add("fade");
         setTimeout(() => {
           loaderElement.remove();
-          transformAllMovingTab()
-          clearInterval(interval)
+          transformAllMovingTab();
+          clearInterval(interval);
         }, 50);
-
       }
     }, 1000);
   });
@@ -225,3 +199,130 @@ import { createLoader, transformAllMovingTab, initAllMovingTabs } from "./script
     if (b) b.innerHTML = "";
   });
 }).call();
+
+(function () {
+  document.addEventListener("afterSubmit", (event) => {
+    if (event?.detail?.errors) return;
+
+    let formElement = event.target.closest("form[data-after-submit-open]");
+
+    if (formElement) {
+      let data = event?.detail?.data;
+
+      let currentModal = formElement?.closest(".modal");
+      let modalID = formElement.getAttribute("data-after-submit-open");
+      let modalElement = document.querySelector(modalID);
+
+      let form = modalElement.querySelector("form");
+      let itemsInput = form.querySelector("input#items");
+
+      if (data?.medicine_id) {
+        let items = JSON.parse(itemsInput.value || "[]");
+        const index = items.findIndex(
+          (item) => item.medicine_id === +data?.medicine_id,
+        );
+
+        if (index !== -1) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "This medicine has already been added to the invoice.",
+          });
+
+          return;
+        }
+      }
+
+      // Close current modal
+      if (currentModal) {
+        let currentInstance = bootstrap.Modal.getInstance(currentModal);
+
+        if (currentInstance) {
+          currentInstance.hide();
+        }
+      }
+
+      let table = modalElement.querySelector("table[data-role=invoice-item]");
+      if (table && data) {
+        let thead = table.querySelector("thead");
+        let tbody = table.querySelector("tbody");
+
+        let trElement = document.createElement("tr");
+        let tdElement;
+        let dataName;
+        let dataVal;
+
+        trElement.dataset.id = data.medicine_id;
+
+        for (const thElement of Array.from(thead.querySelectorAll("th"))) {
+          dataName = thElement.dataset.name;
+          dataVal = data[dataName];
+
+          tdElement = document.createElement("td");
+          tdElement.classList.value = "text-xs text-center";
+
+          if (dataVal !== undefined) {
+            tdElement.innerHTML = dataVal;
+          }
+
+          trElement.append(tdElement);
+        }
+
+        const checkboxTd = trElement.firstElementChild;
+        if (checkboxTd) {
+          let divElement = document.createElement("div");
+          let inputElement = document.createElement("input");
+
+          tdElement.classList.value = "checkbox-td text-center";
+
+          divElement.classList.value = "form-check form-check-info p-0";
+
+          inputElement.type = "checkbox";
+          inputElement.name = "multiple-remove";
+          inputElement.classList.add("form-check-input");
+
+          divElement.append(inputElement);
+          checkboxTd.append(divElement);
+        }
+
+        const removeTd = trElement.lastElementChild;
+        if (removeTd) {
+          removeTd.classList.value = "text-center";
+
+          let removeElement = document.createElement("a");
+          removeElement.dataset.bsRole = "remove";
+
+          removeElement.dataset.role = "remove";
+          removeElement.innerHTML = `<i class="material-symbols-rounded fs-5">delete</i>`;
+          removeElement.classList.value =
+            "text-secondary font-weight-bold text-xs m-1 btn btn-xs text-white btn-danger";
+
+          removeTd.append(removeElement);
+        }
+
+        tbody.append(trElement);
+      }
+
+      if (form && itemsInput) {
+        let items = JSON.parse(itemsInput.value || "[]");
+
+        items.push({
+          medicine_id: data.medicine_id,
+          quantity: data.quantity,
+          unit_price: data.unitPrice,
+          total_price: data.total_price,
+        });
+
+        itemsInput.value = JSON.stringify(items);
+      }
+
+      updateInvoiceModalStats(form);
+
+      // Open next modal after closing
+      if (modalElement) {
+        let nextModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+        nextModal.show();
+      }
+    }
+  });
+}).call(this);

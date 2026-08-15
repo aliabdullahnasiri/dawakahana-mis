@@ -145,16 +145,51 @@ def add_invoice():
 @bp.post("/add/invoice-item")
 @permission_required(Permission.get("CREATE_INVOICE_ITEM"))
 def add_invoice_item():
-    form = AddInvoiceItemForm()
 
     response: Dict = {}
 
-    if not form.validate_on_submit():
+    form = AddInvoiceItemForm()
+
+    if form.validate_on_submit():
+
+        medicine_id = form.medicine_id.data
+        quantity = form.quantity.data
+        unit_price = form.unit_price.data
+
+        if isinstance(quantity, int) and isinstance(unit_price, int):
+            if medicine := Medicine.query.get(medicine_id):
+                # Get stock with nearest expiry first
+                stock = (
+                    MedicineStock.query.filter(
+                        MedicineStock.medicine_id == medicine_id,
+                        MedicineStock.quantity > quantity,
+                    )
+                    .order_by(MedicineStock.expiry_date.asc())
+                    .first()
+                )
+
+                if stock:
+                    total_price = quantity * unit_price
+
+                    response["data"] = {
+                        "medicine_id": medicine.id,
+                        "medicine": medicine.name,
+                        "batch_number": stock.batch_number,
+                        "quantity": quantity,
+                        "unit_price": float(unit_price),
+                        "total_price": float(total_price),
+                        "expiry_date": stock.expiry_date.strftime("%Y-%m-%d"),
+                    }
+
+                    response["category"] = "success"
+
+    else:
         response["errors"] = form.errors
 
     return Response(
         json.dumps(response),
         status=200,
+        headers={"Content-Type": "application/json"},
     )
 
 

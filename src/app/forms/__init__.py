@@ -67,6 +67,35 @@ class MustBeUnique:
                 )
 
 
+class ValidateID:
+    def __init__(
+        self: Self,
+        model,
+        invalid_format_msg=None,
+        not_found_msg=None,
+    ) -> None:
+        self.model = model
+        self.prefix = model.__class__.__name__.__getitem__(0)
+        self.invalid_format_msg = invalid_format_msg
+        self.not_found_msg = not_found_msg
+
+    def __call__(self, form, field):
+        vals: List = []
+
+        try:
+            vals = json.loads(field.data)
+            if not isinstance(vals, list):
+                vals = [vals]
+        except:
+            vals.append(field.data)
+
+        for val in vals:
+            if not self.model.query.filter_by(id=val).count():
+                raise ValidationError(
+                    _(self.not_found_msg or "SPECIFIED_RECORD_DOES_NOT_EXIST")
+                )
+
+
 class Form(FlaskForm):
     def __new__(cls, *args, **kwargs) -> Self:
         return super().__new__(cls, *args, **kwargs)

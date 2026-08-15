@@ -4,6 +4,7 @@
   autocomplete="off"
   method="POST"
   action="{{ url_for('api.add_invoice_item') }}"
+  data-after-submit-open="#AddInvoiceModal"
 >
   {{ f.hidden_tag() }}
   <div class="row">

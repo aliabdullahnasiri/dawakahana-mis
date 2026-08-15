@@ -1,4 +1,5 @@
 import { initAllMovingTabs } from "./script.js";
+import { resetForm } from "./form.js"
 
 const LIMIT = 50;
 const FIRST_PAGE = 1;
@@ -180,27 +181,6 @@ function addCheckBox(trElement, disabled = true) {
   trElement.append(tdElement);
 }
 
-function resetForm(formElement) {
-  const inputGroupElement = formElement.querySelectorAll(".input-group");
-
-  Array.from(inputGroupElement).forEach((inputGroupElement) => {
-    let input = inputGroupElement.querySelector("input,textarea");
-
-    if (input) input.value = null;
-
-    inputGroupElement.classList.remove("is-filled");
-    inputGroupElement.classList.remove("is-valid");
-    inputGroupElement.classList.remove("is-invalid");
-  });
-
-  Array.from(formElement.querySelectorAll("div.errors")).forEach((element) =>
-    element.remove(),
-  );
-
-  Array.from(
-    formElement.querySelectorAll("div.multi-value-input div.values span"),
-  ).forEach((element) => element.remove());
-}
 
 function deleteRows(tableElement, tbodyElement, ids) {
   if (ids && ids?.length > 0) {

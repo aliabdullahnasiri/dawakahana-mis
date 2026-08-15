@@ -32,11 +32,33 @@ export function uploadFile(
   return http;
 }
 
-export function resetForm(formElement) {
-  formElement.reset();
+export function resetForm(form) {
+  form?.reset();
+
+  Array.from(form.querySelectorAll("div.input-group,.form-control")).forEach(
+    (element) => {
+      let input = element.querySelector("input,textarea");
+
+      if (input) input.value = null;
+
+      element?.classList.remove("focused");
+      element?.classList.remove("is-focused");
+      element?.classList.remove("is-filled");
+      element?.classList.remove("is-invalid");
+      element?.classList.remove("is-valid");
+    },
+  );
+
+  Array.from(form.querySelectorAll("ul li[data-id]")).forEach((element) => {
+    element?.remove();
+  });
+
+  Array.from(form.querySelectorAll("div.errors")).forEach((element) => {
+    element.remove();
+  });
 
   // Reset Multi-Value Input
-  for (const input of formElement.querySelectorAll("div.multi-value-input")) {
+  for (const input of form.querySelectorAll("div.multi-value-input")) {
     for (const val of input?.querySelectorAll(
       "div.values span[data-role=value]",
     ))
@@ -157,15 +179,16 @@ async function submitForm(formElement) {
         }
       });
     } else {
-      Swal.fire({
-        title: data.title,
-        text: data.message,
-        icon: data.category,
-      }).then(() => {
-        if (data?.redirect) {
-          window.location.replace(data.redirect);
-        }
-      });
+      if (data?.title && data?.message && data.category)
+        Swal.fire({
+          title: data.title,
+          text: data.message,
+          icon: data.category,
+        }).then(() => {
+          if (data?.redirect) {
+            window.location.replace(data.redirect);
+          }
+        });
     }
   } catch (err) {
     console.log(err);
@@ -760,15 +783,21 @@ export function upload(files, dropZone) {
 
 (function () {
   function fun(select) {
-    select.querySelectorAll("option").forEach((option) => {
-      for (let group of document?.querySelectorAll(
-        `[data-group-id='${option.value}']`,
-      )) {
-        group = group?.closest(".row,.group");
-        if (select.value !== option.value) group.classList.add("d-none");
-        else group.classList.remove("d-none");
-      }
-    });
+    document
+      .querySelectorAll("[data-group-id], [data-second-group-id]")
+      .forEach((element) => {
+        const group = element.closest(".row, .group");
+
+        if (!group) {
+          return;
+        }
+
+        const matches =
+          element.dataset.groupId === select.value ||
+          element.dataset.secondGroupId === select.value;
+
+        group.classList.toggle("d-none", !matches);
+      });
   }
 
   $("[data-group-switcher=true]").each(function () {

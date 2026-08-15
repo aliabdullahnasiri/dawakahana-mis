@@ -28,7 +28,7 @@ class Config:
 
     BABEL_TRANSLATION_DIRECTORIES = "../../translations/"
 
-    CURRENCY_SYMBOL = chr(36)
+    CURRENCY_SYMBOL = "AF"
 
     DEFAULT_AVATAR = "admin/assets/img/default-avatar.png"
 

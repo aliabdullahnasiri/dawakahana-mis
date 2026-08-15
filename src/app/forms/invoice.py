@@ -6,11 +6,13 @@ from wtforms import (
     SelectField,
     StringField,
     SubmitField,
+    ValidationError,
 )
 from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
-from app.forms import Form
+from app.forms import Form, ValidateID
 from app.models.invoice import InvoiceType
+from app.models.medicine import Medicine
 
 
 class AddInvoiceForm(Form):
@@ -40,6 +42,7 @@ class AddInvoiceForm(Form):
             "data-search-col": "name",
             "data-template": "suppliers.html",
             "data-group-id": InvoiceType.PURCHASE.value,
+            "data-second-group-id": InvoiceType.PURCHASE_RETURN.value,
         },
     )
 
@@ -56,6 +59,7 @@ class AddInvoiceForm(Form):
             "data-search-col": "name",
             "data-template": "customers.html",
             "data-group-id": InvoiceType.SALE.value,
+            "data-second-group-id": InvoiceType.SALE_RETURN.value,
         },
     )
 
@@ -91,7 +95,10 @@ class AddInvoiceForm(Form):
 class AddInvoiceItemForm(Form):
     medicine_id = IntegerField(
         _("MEDICINE_ID_LABEL"),
-        validators=[DataRequired(message=_("THIS_FIELD_IS_REQUIRED_ERROR"))],
+        validators=[
+            DataRequired(message=_("THIS_FIELD_IS_REQUIRED_ERROR")),
+            ValidateID(Medicine),
+        ],
         render_kw={
             "data-auto-complete": "true",
             "data-fetch-api": "api.autocomplete",
@@ -125,6 +132,19 @@ class AddInvoiceItemForm(Form):
     )
 
     submit = SubmitField(_("ADD_INVOICE_ITEM_LABEL"))
+
+    def validate_quantity(self, field):
+        from app.models.medicine_stock import MedicineStock
+
+        medicine_id = self.medicine_id.data
+
+        stock = MedicineStock.query.filter(
+            MedicineStock.medicine_id == medicine_id,
+            MedicineStock.quantity >= field.data,
+        ).first()
+
+        if not stock:
+            raise ValidationError(_("NOT_ENOUGH_STOCK_AVAILABLE_MSG"))
 
 
 class UpdateInvoiceForm(AddInvoiceForm):

@@ -9,7 +9,7 @@
 
   <div class="row justify-content-center">
     <!-- Invoice Information -->
-    <div class="col-4">
+    <div class="col-3">
       <div class="card-header p-2 pb-0">
         <h6 class="m-0">{{ _("INVOICE_INFORMATION_LABEL") }}</h6>
         <p class="text-sm text-muted mb-2">
@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <div class="col-8 mt-4">
+    <div class="col-9 mt-4">
       <div class="card">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div
@@ -88,6 +88,12 @@
             </div>
             <div class="mx-3">
               <button
+                class="btn btn-danger m-0 mx-2"
+                data-bs-role="multiple-remove"
+              >
+                <i class="material-symbols-rounded fs-5">delete</i>
+              </button>
+              <button
                 class="btn btn-success m-0 mx-2"
                 data-bs-role="add"
                 data-bs-toggle="modal"
@@ -103,7 +109,10 @@
 
         <div class="card-body">
           <div class="table-responsive p-0">
-            <table class="table align-items-center mb-0 table-hover">
+            <table
+              class="table align-items-center mb-0 table-hover"
+              data-role="invoice-item"
+            >
               <thead>
                 <tr>
                   <th
@@ -113,47 +122,110 @@
 
                   <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-middle text-center"
-                    data-name="id"
+                    data-name="medicine_id"
                   >
                     {{ _("MEDICINE_LABEL") }}
                   </th>
 
                   <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-middle text-center"
-                    data-name="id"
+                    data-name="batch_number"
                   >
                     {{ _("BATCH_NUMBER_LABEL") }}
                   </th>
 
                   <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-middle text-center"
-                    data-name="id"
+                    data-name="quantity"
                   >
                     {{ _("QUANTITY_LABEL") }}
                   </th>
 
                   <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-middle text-center"
-                    data-name="id"
+                    data-name="unit_price"
                   >
                     {{ _("UNIT_PRICE_LABEL") }}
                   </th>
 
                   <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 align-middle text-center"
-                    data-name="id"
+                    data-name="total_price"
                   >
                     {{ _("TOTAL_LABEL") }}
                   </th>
                   <th
                     class="text-uppercase text-secondary text-xxs font-weight-bonder opacity-7"
-                    data-name="action"
+                    data-name="remove"
                   ></th>
                 </tr>
               </thead>
               <tbody>
-                <tr></tr>
+                <tr class="no-data">
+                  <td colspan="7" class="text-center">No data found</td>
+                </tr>
               </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4"></td>
+
+                  <td class="text-end">
+                    <span class="text-sm font-weight-bolder">
+                      {{ _("TOTAL_AMOUNT_LABEL") }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="text-sm font-weight-bolder" data-invoice-total>
+                      0.00 AF
+                    </span>
+                  </td>
+
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td colspan="4"></td>
+
+                  <td class="text-end">
+                    <span class="text-sm font-weight-bolder">
+                      {{ _("PAID_AMOUNT_LABEL") }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span
+                      class="text-sm font-weight-bolder text-success"
+                      data-invoice-paid
+                    >
+                      0.00 AF
+                    </span>
+                  </td>
+
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td colspan="4"></td>
+
+                  <td class="text-end">
+                    <span class="text-sm font-weight-bolder">
+                      {{ _("REMAINING_AMOUNT_LABEL") }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span
+                      class="text-sm font-weight-bolder text-danger"
+                      data-invoice-remaining
+                    >
+                      0.00 AF
+                    </span>
+                  </td>
+
+                  <td></td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
