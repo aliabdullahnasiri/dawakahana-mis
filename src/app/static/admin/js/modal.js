@@ -318,8 +318,8 @@ import {
           quantity: data.quantity,
           unit_price: data.unit_price,
           total_price: data.total_price,
+          total_debt: data.total_debt,
         });
-        console.log(items);
 
         itemsInput.value = JSON.stringify(items);
       }
@@ -331,6 +331,11 @@ import {
         let nextModal = bootstrap.Modal.getOrCreateInstance(modalElement);
         nextModal.show();
       }
+    }
+  });
+
+  document.addEventListener("afterSubmit", (event) => {
+    if (!event?.detail?.errors) {
     }
   });
 }).call(this);

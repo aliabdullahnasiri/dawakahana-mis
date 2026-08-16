@@ -580,141 +580,6 @@ export function upload(files, dropZone) {
 })();
 
 (function () {
-  document.body.addEventListener(
-    "focusin",
-    (event) => {
-      const target = event.target;
-
-      if (Array("INPUT", "TEXTAREA").includes(target.tagName)) {
-        const inputGroup = target.closest(".input-group");
-
-        Array.from(document.querySelectorAll("div.suggestions-list")).forEach(
-          (element) => {
-            if (inputGroup && inputGroup.contains(element)) {
-              return; // Skip this one
-            }
-
-            element.classList.add("d-none");
-          },
-        );
-      }
-    },
-    true,
-  );
-
-  document.body.addEventListener(
-    "click",
-    (event) => {
-      const target = event.target;
-
-      if (target.closest("div.suggestions-list,.input-group")) return;
-
-      Array.from(document.querySelectorAll("div.suggestions-list")).forEach(
-        (element) => {
-          element.classList.add("d-none");
-        },
-      );
-    },
-    true,
-  );
-
-  const handler = function (event) {
-    const target = event.target;
-
-    if (
-      target.tagName !== "INPUT" ||
-      target.dataset.autoComplete !== "true" ||
-      (target.value.length < 3 && event.type !== "focus" && event.keyCode !== 8)
-    )
-      return;
-
-    const parentElement = target.parentElement;
-
-    let suggestionsListDivElement = parentElement.querySelector(
-      "div.suggestions-list",
-    );
-
-    if (!suggestionsListDivElement) {
-      suggestionsListDivElement = document.createElement("div");
-      suggestionsListDivElement.classList.value =
-        "m-0 mt-2 position-absolute rounded-2 suggestions-list top-100 w-100 z-index-2 p-0 pb-2";
-
-      parentElement.append(suggestionsListDivElement);
-    }
-
-    suggestionsListDivElement.classList.remove("d-none");
-
-    let url = target.dataset.fetchApi;
-
-    if (url) {
-      const query = target.value;
-
-      let params = new URLSearchParams();
-
-      params.set("query", query);
-      params.set("model-name", target.dataset.modelName);
-      params.set("search-col", target.dataset.searchCol);
-      params.set("select-val", target.dataset.selectVal);
-      params.set("template", target.dataset.template);
-
-      url = url.concat(String.fromCharCode(63)).concat(params.toString());
-
-      fetch(url)
-        .then((response) => response.text())
-        .then((data) => {
-          suggestionsListDivElement.innerHTML = data;
-        });
-    }
-  };
-
-  document.body.addEventListener("focus", handler, true);
-  document.body.addEventListener("keyup", handler, true);
-  document.body.addEventListener(
-    "click",
-    (event) => {
-      const target = event.target;
-      const suggestionsListDivElement = target.closest("div.suggestions-list");
-      const itemElement = target.closest(".item");
-
-      if (!suggestionsListDivElement || !itemElement) return;
-
-      suggestionsListDivElement.classList.add("d-none");
-
-      const inputGroup = target.closest("div.input-group");
-      const inputElement = inputGroup.querySelector(
-        "input[data-auto-complete=true]",
-      );
-      const selectVal = inputElement.dataset.selectVal;
-
-      let val = itemElement.getAttribute(
-        "data".concat(String.fromCharCode(45)).concat(selectVal),
-      );
-
-      const valsElement =
-        inputGroup?.parentElement?.querySelector("div.values");
-
-      inputElement.value = "";
-
-      if (valsElement && !valsElement.innerHTML.includes(val)) {
-        let spanElement = document.createElement("span");
-        spanElement.classList.value =
-          "badge badge-sm bg-gradient-secondary mx-2 my-1 cursor-pointer tt-none";
-        spanElement.dataset.role = "value";
-        spanElement.innerHTML = val;
-
-        valsElement.append(spanElement);
-      }
-
-      if (!valsElement) {
-        inputGroup.classList.add("is-filled");
-        inputElement.value = val;
-      }
-    },
-    true,
-  );
-}).call(this);
-
-(function () {
   document.body.addEventListener("click", (event) => {
     const liElement = event.target.closest("li[data-url][data-id]");
     const deleteFileButton = event.target.closest(
@@ -812,69 +677,183 @@ export function upload(files, dropZone) {
 }).call(this);
 
 (function () {
-  //
-  const input = document.getElementById("electronic_tazkira_number");
-
-  if (input)
-    input.addEventListener("input", (e) => {
-      let value = e.target.value.replace(/\D/g, "");
-
-      if (value.length > 13) {
-        value = value.slice(0, 13);
-      }
-
-      if (value.length > 8) {
-        value = `${value.slice(0, 4)}-${value.slice(4, 8)}-${value.slice(8)}`;
-      } else if (value.length > 4) {
-        value = `${value.slice(0, 4)}-${value.slice(4)}`;
-      }
-
-      e.target.value = value;
-    });
-}).call(this);
-
-(function () {
-  const e = document.querySelector("table.school-subjects");
-
-  if (e) {
-    e.addEventListener(
-      "focus",
-      (event) => {
-        if (
-          event.target.tagName === "INPUT" &&
-          !event.target.readOnly &&
-          event.target.value == 0
-        )
-          event.target.value = null;
-      },
-      1,
+  function init(inputGroup) {
+    let containerElement = inputGroup.querySelector(
+      "div.suggestions-container",
     );
-    e.addEventListener(
-      "focusout",
-      (event) => {
-        if (
-          event.target.tagName === "INPUT" &&
-          !event.target.readOnly &&
-          !event.target.value
-        )
-          event.target.value = 0;
-      },
-      1,
-    );
-    e.addEventListener("change", (event) => {
-      let sum = 0;
-      let count = 0;
-      e.querySelectorAll(
-        `input[data-name=${event.target.dataset.name}]`,
-      ).forEach((input) => {
-        sum += +input.value;
-        count += 1;
-      });
+    let resultElement;
 
-      e.querySelector(`[data-sum='${event.target.dataset.name}'] input`).value =
-        sum;
-      e.querySelector(`[data-avg='${event.target.dataset.name}'] input`).value =
-        Math.round(sum / count);
-    });
+    if (!containerElement) {
+      containerElement = document.createElement("div");
+      resultElement = document.createElement("div");
+
+      containerElement.innerHTML = `
+        <div class="input-group input-group-outline p-2 search-input-group">
+          <span class="bottom-50 input-group-text px-2 py-0 top-50 mx-2">
+            <i class="material-symbols-rounded fs-5"> search </i>
+          </span>
+          <input
+            type="text"
+            name="search"
+            id="search"
+            class="form-control"
+            placeholder="Search"
+            autocomplete="off"
+            data-bs-role="autocomplete-search"
+          />
+        </div>
+      `;
+
+      containerElement.classList.value =
+        "border card m-0 mt-2 p-0 pb-2 position-absolute rounded-2 shadow-secondary suggestions-container top-100 w-100 z-index-2";
+      resultElement.classList.value = "autocomplete-results";
+
+      containerElement.append(resultElement);
+      inputGroup.append(containerElement);
+    }
+
+    resultElement = containerElement.querySelector("div.autocomplete-results");
+
+    return resultElement;
   }
+
+  function search(target, query, resultElement) {
+    let url = target.dataset.fetchApi;
+
+    if (url) {
+      let params = new URLSearchParams();
+
+      params.set("query", query?.trim() || "");
+      params.set("model-name", target.dataset.modelName);
+      params.set("search-col", target.dataset.searchCol);
+      params.set("select-val", target.dataset.selectVal);
+      params.set("template", target.dataset.template);
+
+      url = url.concat(String.fromCharCode(63)).concat(params.toString());
+
+      fetch(url)
+        .then((response) => response.text())
+        .then((data) => {
+          resultElement.innerHTML = data;
+        });
+    }
+  }
+
+  function handler(event) {
+    let target = event.target;
+
+    if (target.tagName !== "INPUT" || target.dataset.autoComplete !== "true")
+      return;
+
+    let inputGroup = target.closest("div.input-group");
+    let resultElement = init(inputGroup);
+    let searchInput = inputGroup.querySelector(
+      "input[data-bs-role='autocomplete-search']",
+    );
+    let containerElement = resultElement?.closest("div.suggestions-container");
+
+    containerElement.classList.remove("d-none");
+    resultElement.classList.remove("d-none");
+
+    search(target, searchInput?.value, resultElement);
+  }
+
+  document.addEventListener("focus", handler, true);
+  document.addEventListener(
+    "keyup",
+    (event) => {
+      let target = event.target;
+
+      if (
+        target.dataset.bsRole !== "autocomplete-search" ||
+        (target.value.length < 3 &&
+          event.type !== "focus" &&
+          event.keyCode !== 8)
+      )
+        return;
+
+      let inputGroup = target.closest(
+        "div.input-group:not(.search-input-group)",
+      );
+      let inputElement = inputGroup?.querySelector(
+        "input[data-auto-complete=true]",
+      );
+
+      if (inputGroup && inputElement) {
+        let resultElement = init(inputGroup);
+
+        search(inputElement, target.value, resultElement);
+      }
+    },
+    true,
+  );
+
+  document.body.addEventListener("click", (event) => {
+    const target = event.target;
+
+    if (
+      !target.closest("div.suggestions-container") &&
+      !target.closest("div.input-group")
+    )
+      Array.from(
+        document.querySelectorAll("div.suggestions-container"),
+      ).forEach((containerElement) => {
+        containerElement.classList.add("d-none");
+      });
+  });
+
+  document.body.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target;
+      const containerElement = target.closest("div.suggestions-container");
+      const itemElement = target.closest(".item");
+
+      if (!containerElement || !itemElement) {
+        return;
+      }
+
+      containerElement.classList.add("d-none");
+
+      const inputGroup = target.closest("div.input-group");
+      const inputElement = inputGroup.querySelector(
+        "input[data-auto-complete=true]",
+      );
+      const selectVal = inputElement.dataset.selectVal;
+
+      let val = itemElement.getAttribute(
+        "data".concat(String.fromCharCode(45)).concat(selectVal),
+      );
+
+      const valsElement =
+        inputGroup?.parentElement?.querySelector("div.values");
+
+      inputElement.value = "";
+
+      if (valsElement && !valsElement.innerHTML.includes(val)) {
+        let spanElement = document.createElement("span");
+        spanElement.classList.value =
+          "badge badge-sm bg-gradient-secondary mx-2 my-1 cursor-pointer tt-none";
+        spanElement.dataset.role = "value";
+        spanElement.innerHTML = val;
+
+        valsElement.append(spanElement);
+      }
+
+      if (!valsElement) {
+        inputGroup.classList.add("is-filled");
+        inputElement.value = val;
+      }
+
+      let eventInitDict = { bubbles: true };
+
+      let data = {}
+      if (inputElement.dataset.fillInputs) {
+        data.id = val
+      }
+      eventInitDict.detail = data;
+      inputElement.dispatchEvent(new CustomEvent("afterAutoSelect", eventInitDict));
+    },
+    true,
+  );
 }).call(this);

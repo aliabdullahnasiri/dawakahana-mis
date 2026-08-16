@@ -91,23 +91,24 @@ export function updateInvoiceModalStats(form) {
     "span[data-invoice-remaining]",
   );
 
+  const previousDebtElement = form.querySelector("span[data-previous-debt]");
+
+  const totalDebtElement = form.querySelector("span[data-total-debt]");
+
   const itemsInput = form.querySelector("input#items");
+
   const paidAmountInput = form.querySelector("input#paid_amount");
 
-  if (
-    !invoiceTotalSpanElement ||
-    !invoicePaidSpanElement ||
-    !invoiceRemainingSpanElement ||
-    !itemsInput ||
-    !paidAmountInput
-  ) {
-    return;
-  }
+  const invoiceType = form.querySelector("select#invoice_type");
+
+  const supplierId = form.querySelector("input#supplier_id");
+
+  const customerId = form.querySelector("input#customer_id");
 
   let items = [];
 
   try {
-    items = JSON.parse(itemsInput.value || "[]");
+    items = JSON.parse(itemsInput?.value || "[]");
   } catch {
     items = [];
   }
@@ -117,10 +118,49 @@ export function updateInvoiceModalStats(form) {
     0,
   );
 
-  const paidAmount = Number(paidAmountInput.value || 0);
+  const paidAmount = Number(paidAmountInput?.value || 0);
 
   const remainingAmount = Math.max(invoiceTotal - paidAmount, 0);
 
+  try {
+    let body = {};
+
+    if (["PURCHASE", "PURCHASE_RETURN"].includes(invoiceType.value)) {
+      body = {
+        supplier_id: +supplierId.value,
+      };
+    } else if (["SALE", "SALE_RETURN"].includes(invoiceType.value)) {
+      body = {
+        customer_id: +customerId.value,
+      };
+    }
+
+    fetch(previousDebtElement.dataset.getFrom, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        let prev = +data?.previous_debt;
+        let total = remainingAmount + prev;
+
+        if (paidAmount >= invoiceTotal) {
+          total -= paidAmount - invoiceTotal;
+        }
+
+        if (total < 0) {
+          total = 0;
+        }
+
+        previousDebtElement.textContent = prev?.toFixed(2);
+        totalDebtElement.textContent = total?.toFixed(2);
+      });
+  } catch {}
+
+  invoiceTotalSpanElement.textContent = invoiceTotal.toFixed(2);
   invoiceTotalSpanElement.textContent = invoiceTotal.toFixed(2);
   invoicePaidSpanElement.textContent = paidAmount.toFixed(2);
   invoiceRemainingSpanElement.textContent = remainingAmount.toFixed(2);
@@ -253,13 +293,15 @@ export function updateInvoiceModalStats(form) {
       let input = document.querySelector("input[type=hidden]#invoice_type");
       input.value = this.value;
 
-      let batch_number = document.querySelector("div#AddItemModal input#batch_number")
-      let row = batch_number.closest(".row")
+      let batch_number = document.querySelector(
+        "div#AddItemModal input#batch_number",
+      );
+      let row = batch_number.closest(".row");
 
       if (this.value === "SALE_RETURN") {
-        row.classList.remove("d-none")
+        row.classList.remove("d-none");
       } else {
-        row.classList.add("d-none")
+        row.classList.add("d-none");
       }
     });
 
@@ -306,6 +348,58 @@ export function updateInvoiceModalStats(form) {
     });
   }
 
+  document.addEventListener(
+    "afterAutoSelect",
+    (event) => {
+      let target = event.target;
+
+      if (["customer_id", "supplier_id"].includes(target.id)) {
+        let form = target.closest("form");
+        updateInvoiceModalStats(form);
+      }
+
+      let fillInputs = target.dataset.fillInputs;
+
+      if (fillInputs) {
+        let form = target.closest("form");
+        let data = event.detail;
+        let id = data.id;
+
+        let method = target.dataset.method || "GET";
+
+        try {
+          let url = target.dataset.get.replace("-1", id);
+
+          let options = { method: method };
+
+          if (method == "POST") {
+            let formData = new FormData(form);
+            options.body = formData;
+          }
+
+          fetch(url, options)
+            .then((response) => response.json())
+            .then((data) => {
+              fillInputs
+                .split(",")
+                .filter((val) => val)
+                .forEach((id) => {
+                  let inputElement = form.querySelector("#" + id);
+                  let inputGroup = inputElement.closest("div.input-group");
+                  let val = data[id];
+
+                  if (val) {
+                    inputGroup.classList.add("is-filled");
+                    inputElement.value = val;
+                  }
+                });
+            });
+        } catch (err) {}
+      }
+    },
+    true,
+  );
+
   document.addEventListener("keyup", (event) => {
     const target = event.target;
     const input = target.closest("input#paid_amount");
@@ -315,4 +409,16 @@ export function updateInvoiceModalStats(form) {
       updateInvoiceModalStats(form);
     }
   });
+
+  $(document).on(
+    "changed.bs.select",
+    "select",
+    async function (e, clickedIndex, isSelected, previousValue) {
+      if (e.currentTarget.id == "invoice_type") {
+        let form = e.currentTarget.closest("form");
+
+        updateInvoiceModalStats(form);
+      }
+    },
+  );
 }).call(this);
