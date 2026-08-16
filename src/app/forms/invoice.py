@@ -1,3 +1,4 @@
+from flask import url_for
 from flask_babel import gettext as _
 from wtforms import (
     DecimalField,
@@ -133,6 +134,8 @@ class AddInvoiceItemForm(Form):
             "data-select-val": "id",
             "data-search-col": "name",
             "data-template": "medicines.html",
+            "data-get": "/api/fetch/medicine/-1",
+            "data-fill-inputs": "unit_price",
         },
     )
 
