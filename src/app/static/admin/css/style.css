@@ -358,33 +358,6 @@ td .avatar {
   padding: 0;
 }
 
-.suggestions-list {
-  border-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-.suggestions-list .item {
-  transition: 0.32s;
-}
-
-.suggestions-list .item {
-  border: 1px solid transparent;
-  cursor: pointer;
-}
-
-.suggestions-list .item:hover {
-  transition: 0.32s;
-  background: rgb(0 0 0 / 10%);
-}
-
-body.dark-version .suggestions-list .item:hover {
-  background: rgb(10 10 10 / 18%);
-  border: 1px solid rgb(155 155 155 / 18%);
-}
-
-.suggestions-list:not(:has(.item)) {
-  display: none !important;
-}
-
 .filter-option-inner-inner {
   margin: 0px 10px;
 }
@@ -503,10 +476,57 @@ ul.nav.nav-pills.nav-fill {
 }
 
 .filter-option-inner-inner {
-    margin: 0 !important;
-    color: gray !important;
+  margin: 0 !important;
+  color: gray !important;
 }
-  
+
 table tbody:has(tr:not(.no-data)) .no-data {
-    display: none;
+  display: none;
+}
+
+.suggestions-container {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.suggestions-container .item {
+  transition: 0.32s;
+}
+
+.suggestions-container .item {
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.suggestions-container .item:hover {
+  transition: 0.32s;
+  background: rgb(0 0 0 / 10%);
+}
+
+body.dark-version .suggestions-container .item:hover {
+  background: rgb(10 10 10 / 18%);
+  border: 1px solid rgb(155 155 155 / 18%);
+}
+
+.suggestions-container:not(:has(.item)) ul::after {
+  content: "No matching items found";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  padding: 1rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.875rem;
+  text-align: center;
+  font-weight: 500;
+}
+.suggestions-container:not(:has(.item)) .autocomplete-results {
+  overflow: hidden;
+}
+.autocomplete-results {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.autocomplete-results ul {
+  padding-top: 0px !important;
 }
