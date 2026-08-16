@@ -1,5 +1,8 @@
+from sqlalchemy import case, func
+
 from app.extensions.db import db
 from app.models.base import Base
+from app.models.transaction import Transaction, TransactionType
 
 
 class Customer(Base):
@@ -26,6 +29,40 @@ class Customer(Base):
 
     invoices = db.relationship("Invoice", back_populates="customer", lazy="dynamic")
 
+    def get_debt(self):
+
+        debt = (
+            db.session.query(
+                func.coalesce(
+                    func.sum(
+                        case(
+                            (
+                                Transaction.transaction_type == TransactionType.SALE,
+                                Transaction.amount,
+                            ),
+                            (
+                                Transaction.transaction_type == TransactionType.PAYMENT,
+                                -Transaction.amount,
+                            ),
+                            (
+                                Transaction.transaction_type
+                                == TransactionType.SALE_RETURN,
+                                -Transaction.amount,
+                            ),
+                            else_=0,
+                        )
+                    ),
+                    0,
+                )
+            )
+            .filter(
+                Transaction.customer_id == self.id,
+            )
+            .scalar()
+        )
+
+        return debt or 0
+
     def to_dict(self) -> dict:
 
         return {
@@ -39,4 +76,4 @@ class Customer(Base):
         }
 
     def __repr__(self):
-        return f"<Customer name='{self.name!r}' " f"phone='{self.phone!r}'>"
+        return f"<Customer name={self.name!r} " f"phone={self.phone!r}>"

@@ -148,6 +148,11 @@ def add_invoice():
             invoice.invoice_date = date.today()
             invoice.created_by = current_user.id
 
+            if invoice_type in (InvoiceType.PURCHASE, InvoiceType.PURCHASE_RETURN):
+                invoice.supplier_id = supplier_id
+            elif invoice_type in (InvoiceType.SALE, InvoiceType.SALE_RETURN):
+                invoice.customer_id = customer_id
+
             db.session.add(invoice)
             db.session.flush()
 
@@ -194,8 +199,6 @@ def add_invoice():
 
                         db.session.add(invoice_item)
 
-                        # !!! ADD STOCK MOVEMENT
-
                     case InvoiceType.SALE:
                         stock = (
                             MedicineStock.query.filter(
@@ -220,8 +223,6 @@ def add_invoice():
 
                             db.session.add(invoice_item)
 
-                            # !!! ADD STOCK MOVEMENT
-
                     case InvoiceType.PURCHASE_RETURN:
                         stock = MedicineStock.query.filter(
                             MedicineStock.medicine_id == medicine.id,
@@ -243,7 +244,6 @@ def add_invoice():
 
                             db.session.add(invoice_item)
 
-                            # !!! ADD STOCK MOVEMENT
                     case InvoiceType.SALE_RETURN:
                         batch_number = item.get("batch_number")
 
@@ -275,8 +275,6 @@ def add_invoice():
                             invoice_item.batch_number = batch_number
 
                             db.session.add(invoice_item)
-
-                            # !!! ADD STOCK MOVEMENT
 
             paid_amount = Decimal(str(form.paid_amount.data or 0))
 

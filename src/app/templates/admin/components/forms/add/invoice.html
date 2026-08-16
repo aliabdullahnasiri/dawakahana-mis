@@ -213,6 +213,43 @@
                     </span>
                   </td>
                 </tr>
+                <tr>
+                  <td colspan="4"></td>
+
+                  <td class="text-end">
+                    <span class="text-sm font-weight-bolder">
+                      {{ _("PREVIOUS_DEBT_LABEL") }}</span
+                    >
+                  </td>
+
+                  <td>
+                    <span
+                      class="text-sm font-weight-bolder text-danger"
+                      data-previous-debt
+                      data-get-from="{{ url_for('api.get_previous_debt') }}"
+                    >
+                      0.00
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4"></td>
+
+                  <td class="text-end">
+                    <span class="text-sm font-weight-bolder">
+                      {{ _("TOTAL_DEBT_LABEL") }}</span
+                    >
+                  </td>
+
+                  <td>
+                    <span
+                      class="text-sm font-weight-bolder text-danger"
+                      data-total-debt
+                    >
+                      0.00
+                    </span>
+                  </td>
+                </tr>
               </tfoot>
             </table>
           </div>
