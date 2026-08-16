@@ -309,6 +309,7 @@ export function updateInvoiceModalStats(form) {
 
     addInvoiceModalElement.addEventListener("click", (event) => {
       const target = event.target;
+      const form = target.closest("form");
 
       let items = JSON.parse(itemsInput.value || "[]");
 
@@ -329,6 +330,7 @@ export function updateInvoiceModalStats(form) {
             items.splice(index, 1);
 
             trElement.remove();
+            updateInvoiceModalStats(form);
           }
         }
       } else if (target.closest("[data-bs-role=remove]")) {
@@ -341,6 +343,7 @@ export function updateInvoiceModalStats(form) {
           items.splice(index, 1);
 
           trElement.remove();
+          updateInvoiceModalStats(form);
         }
 
         itemsInput.value = JSON.stringify(items);
