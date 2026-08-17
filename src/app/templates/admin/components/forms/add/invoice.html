@@ -64,6 +64,19 @@
 
       <div class="row">
         <div class="col-md-12">
+          <div class="mt-2 mx-2">
+            <div
+              class="d-flex form-check form-check-info form-switch is-filled"
+            >
+              {{ f.is_draft(class="form-check-input") }} {{
+              f.is_draft.label(class="form-check-label ms-3") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
           <div class="text-center">
             {{ f.submit( class="btn bg-gradient-info btn-lg w-100 mt-3 mb-0" )
             }}

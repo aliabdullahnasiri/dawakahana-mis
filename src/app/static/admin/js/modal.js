@@ -9,7 +9,6 @@ import {
 (function () {
   document.addEventListener("show.bs.modal", (event) => {
     const form = event.target.querySelector("form");
-
     if (event.target.dataset.onShowReset !== "false") if (form) resetForm(form);
   });
 
@@ -312,14 +311,25 @@ import {
       if (form && itemsInput) {
         let items = JSON.parse(itemsInput.value || "[]");
 
-        items.push({
+        let item = {
           medicine_id: data.medicine_id,
           batch_number: data.batch_number,
           quantity: data.quantity,
           unit_price: data.unit_price,
           total_price: data.total_price,
-          total_debt: data.total_debt,
-        });
+        };
+
+        let formData = new FormData(formElement);
+
+        for (const [key, value] of formData.entries()) {
+          if (item[key] === undefined && value) {
+            item[key] = value;
+          }
+        }
+
+        items.push(item);
+
+        console.log(item);
 
         itemsInput.value = JSON.stringify(items);
       }
@@ -336,6 +346,28 @@ import {
 
   document.addEventListener("afterSubmit", (event) => {
     if (!event?.detail?.errors) {
+      let modal = event.target.closest("div.modal");
+      let table = modal?.querySelector("table[data-role='invoice-item']");
+      let tbody = table?.querySelector("tbody");
+      let form = modal.querySelector("form");
+
+      if (tbody) {
+        Array.from(tbody.querySelectorAll("a[data-bs-role='remove']")).forEach(
+          (link) => {
+            link.click();
+          },
+        );
+
+        let nextModal = bootstrap.Modal.getOrCreateInstance(modal);
+        nextModal.hide();
+
+        if (form) {
+          resetForm(form);
+          updateInvoiceModalStats(form);
+        }
+      }
     }
   });
+
+  document.addEventListener("hidden.bs.modal", (event) => {});
 }).call(this);

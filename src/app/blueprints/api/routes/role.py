@@ -152,9 +152,6 @@ def update_role() -> Response:
 
             db.session.commit()
 
-            # for user in role.users.all():
-            #     dct.remove(user.id)
-
             response["title"] = g("UPDATED_SUCCESS_MSG")
             response["message"] = g("ROLE_UPDATED_SUCCESSFULLY_SUCCESS_MSG")
             response["category"] = "success"

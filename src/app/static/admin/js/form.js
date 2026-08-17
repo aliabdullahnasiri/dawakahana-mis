@@ -64,6 +64,31 @@ export function resetForm(form) {
     ))
       val.remove();
   }
+
+  const selectElements = form.querySelectorAll("select");
+
+  // Destroy all Bootstrap Select instances
+  selectElements.forEach((selectElement) => {
+    const select = $(selectElement);
+
+    if (select.data("selectpicker")) {
+      select.selectpicker("destroy");
+    }
+  });
+
+  // Recreate Bootstrap Select
+  selectElements.forEach((selectElement) => {
+
+    const input = document.querySelector(`input[type="hidden"]#${selectElement.id}`);
+
+    if (input) {
+      input.value = selectElement.value;
+    }
+
+    $(selectElement).selectpicker();
+
+    groupSwitcher(selectElement);
+  });
 }
 
 async function submitForm(formElement) {
@@ -152,7 +177,7 @@ async function submitForm(formElement) {
         const input = form.querySelector(`#${key}`);
         if (!input) return;
 
-        if (input.dataset.onError == "alert") {
+        if (input.dataset.onError == "alert" || input.type == "hidden") {
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -367,6 +392,24 @@ export function createProgressBar(now_value, min_value, max_value) {
   divElement.append(progressBarElement);
 
   return divElement;
+}
+
+export function groupSwitcher(select) {
+  document
+    .querySelectorAll("[data-group-id], [data-second-group-id]")
+    .forEach((element) => {
+      const group = element.closest(".row, .group");
+
+      if (!group) {
+        return;
+      }
+
+      const matches =
+        element.dataset.groupId === select.value ||
+        element.dataset.secondGroupId === select.value;
+
+      group.classList.toggle("d-none", !matches);
+    });
 }
 
 export function upload(files, dropZone) {
@@ -647,36 +690,6 @@ export function upload(files, dropZone) {
 }).call(this);
 
 (function () {
-  function fun(select) {
-    document
-      .querySelectorAll("[data-group-id], [data-second-group-id]")
-      .forEach((element) => {
-        const group = element.closest(".row, .group");
-
-        if (!group) {
-          return;
-        }
-
-        const matches =
-          element.dataset.groupId === select.value ||
-          element.dataset.secondGroupId === select.value;
-
-        group.classList.toggle("d-none", !matches);
-      });
-  }
-
-  $("[data-group-switcher=true]").each(function () {
-    fun(this);
-  });
-
-  $(document).on("changed.bs.select", "select", function () {
-    if (!this.matches("select") && !this.dataset.groupSwitcher) return;
-
-    fun(this);
-  });
-}).call(this);
-
-(function () {
   function init(inputGroup) {
     let containerElement = inputGroup.querySelector(
       "div.suggestions-container",
@@ -847,13 +860,32 @@ export function upload(files, dropZone) {
 
       let eventInitDict = { bubbles: true };
 
-      let data = {}
+      let data = {};
       if (inputElement.dataset.fillInputs) {
-        data.id = val
+        data.id = val;
       }
       eventInitDict.detail = data;
-      inputElement.dispatchEvent(new CustomEvent("afterAutoSelect", eventInitDict));
+      inputElement.dispatchEvent(
+        new CustomEvent("afterAutoSelect", eventInitDict),
+      );
     },
     true,
   );
+}).call(this);
+
+(function () {
+  $("[data-group-switcher=true]").each(function () {
+    groupSwitcher(this);
+  });
+
+  $(document).on("changed.bs.select", "select[id]", function () {
+    if (this.matches("select") && this.dataset.groupSwitcher)
+      groupSwitcher(this);
+
+    const input = document.querySelector(`input[type="hidden"]#${this.id}`);
+
+    if (input) {
+      input.value = this.value;
+    }
+  });
 }).call(this);

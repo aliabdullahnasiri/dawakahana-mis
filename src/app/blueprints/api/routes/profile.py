@@ -68,7 +68,6 @@ def update_profile():
         response["category"] = "success"
 
     else:
-        print(form.errors)
         response["errors"] = form.errors
 
     return Response(

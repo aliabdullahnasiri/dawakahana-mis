@@ -1,6 +1,11 @@
-from flask import url_for
+import json
+from json import JSONDecodeError
+
 from flask_babel import gettext as _
+from sqlalchemy import and_
 from wtforms import (
+    BooleanField,
+    DateField,
     DecimalField,
     HiddenField,
     IntegerField,
@@ -12,7 +17,6 @@ from wtforms import (
 from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
 from app.forms import Form, ValidateID
-from app.forms.medicine_stock import AddMedicineStockForm
 from app.models.invoice import InvoiceType
 from app.models.medicine import Medicine
 from app.models.medicine_stock import MedicineStock
@@ -68,7 +72,6 @@ class AddInvoiceForm(Form):
 
     items = HiddenField(
         _("INVOICE_ITEMS_LABEL"),
-        validators=[DataRequired(message=_("THIS_FIELD_IS_REQUIRED_ERROR"))],
     )
 
     paid_amount = DecimalField(
@@ -92,7 +95,26 @@ class AddInvoiceForm(Form):
         ],
     )
 
+    is_draft = BooleanField(
+        _("SAVE_AS_DRAFT_LABEL"),
+        default=False,
+    )
+
     submit = SubmitField(_("ADD_LABEL"))
+
+    def validate_items(self, field):
+
+        try:
+            data = json.loads(field.data or "[]")
+
+        except JSONDecodeError:
+            raise ValidationError(_("INVALID_INVOICE_ITEMS_MSG"))
+
+        if not isinstance(data, list):
+            raise ValidationError(_("INVALID_INVOICE_ITEMS_MSG"))
+
+        if not data:
+            raise ValidationError(_("INVOICE_MUST_HAVE_AT_LEAST_ONE_ITEM_MSG"))
 
 
 class AddInvoiceItemForm(Form):
@@ -100,9 +122,10 @@ class AddInvoiceItemForm(Form):
         _("INVOICE_TYPE_LABEL"),
         default=InvoiceType.PURCHASE.value,
         validators=[DataRequired(message=_("THIS_FIELD_IS_REQUIRED_ERROR"))],
+        render_kw={"data-group-switcher": "true"},
     )
 
-    batch_number = StringField(
+    return_batch_number = StringField(
         _("BATCH_NUMBER_LABEL"),
         validators=[
             Length(
@@ -118,6 +141,22 @@ class AddInvoiceItemForm(Form):
             "data-select-val": "batch-number",
             "data-search-col": "batch_number",
             "data-template": "medicine_stocks.html",
+            "data-group-id": InvoiceType.SALE_RETURN.value,
+            "data-second-group-id": InvoiceType.PURCHASE_RETURN.value,
+        },
+    )
+
+    purchase_batch_number = StringField(
+        _("BATCH_NUMBER_LABEL"),
+        validators=[
+            Optional(),
+            Length(
+                max=100,
+                message=_("THIS_FIELD_CANNOT_EXCEED_100_CHARACTERS_MSG"),
+            ),
+        ],
+        render_kw={
+            "data-group-id": InvoiceType.PURCHASE.value,
         },
     )
 
@@ -161,13 +200,50 @@ class AddInvoiceItemForm(Form):
         ],
     )
 
+    selling_price = DecimalField(
+        _("SELLING_PRICE_LABEL"),
+        validators=[Optional()],
+        render_kw={
+            "data-group-id": InvoiceType.PURCHASE.value,
+        },
+    )
+
+    expiry_date = DateField(
+        _("EXPIRY_DATE_LABEL"),
+        format="%Y-%m-%d",
+        validators=[Optional()],
+        render_kw={
+            "data-group-id": InvoiceType.PURCHASE.value,
+        },
+    )
+
     submit = SubmitField(_("ADD_INVOICE_ITEM_LABEL"))
 
-    def validate_batch_number(self, field):
+    def validate_return_batch_number(self, field):
         if self.invoice_type.data != InvoiceType.SALE_RETURN.value:
             return
 
-        if not self.batch_number.data:
+        if not self.return_batch_number.data:
+            raise ValidationError(_("THIS_FIELD_IS_REQUIRED_ERROR"))
+
+        medicine_id = self.medicine_id.data
+
+        if not medicine_id:
+            return
+
+        stock = MedicineStock.query.filter_by(
+            medicine_id=medicine_id,
+            batch_number=field.data,
+        ).first()
+
+        if not stock:
+            raise ValidationError(_("BATCH_NUMBER_NOT_FOUND_MSG"))
+
+    def validate_purchase_batch_number(self, field):
+        if self.invoice_type.data != InvoiceType.SALE_RETURN.value:
+            return
+
+        if not self.purchase_batch_number.data:
             raise ValidationError(_("THIS_FIELD_IS_REQUIRED_ERROR"))
 
         medicine_id = self.medicine_id.data
@@ -196,8 +272,11 @@ class AddInvoiceItemForm(Form):
         medicine_id = self.medicine_id.data
 
         stock = MedicineStock.query.filter(
-            MedicineStock.medicine_id == medicine_id,
-            MedicineStock.quantity >= field.data,
+            and_(
+                MedicineStock.medicine_id == medicine_id,
+                MedicineStock.quantity >= field.data,
+                MedicineStock.batch_number.isnot(None),
+            ),
         ).first()
 
         if not stock:

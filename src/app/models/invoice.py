@@ -1,8 +1,13 @@
 import enum
 from datetime import datetime
+from decimal import Decimal
+
+from sqlalchemy import func
 
 from app.extensions.db import db
 from app.models.base import Base
+from app.models.invoice_item import InvoiceItem
+from app.models.transaction import Transaction, TransactionType
 
 
 class InvoiceType(enum.Enum):
@@ -12,10 +17,10 @@ class InvoiceType(enum.Enum):
     SALE_RETURN = "SALE_RETURN"
 
 
-class PaymentStatus(enum.Enum):
-    PAID = "PAID"
-    PARTIAL = "PARTIAL"
-    UNPAID = "UNPAID"
+class InvoiceStatus(enum.Enum):
+    DRAFT = "DRAFT"
+    COMPLETED = "COMPLETED"
+    CANCELLED = "CANCELLED"
 
 
 class Invoice(Base):
@@ -30,7 +35,11 @@ class Invoice(Base):
 
     customer_id = db.Column(db.Integer, db.ForeignKey("customers.id"), nullable=True)
 
-    payment_status = db.Column(db.Enum(PaymentStatus), default=PaymentStatus.UNPAID)
+    status = db.Column(
+        db.Enum(InvoiceStatus),
+        nullable=False,
+        default=InvoiceStatus.COMPLETED,
+    )
 
     invoice_date = db.Column(db.DateTime, nullable=False)
 
@@ -54,7 +63,6 @@ class Invoice(Base):
         return {
             "invoice_number": self.invoice_number,
             "invoice_type": self.invoice_type.value,
-            "payment_status": self.payment_status.value,
             "invoice_date": self.invoice_date,
             **getattr(super(), "to_dict")(),
         }
@@ -85,3 +93,31 @@ class Invoice(Base):
             sequence = 1
 
         return f"{prefix}-{date}-{sequence:04d}"
+
+    @property
+    def total_amount(self):
+        return db.session.query(
+            func.coalesce(
+                func.sum(InvoiceItem.total_price),
+                0,
+            )
+        ).filter(InvoiceItem.invoice_id == self.id,).scalar() or Decimal("0")
+
+    @property
+    def paid_amount(self):
+        return db.session.query(
+            func.coalesce(
+                func.sum(Transaction.amount),
+                0,
+            )
+        ).filter(
+            Transaction.invoice_id == self.id,
+            Transaction.transaction_type == TransactionType.PAYMENT,
+        ).scalar() or Decimal("0")
+
+    @property
+    def remaining_amount(self):
+        return max(
+            self.total_amount - self.paid_amount,
+            Decimal("0"),
+        )

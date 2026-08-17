@@ -16,8 +16,8 @@ def get_previous_debt():
         customer_id = data.get("customer_id")
 
         if isinstance(supplier_id, int):
-            supplier = Supplier.query.get(supplier_id)
-            print(supplier)
+            if supplier := Supplier.query.get(supplier_id):
+                prev_debt = supplier.get_debt()
 
         elif isinstance(customer_id, int):
             if customer := Customer.query.get(customer_id):

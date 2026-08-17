@@ -174,7 +174,7 @@ def add_invoice():
 
                 match invoice_type:
                     case InvoiceType.PURCHASE:
-                        batch_number = item.get("batch_number")
+                        batch_number = item.get("purchase_batch_number")
                         expiry_date = item.get("expiry_date")
 
                         stock = MedicineStock()
@@ -204,6 +204,7 @@ def add_invoice():
                             MedicineStock.query.filter(
                                 MedicineStock.medicine_id == medicine.id,
                                 MedicineStock.quantity >= quantity,
+                                MedicineStock.batch_number.isnot(None),
                             )
                             .order_by(MedicineStock.expiry_date.asc())
                             .first()
@@ -227,7 +228,8 @@ def add_invoice():
                         stock = MedicineStock.query.filter(
                             MedicineStock.medicine_id == medicine.id,
                             MedicineStock.quantity >= quantity,
-                            MedicineStock.batch_number == item.get("batch_number"),
+                            MedicineStock.batch_number
+                            == item.get("return_batch_number"),
                         ).first()
 
                         if stock:
@@ -235,17 +237,17 @@ def add_invoice():
 
                             invoice_item = InvoiceItem()
 
-                            stock.invoice_id = invoice.id
-                            stock.medicine_id = medicine.id
-                            stock.quantity = quantity
-                            stock.unit_price = unit_price
-                            stock.total_price = item_total
-                            stock.batch_number = stock.batch_number
+                            invoice_item.invoice_id = invoice.id
+                            invoice_item.medicine_id = medicine.id
+                            invoice_item.quantity = quantity
+                            invoice_item.unit_price = unit_price
+                            invoice_item.total_price = item_total
+                            invoice_item.batch_number = stock.batch_number
 
                             db.session.add(invoice_item)
 
                     case InvoiceType.SALE_RETURN:
-                        batch_number = item.get("batch_number")
+                        batch_number = item.get("return_batch_number")
 
                         stock = MedicineStock.query.filter(
                             MedicineStock.medicine_id == medicine.id,
@@ -323,30 +325,90 @@ def add_invoice():
                     db.session.add(transaction)
 
             if paid_amount > 0:
-                if invoice_type in (InvoiceType.SALE, InvoiceType.SALE_RETURN):
-                    transaction = Transaction()
 
-                    transaction.customer_id = customer_id
-                    transaction.invoice_id = invoice.id
-                    transaction.transaction_type = TransactionType.PAYMENT
-                    transaction.amount = paid_amount
-                    transaction.created_by = current_user.id
-
-                    db.session.add(transaction)
-
-                elif invoice_type in (
-                    InvoiceType.PURCHASE,
-                    InvoiceType.PURCHASE_RETURN,
+                def allocate_payment(
+                    invoice: Invoice,
+                    total_amount: Decimal,
+                    customer_id: int | None = None,
+                    supplier_id: int | None = None,
+                    processed_invoice_ids: set[int] | None = None,
                 ):
-                    transaction = Transaction()
+                    if processed_invoice_ids is None:
+                        processed_invoice_ids = set()
 
-                    transaction.supplier_id = supplier_id
-                    transaction.invoice_id = invoice.id
-                    transaction.transaction_type = TransactionType.PAYMENT
-                    transaction.amount = paid_amount
-                    transaction.created_by = current_user.id
+                    if total_amount <= 0:
+                        return
 
-                    db.session.add(transaction)
+                    if invoice.id in processed_invoice_ids:
+                        return
+
+                    processed_invoice_ids.add(invoice.id)
+
+                    payment_amount = min(
+                        total_amount,
+                        invoice.remaining_amount,
+                    )
+
+                    if payment_amount > 0:
+                        transaction = Transaction()
+                        transaction.invoice_id = invoice.id
+                        transaction.transaction_type = TransactionType.PAYMENT
+                        transaction.amount = payment_amount
+                        transaction.created_by = current_user.id
+
+                        if customer_id is not None:
+                            transaction.customer_id = customer_id
+                        elif supplier_id is not None:
+                            transaction.supplier_id = supplier_id
+
+                        db.session.add(transaction)
+
+                    remaining_payment = total_amount - payment_amount
+
+                    if remaining_payment <= 0:
+                        return
+
+                    if supplier_id is not None:
+                        previous_invoice = (
+                            Invoice.query.filter(
+                                Invoice.supplier_id == supplier_id,
+                                Invoice.invoice_type == InvoiceType.PURCHASE,
+                                ~Invoice.id.in_(processed_invoice_ids),
+                            )
+                            .order_by(
+                                Invoice.invoice_date.asc(),
+                                Invoice.id.asc(),
+                            )
+                            .first()
+                        )
+
+                    elif customer_id is not None:
+                        previous_invoice = (
+                            Invoice.query.filter(
+                                Invoice.customer_id == customer_id,
+                                Invoice.invoice_type == InvoiceType.SALE,
+                                ~Invoice.id.in_(processed_invoice_ids),
+                            )
+                            .order_by(
+                                Invoice.invoice_date.asc(),
+                                Invoice.id.asc(),
+                            )
+                            .first()
+                        )
+
+                    else:
+                        return
+
+                    if previous_invoice:
+                        return allocate_payment(
+                            previous_invoice,
+                            remaining_payment,
+                            customer_id,
+                            supplier_id,
+                            processed_invoice_ids,
+                        )
+
+                allocate_payment(invoice, paid_amount, customer_id, supplier_id)
 
             db.session.commit()
 
@@ -373,7 +435,6 @@ def add_invoice():
             response["category"] = "error"
 
     else:
-
         response["errors"] = form.errors
 
     return Response(
@@ -403,6 +464,7 @@ def add_invoice_item():
                     MedicineStock.query.filter(
                         MedicineStock.medicine_id == medicine_id,
                         MedicineStock.quantity > quantity,
+                        MedicineStock.batch_number.isnot(None),
                     )
                     .order_by(MedicineStock.expiry_date.asc())
                     .first()

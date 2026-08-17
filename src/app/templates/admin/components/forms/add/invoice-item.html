@@ -28,11 +28,22 @@
     </div>
   </div>
 
-  <div class="row d-none">
+  <div class="row">
     <div class="col-md-12">
       <div class="my-2">
         <div class="input-group input-group-outline">
-          {{ f.batch_number.label(class="form-label") }} {{ f.batch_number(
+          {{ f.purchase_batch_number.label(class="form-label") }} {{ f.purchase_batch_number(
+          class="form-control" ) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="my-2">
+        <div class="input-group input-group-outline">
+          {{ f.return_batch_number.label(class="form-label") }} {{ f.return_batch_number(
           class="form-control" ) }}
         </div>
       </div>
@@ -45,6 +56,30 @@
         <div class="input-group input-group-outline">
           {{ f.unit_price.label(class="form-label") }} {{ f.unit_price(
           class="form-control" ) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="my-2">
+        <div class="input-group input-group-outline">
+          {{ f.selling_price.label(class="form-label") }}
+          {{ f.selling_price(class="form-control") }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="my-2">
+        <div class="px-2 py-0 my-0">
+          {{ f.expiry_date.label(class="form-label") }}
+        </div>
+        <div class="input-group input-group-outline">
+          {{ f.expiry_date(class="form-control") }}
         </div>
       </div>
     </div>

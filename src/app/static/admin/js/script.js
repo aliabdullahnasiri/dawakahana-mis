@@ -164,6 +164,8 @@ export function updateInvoiceModalStats(form) {
   invoiceTotalSpanElement.textContent = invoiceTotal.toFixed(2);
   invoicePaidSpanElement.textContent = paidAmount.toFixed(2);
   invoiceRemainingSpanElement.textContent = remainingAmount.toFixed(2);
+
+  itemsInput.value = JSON.stringify(items);
 }
 
 (function () {
@@ -289,22 +291,6 @@ export function updateInvoiceModalStats(form) {
   let addInvoiceModalElement = document.querySelector("#AddInvoiceModal");
 
   if (addInvoiceModalElement) {
-    $(document).on("change", "select#invoice_type", function () {
-      let input = document.querySelector("input[type=hidden]#invoice_type");
-      input.value = this.value;
-
-      let batch_number = document.querySelector(
-        "div#AddItemModal input#batch_number",
-      );
-      let row = batch_number.closest(".row");
-
-      if (this.value === "SALE_RETURN") {
-        row.classList.remove("d-none");
-      } else {
-        row.classList.add("d-none");
-      }
-    });
-
     let itemsInput = addInvoiceModalElement.querySelector("input#items");
 
     addInvoiceModalElement.addEventListener("click", (event) => {
@@ -330,7 +316,6 @@ export function updateInvoiceModalStats(form) {
             items.splice(index, 1);
 
             trElement.remove();
-            updateInvoiceModalStats(form);
           }
         }
       } else if (target.closest("[data-bs-role=remove]")) {
@@ -343,10 +328,10 @@ export function updateInvoiceModalStats(form) {
           items.splice(index, 1);
 
           trElement.remove();
-          updateInvoiceModalStats(form);
         }
 
         itemsInput.value = JSON.stringify(items);
+        updateInvoiceModalStats(form);
       }
     });
   }
