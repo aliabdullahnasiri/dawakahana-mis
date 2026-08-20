@@ -2,7 +2,7 @@ import json
 from json import JSONDecodeError
 
 from flask_babel import gettext as _
-from sqlalchemy import and_
+from sqlalchemy import func
 from wtforms import (
     BooleanField,
     DateField,
@@ -16,6 +16,7 @@ from wtforms import (
 )
 from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
+from app.extensions.db import db
 from app.forms import Form, ValidateID
 from app.models.invoice import InvoiceType
 from app.models.medicine import Medicine
@@ -143,6 +144,7 @@ class AddInvoiceItemForm(Form):
             "data-template": "medicine_stocks.html",
             "data-group-id": InvoiceType.SALE_RETURN.value,
             "data-second-group-id": InvoiceType.PURCHASE_RETURN.value,
+            "data-based-on": "medicine_id",
         },
     )
 
@@ -266,20 +268,32 @@ class AddInvoiceItemForm(Form):
             raise ValidationError(_("INVALID_INVOICE_TYPE_MSG"))
 
     def validate_quantity(self, field):
+
         if self.invoice_type.data != InvoiceType.SALE.value:
             return
 
         medicine_id = self.medicine_id.data
+        quantity = field.data
 
-        stock = MedicineStock.query.filter(
-            and_(
+        if not medicine_id or not quantity:
+            return
+
+        available_quantity = (
+            db.session.query(
+                func.coalesce(
+                    func.sum(MedicineStock.quantity),
+                    0,
+                )
+            )
+            .filter(
                 MedicineStock.medicine_id == medicine_id,
-                MedicineStock.quantity >= field.data,
+                MedicineStock.quantity > 0,
                 MedicineStock.batch_number.isnot(None),
-            ),
-        ).first()
+            )
+            .scalar()
+        )
 
-        if not stock:
+        if available_quantity < quantity:
             raise ValidationError(_("NOT_ENOUGH_STOCK_AVAILABLE_MSG"))
 
 
@@ -291,3 +305,8 @@ class UpdateInvoiceForm(AddInvoiceForm):
     )
 
     submit = SubmitField(_("UPDATE_LABEL"))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.invoice_type.validators = [Optional()]

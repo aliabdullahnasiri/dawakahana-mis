@@ -4,17 +4,39 @@
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="true"
 >
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-body p-0">
         <div class="card card-plain">
-          <div class="card-header pb-0 text-left">
-            <h5 data-modal-title>{{ _("UPDATE_INVOICE_INFORMATION_MSG") }}</h5>
+          <div class="card-header pb-0 pt-3 px-3">
+            <div class="d-flex align-items-start justify-content-between gap-3">
+              <div>
+                <h5 class="mb-1" data-modal-title>
+                  {{ _("UPDATE_INVOICE_INFORMATION_MSG") }}
+                </h5>
 
-            <p class="mb-0" data-modal-description>
-              {{ _("UPDATE_INVOICE_DESCRIPTION_MSG") }}
-            </p>
+                <p
+                  class="mb-0 text-sm text-secondary"
+                  data-modal-description
+                >
+                  {{ _("UPDATE_INVOICE_DESCRIPTION_MSG") }}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                class="btn btn-danger btn-rounded mb-0 p-1 p-2 shadow shadow-danger text-xs"
+                data-bs-dismiss="modal"
+                aria-label="{{ _("CLOSE_LABEL") }}"
+              >
+                <i class="material-symbols-rounded">
+                  close
+                </i>
+              </button>
+            </div>
           </div>
 
           <div class="card-body">

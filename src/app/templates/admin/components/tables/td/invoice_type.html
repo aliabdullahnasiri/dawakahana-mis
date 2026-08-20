@@ -1,0 +1,5 @@
+<span
+  class="badge text-xxs {% if invoice.invoice_type.value == 'SALE' %} bg-gradient-success {% elif invoice.invoice_type.value == 'PURCHASE' %} bg-gradient-info {% elif invoice.invoice_type.value == 'SALE_RETURN' %} bg-gradient-warning {% elif invoice.invoice_type.value == 'PURCHASE_RETURN' %} bg-gradient-danger {% endif %}"
+>
+  {{ _(invoice.invoice_type.value + "_LABEL" )}}
+</span>

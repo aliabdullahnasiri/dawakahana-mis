@@ -91,9 +91,9 @@ export function updateInvoiceModalStats(form) {
     "span[data-invoice-remaining]",
   );
 
-  const previousDebtElement = form.querySelector("span[data-previous-debt]");
-
   const totalDebtElement = form.querySelector("span[data-total-debt]");
+
+  const totalCreditElement = form.querySelector("span[data-total-credit]");
 
   const itemsInput = form.querySelector("input#items");
 
@@ -135,7 +135,7 @@ export function updateInvoiceModalStats(form) {
       };
     }
 
-    fetch(previousDebtElement.dataset.getFrom, {
+    fetch("/api/get/previous/balance", {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
@@ -144,23 +144,25 @@ export function updateInvoiceModalStats(form) {
     })
       .then((response) => response.json())
       .then((data) => {
-        let prev = +data?.previous_debt;
-        let total = remainingAmount + prev;
+        const previousBalance = Number(data?.previous_balance || 0);
 
-        if (paidAmount >= invoiceTotal) {
-          total -= paidAmount - invoiceTotal;
+        let invoiceEffect = remainingAmount;
+
+        // Returns reduce the existing balance.
+        if (["PURCHASE_RETURN", "SALE_RETURN"].includes(invoiceType.value)) {
+          invoiceEffect = -remainingAmount;
         }
 
-        if (total < 0) {
-          total = 0;
-        }
+        const newBalance = previousBalance + invoiceEffect;
 
-        previousDebtElement.textContent = prev?.toFixed(2);
-        totalDebtElement.textContent = total?.toFixed(2);
+        const totalDebt = Math.max(newBalance, 0);
+        const totalCredit = Math.max(-newBalance, 0);
+
+        totalDebtElement.textContent = totalDebt.toFixed(2);
+        totalCreditElement.textContent = totalCredit.toFixed(2);
       });
   } catch {}
 
-  invoiceTotalSpanElement.textContent = invoiceTotal.toFixed(2);
   invoiceTotalSpanElement.textContent = invoiceTotal.toFixed(2);
   invoicePaidSpanElement.textContent = paidAmount.toFixed(2);
   invoiceRemainingSpanElement.textContent = remainingAmount.toFixed(2);

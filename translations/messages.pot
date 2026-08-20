@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-15 11:57+0430\n"
+"POT-Creation-Date: 2026-08-18 15:03+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+
+#: src/app/__init__.py:78
+msgid "INVALID_JSON_MSG"
+msgstr ""
 
 #: src/app/translations_stub.py:10
 msgid "Ali Abdullah Nasiri"
@@ -114,7 +118,7 @@ msgstr ""
 
 #: src/app/blueprints/api/routes/customer.py:17
 #: src/app/blueprints/api/routes/employee.py:20
-#: src/app/blueprints/api/routes/invoice.py:21
+#: src/app/blueprints/api/routes/invoice.py:24
 #: src/app/blueprints/api/routes/medicine.py:17
 #: src/app/blueprints/api/routes/medicine_stock.py:17
 #: src/app/blueprints/api/routes/permission.py:16
@@ -164,7 +168,7 @@ msgstr ""
 #: src/app/blueprints/api/routes/customer.py:186
 #: src/app/blueprints/api/routes/job.py:169
 #: src/app/blueprints/api/routes/permission.py:136
-#: src/app/blueprints/api/routes/role.py:158
+#: src/app/blueprints/api/routes/role.py:155
 msgid "UPDATED_SUCCESS_MSG"
 msgstr ""
 
@@ -175,7 +179,7 @@ msgstr ""
 #: src/app/blueprints/api/routes/customer.py:192
 #: src/app/blueprints/api/routes/job.py:173
 #: src/app/blueprints/api/routes/permission.py:140
-#: src/app/blueprints/api/routes/role.py:162
+#: src/app/blueprints/api/routes/role.py:159
 msgid "NOT_FOUND_LABEL"
 msgstr ""
 
@@ -185,11 +189,11 @@ msgstr ""
 
 #: src/app/blueprints/api/routes/customer.py:220
 #: src/app/blueprints/api/routes/employee.py:245
-#: src/app/blueprints/api/routes/invoice.py:232
+#: src/app/blueprints/api/routes/invoice.py:1019
 #: src/app/blueprints/api/routes/job.py:196
 #: src/app/blueprints/api/routes/medicine.py:203
 #: src/app/blueprints/api/routes/medicine_stock.py:205
-#: src/app/blueprints/api/routes/role.py:185
+#: src/app/blueprints/api/routes/role.py:182
 #: src/app/blueprints/api/routes/supplier.py:206
 #: src/app/blueprints/api/routes/user.py:184
 msgid "DELETED_SUCCESS_MSG"
@@ -201,10 +205,27 @@ msgstr ""
 
 #: src/app/blueprints/api/routes/customer.py:227
 #: src/app/blueprints/api/routes/employee.py:250
+#: src/app/blueprints/api/routes/invoice.py:302
+#: src/app/blueprints/api/routes/invoice.py:310
+#: src/app/blueprints/api/routes/invoice.py:347
+#: src/app/blueprints/api/routes/invoice.py:361
+#: src/app/blueprints/api/routes/invoice.py:374
+#: src/app/blueprints/api/routes/invoice.py:394
+#: src/app/blueprints/api/routes/invoice.py:407
+#: src/app/blueprints/api/routes/invoice.py:430
+#: src/app/blueprints/api/routes/invoice.py:457
+#: src/app/blueprints/api/routes/invoice.py:480
+#: src/app/blueprints/api/routes/invoice.py:493
+#: src/app/blueprints/api/routes/invoice.py:529
+#: src/app/blueprints/api/routes/invoice.py:551
+#: src/app/blueprints/api/routes/invoice.py:625
+#: src/app/blueprints/api/routes/invoice.py:685
+#: src/app/blueprints/api/routes/invoice.py:983
+#: src/app/blueprints/api/routes/invoice.py:993
 #: src/app/blueprints/api/routes/job.py:201
 #: src/app/blueprints/api/routes/medicine.py:209
 #: src/app/blueprints/api/routes/medicine_stock.py:212
-#: src/app/blueprints/api/routes/role.py:196
+#: src/app/blueprints/api/routes/role.py:193
 #: src/app/blueprints/api/routes/supplier.py:216
 #: src/app/blueprints/api/routes/user.py:190
 msgid "ERROR_ERROR"
@@ -278,40 +299,143 @@ msgstr ""
 msgid "EMPLOYEE_NOT_FOUND_MSG"
 msgstr ""
 
-#: src/app/blueprints/api/routes/invoice.py:22
+#: src/app/blueprints/api/routes/invoice.py:25
 msgid "INVOICE_NUMBER_LABEL"
 msgstr ""
 
-#: src/app/blueprints/api/routes/invoice.py:23 src/app/forms/invoice.py:21
+#: src/app/blueprints/api/routes/invoice.py:26 src/app/forms/invoice.py:29
+#: src/app/forms/invoice.py:123
 msgid "INVOICE_TYPE_LABEL"
 msgstr ""
 
-#: src/app/blueprints/api/routes/invoice.py:24
-#: src/app/templates/admin/components/forms/add/invoice.html:174
+#: src/app/blueprints/api/routes/invoice.py:27
+#: src/app/templates/admin/components/forms/fields/invoice.html:177
 msgid "TOTAL_AMOUNT_LABEL"
 msgstr ""
 
-#: src/app/blueprints/api/routes/invoice.py:25 src/app/forms/invoice.py:72
-#: src/app/templates/admin/components/forms/add/invoice.html:192
+#: src/app/blueprints/api/routes/invoice.py:28 src/app/forms/invoice.py:79
+#: src/app/templates/admin/components/forms/fields/invoice.html:193
 msgid "PAID_AMOUNT_LABEL"
 msgstr ""
 
-#: src/app/blueprints/api/routes/invoice.py:26
-#: src/app/templates/admin/components/forms/add/invoice.html:213
+#: src/app/blueprints/api/routes/invoice.py:29
+#: src/app/templates/admin/components/forms/fields/invoice.html:212
 msgid "REMAINING_AMOUNT_LABEL"
 msgstr ""
 
-#: src/app/blueprints/api/routes/invoice.py:27
+#: src/app/blueprints/api/routes/invoice.py:30
 msgid "DATE_LABEL"
 msgstr ""
 
-#: src/app/blueprints/api/routes/invoice.py:84
-#: src/app/blueprints/api/routes/invoice.py:116
-#: src/app/blueprints/api/routes/invoice.py:243
+#: src/app/blueprints/api/routes/invoice.py:87
+#: src/app/blueprints/api/routes/invoice.py:119
+#: src/app/blueprints/api/routes/invoice.py:686
+#: src/app/blueprints/api/routes/invoice.py:1030
 msgid "INVOICE_NOT_FOUND_MSG"
 msgstr ""
 
-#: src/app/blueprints/api/routes/invoice.py:233
+#: src/app/blueprints/api/routes/invoice.py:290
+msgid "INVOICE_ADDED_LABEL"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:292
+msgid "INVOICE_ADDED_SUCCESSFULLY_SUCCESS_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:311
+msgid "INVOICE_COULD_NOT_BE_CREATED_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:348
+#: src/app/blueprints/api/routes/invoice.py:795
+#: src/app/blueprints/api/routes/medicine.py:210
+msgid "MEDICINE_NOT_FOUND_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:363
+#: src/app/blueprints/api/routes/invoice.py:787
+msgid "QUANTITY_MUST_BE_GREATER_THAN_ZERO_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:376
+#: src/app/blueprints/api/routes/invoice.py:790
+msgid "UNIT_PRICE_CANNOT_BE_NEGATIVE_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:396
+#: src/app/blueprints/api/routes/invoice.py:459
+#: src/app/blueprints/api/routes/invoice.py:531
+#: src/app/blueprints/api/routes/invoice.py:826
+#: src/app/blueprints/api/routes/invoice.py:866
+#: src/app/blueprints/api/routes/invoice.py:886
+msgid "BATCH_NUMBER_IS_REQUIRED_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:409
+msgid "EXPIRY_DATE_IS_REQUIRED_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:432
+msgid "BATCH_NUMBER_ALREADY_EXISTS_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:482
+#: src/app/blueprints/api/routes/invoice.py:553
+msgid "BATCH_NOT_FOUND_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:495
+#: src/app/blueprints/api/routes/invoice.py:627
+#: src/app/blueprints/api/routes/invoice.py:855
+#: src/app/blueprints/api/routes/invoice.py:875 src/app/forms/invoice.py:297
+msgid "NOT_ENOUGH_STOCK_AVAILABLE_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:698 src/app/forms/invoice.py:112
+#: src/app/forms/invoice.py:115
+msgid "INVALID_INVOICE_ITEMS_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:710
+msgid "CANNOT_CHANGE_COMPLETED_INVOICE_TYPE_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:717
+msgid "CANNOT_CHANGE_COMPLETED_INVOICE_CUSTOMER_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:724
+msgid "CANNOT_CHANGE_COMPLETED_INVOICE_SUPPLIER_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:727
+msgid "COMPLETED_INVOICE_CANNOT_BE_DRAFT_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:734
+#: src/app/blueprints/api/routes/invoice.py:915
+#: src/app/blueprints/api/routes/invoice.py:972
+msgid "INVOICE_UPDATED_LABEL"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:735
+#: src/app/blueprints/api/routes/invoice.py:974
+msgid "INVOICE_UPDATED_SUCCESSFULLY_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:746
+msgid "INVALID_INVOICE_STATUS_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:917
+msgid "INVOICE_SAVED_AS_DRAFT_SUCCESSFULLY_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:994
+msgid "INVOICE_COULD_NOT_BE_UPDATED_MSG"
+msgstr ""
+
+#: src/app/blueprints/api/routes/invoice.py:1020
 msgid "INVOICE_DELETED_SUCCESSFULLY_MSG"
 msgstr ""
 
@@ -406,29 +530,28 @@ msgstr ""
 msgid "MEDICINE_DELETED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr ""
 
-#: src/app/blueprints/api/routes/medicine.py:210
-msgid "MEDICINE_NOT_FOUND_MSG"
-msgstr ""
-
 #: src/app/blueprints/api/routes/medicine_stock.py:18
-#: src/app/templates/admin/components/forms/add/invoice.html:127
+#: src/app/templates/admin/components/forms/fields/invoice.html:137
 msgid "MEDICINE_LABEL"
 msgstr ""
 
 #: src/app/blueprints/api/routes/medicine_stock.py:19
+#: src/app/forms/invoice.py:130 src/app/forms/invoice.py:152
 #: src/app/forms/medicine_stock.py:30
-#: src/app/templates/admin/components/forms/add/invoice.html:134
 msgid "BATCH_NUMBER_LABEL"
 msgstr ""
 
 #: src/app/blueprints/api/routes/medicine_stock.py:20
-#: src/app/forms/invoice.py:113 src/app/forms/medicine_stock.py:41
-#: src/app/templates/admin/components/forms/add/invoice.html:141
+#: src/app/forms/invoice.py:184 src/app/forms/medicine_stock.py:41
+#: src/app/templates/admin/autocomplete/medicine_stocks.html:38
+#: src/app/templates/admin/autocomplete/medicines.html:42
+#: src/app/templates/admin/components/forms/fields/invoice.html:144
 msgid "QUANTITY_LABEL"
 msgstr ""
 
 #: src/app/blueprints/api/routes/medicine_stock.py:21
-#: src/app/forms/medicine_stock.py:66
+#: src/app/forms/invoice.py:214 src/app/forms/medicine_stock.py:66
+#: src/app/templates/admin/autocomplete/medicine_stocks.html:45
 msgid "EXPIRY_DATE_LABEL"
 msgstr ""
 
@@ -461,7 +584,7 @@ msgstr ""
 msgid "MANAGEMENT_LABEL"
 msgstr ""
 
-#: src/app/blueprints/api/routes/navbar.py:70 src/app/forms/invoice.py:50
+#: src/app/blueprints/api/routes/navbar.py:70 src/app/forms/invoice.py:58
 msgid "CUSTOMER_LABEL"
 msgstr ""
 
@@ -507,35 +630,35 @@ msgstr ""
 msgid "ROLE_WITH_THE_GIVEN_ID_WAS_NOT_FOUND_MSG"
 msgstr ""
 
-#: src/app/blueprints/api/routes/role.py:159
+#: src/app/blueprints/api/routes/role.py:156
 msgid "ROLE_UPDATED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr ""
 
-#: src/app/blueprints/api/routes/role.py:163
+#: src/app/blueprints/api/routes/role.py:160
 msgid "ROLE_RECORD_NOT_FOUND_MSG"
 msgstr ""
 
-#: src/app/blueprints/api/routes/role.py:186
+#: src/app/blueprints/api/routes/role.py:183
 msgid "ROLE_HAS_BEEN_DELETED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr ""
 
-#: src/app/blueprints/api/routes/role.py:190
+#: src/app/blueprints/api/routes/role.py:187
 msgid "WARNING_WARNING"
 msgstr ""
 
-#: src/app/blueprints/api/routes/role.py:191
+#: src/app/blueprints/api/routes/role.py:188
 msgid "PRIMARY_ROLES_CANNOT_BE_DELETED_ERROR"
 msgstr ""
 
-#: src/app/blueprints/api/routes/role.py:197
+#: src/app/blueprints/api/routes/role.py:194
 msgid "ROLE_NOT_FOUND_MSG"
 msgstr ""
 
-#: src/app/blueprints/api/routes/role.py:238
+#: src/app/blueprints/api/routes/role.py:235
 msgid "ROLE_ADDED_SUCCESSFULLY_SUCCESS_MSG"
 msgstr ""
 
-#: src/app/blueprints/api/routes/role.py:239
+#: src/app/blueprints/api/routes/role.py:236
 msgid "ROLE_ADDED_LABEL"
 msgstr ""
 
@@ -622,9 +745,10 @@ msgstr ""
 
 #: src/app/forms/customer.py:14 src/app/forms/customer.py:57
 #: src/app/forms/employee.py:54 src/app/forms/employee.py:60
-#: src/app/forms/invoice.py:22 src/app/forms/invoice.py:68
-#: src/app/forms/invoice.py:99 src/app/forms/invoice.py:115
-#: src/app/forms/invoice.py:126 src/app/forms/invoice.py:154
+#: src/app/forms/invoice.py:30 src/app/forms/invoice.py:125
+#: src/app/forms/invoice.py:168 src/app/forms/invoice.py:186
+#: src/app/forms/invoice.py:197 src/app/forms/invoice.py:229
+#: src/app/forms/invoice.py:249 src/app/forms/invoice.py:304
 #: src/app/forms/job.py:12 src/app/forms/job.py:29 src/app/forms/job.py:38
 #: src/app/forms/job.py:50 src/app/forms/login.py:12 src/app/forms/login.py:17
 #: src/app/forms/medicine.py:26 src/app/forms/medicine.py:71
@@ -684,7 +808,7 @@ msgstr ""
 msgid "VALUE_MUST_BE_AT_LEAST_MIN_S_MSG"
 msgstr ""
 
-#: src/app/forms/employee.py:47 src/app/forms/invoice.py:92
+#: src/app/forms/employee.py:47 src/app/forms/invoice.py:104
 #: src/app/forms/medicine.py:65 src/app/forms/medicine_stock.py:71
 #: src/app/forms/supplier.py:28 src/app/forms/user.py:93
 msgid "ADD_LABEL"
@@ -704,73 +828,95 @@ msgstr ""
 msgid "PASSWORD_LABEL"
 msgstr ""
 
-#: src/app/forms/employee.py:64 src/app/forms/invoice.py:157
+#: src/app/forms/employee.py:64 src/app/forms/invoice.py:307
 #: src/app/forms/medicine.py:82 src/app/forms/medicine_stock.py:81
 #: src/app/forms/profile.py:10 src/app/forms/supplier.py:38
 #: src/app/forms/user.py:104
 msgid "UPDATE_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:24
+#: src/app/forms/invoice.py:32
 msgid "PURCHASE_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:25
+#: src/app/forms/invoice.py:33
 msgid "SALE_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:26
+#: src/app/forms/invoice.py:34
 msgid "PURCHASE_RETURN_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:27
+#: src/app/forms/invoice.py:35
 msgid "SALE_RETURN_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:33
+#: src/app/forms/invoice.py:41
 msgid "SUPPLIER_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:67
-#: src/app/templates/admin/components/forms/add/invoice.html:82
+#: src/app/forms/invoice.py:75
+#: src/app/templates/admin/components/forms/fields/invoice.html:88
 msgid "INVOICE_ITEMS_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:77
+#: src/app/forms/invoice.py:84
 msgid "PAYMENT_METHOD_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:79
+#: src/app/forms/invoice.py:86
 msgid "CASH_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:85
+#: src/app/forms/invoice.py:92
 msgid "NOTE_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:97 src/app/forms/medicine_stock.py:17
+#: src/app/forms/invoice.py:100
+msgid "SAVE_AS_DRAFT_LABEL"
+msgstr ""
+
+#: src/app/forms/invoice.py:118
+msgid "INVOICE_MUST_HAVE_AT_LEAST_ONE_ITEM_MSG"
+msgstr ""
+
+#: src/app/forms/invoice.py:134 src/app/forms/invoice.py:157
+#: src/app/forms/medicine.py:14 src/app/forms/medicine.py:51
+#: src/app/forms/medicine.py:78 src/app/forms/medicine_stock.py:35
+msgid "THIS_FIELD_CANNOT_EXCEED_100_CHARACTERS_MSG"
+msgstr ""
+
+#: src/app/forms/invoice.py:166 src/app/forms/medicine_stock.py:17
 msgid "MEDICINE_ID_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:118 src/app/forms/invoice.py:129
+#: src/app/forms/invoice.py:189 src/app/forms/invoice.py:200
 #: src/app/forms/medicine_stock.py:46
 msgid "VALUE_MUST_BE_GREATER_THAN_ZERO_MSG"
 msgstr ""
 
-#: src/app/forms/invoice.py:124
-#: src/app/templates/admin/components/forms/add/invoice.html:148
+#: src/app/forms/invoice.py:195
+#: src/app/templates/admin/components/forms/fields/invoice.html:151
 msgid "UNIT_PRICE_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:134
+#: src/app/forms/invoice.py:206 src/app/forms/medicine_stock.py:59
+msgid "SELLING_PRICE_LABEL"
+msgstr ""
+
+#: src/app/forms/invoice.py:222
 msgid "ADD_INVOICE_ITEM_LABEL"
 msgstr ""
 
-#: src/app/forms/invoice.py:147
-msgid "NOT_ENOUGH_STOCK_AVAILABLE_MSG"
+#: src/app/forms/invoice.py:242 src/app/forms/invoice.py:262
+msgid "BATCH_NUMBER_NOT_FOUND_MSG"
 msgstr ""
 
-#: src/app/forms/invoice.py:153
+#: src/app/forms/invoice.py:268
+msgid "INVALID_INVOICE_TYPE_MSG"
+msgstr ""
+
+#: src/app/forms/invoice.py:303
 msgid "INVOICE_ID_LABEL"
 msgstr ""
 
@@ -807,11 +953,6 @@ msgstr ""
 msgid "LOG_IN_LABEL"
 msgstr ""
 
-#: src/app/forms/medicine.py:14 src/app/forms/medicine.py:51
-#: src/app/forms/medicine.py:78 src/app/forms/medicine_stock.py:35
-msgid "THIS_FIELD_CANNOT_EXCEED_100_CHARACTERS_MSG"
-msgstr ""
-
 #: src/app/forms/medicine.py:18
 msgid "BARCODE_ALREADY_EXISTS_MSG"
 msgstr ""
@@ -830,10 +971,6 @@ msgstr ""
 
 #: src/app/forms/medicine_stock.py:52
 msgid "PURCHASE_PRICE_LABEL"
-msgstr ""
-
-#: src/app/forms/medicine_stock.py:59
-msgid "SELLING_PRICE_LABEL"
 msgstr ""
 
 #: src/app/forms/permission.py:10
@@ -925,6 +1062,10 @@ msgstr ""
 msgid "DUPLICATE_ENTRY_FOR_PHONE_NUMBER_MSG"
 msgstr ""
 
+#: src/app/templates/admin/autocomplete/medicines.html:29
+msgid "STOCKS_LABEL"
+msgstr ""
+
 #: src/app/templates/admin/components/aside.html:87
 msgid "LOGOUT_LABEL"
 msgstr ""
@@ -1007,20 +1148,32 @@ msgstr ""
 msgid "WEEEKLY_WEBSITE_VIEWS_MSG"
 msgstr ""
 
-#: src/app/templates/admin/components/forms/add/invoice.html:14
+#: src/app/templates/admin/components/forms/fields/invoice.html:7
 msgid "INVOICE_INFORMATION_LABEL"
 msgstr ""
 
-#: src/app/templates/admin/components/forms/add/invoice.html:16
+#: src/app/templates/admin/components/forms/fields/invoice.html:9
 msgid "INVOICE_INFORMATION_DESC"
 msgstr ""
 
-#: src/app/templates/admin/components/forms/add/invoice.html:86
+#: src/app/templates/admin/components/forms/fields/invoice.html:92
 msgid "ADD_MEDICINES_TO_INVOICE_DESC"
 msgstr ""
 
-#: src/app/templates/admin/components/forms/add/invoice.html:155
+#: src/app/templates/admin/components/forms/fields/invoice.html:158
 msgid "TOTAL_LABEL"
+msgstr ""
+
+#: src/app/templates/admin/components/forms/fields/invoice.html:168
+msgid "NO_DATA_FOUND_MSG"
+msgstr ""
+
+#: src/app/templates/admin/components/forms/fields/invoice.html:230
+msgid "PREVIOUS_DEBT_LABEL"
+msgstr ""
+
+#: src/app/templates/admin/components/forms/fields/invoice.html:249
+msgid "TOTAL_DEBT_LABEL"
 msgstr ""
 
 #: src/app/templates/admin/components/modals/add/customer.html:13
@@ -1039,20 +1192,25 @@ msgstr ""
 msgid "FILL_IN_THE_EMPLOYEE_S_DETAILS_BELOW_TO_CREATE_A_NEW_EMPLOYEE_MSG"
 msgstr ""
 
-#: src/app/templates/admin/components/modals/add/invoice-item.html:13
+#: src/app/templates/admin/components/modals/add/invoice-item.html:14
 msgid "ADD_NEW_INVOICE_ITEM_MSG"
 msgstr ""
 
-#: src/app/templates/admin/components/modals/add/invoice-item.html:15
+#: src/app/templates/admin/components/modals/add/invoice-item.html:16
 msgid "CREATE_NEW_INVOICE_ITEM_DESCRIPTION_MSG"
 msgstr ""
 
-#: src/app/templates/admin/components/modals/add/invoice.html:14
+#: src/app/templates/admin/components/modals/add/invoice.html:19
 msgid "ADD_NEW_INVOICE_MSG"
 msgstr ""
 
-#: src/app/templates/admin/components/modals/add/invoice.html:17
+#: src/app/templates/admin/components/modals/add/invoice.html:26
 msgid "CREATE_NEW_INVOICE_DESCRIPTION_MSG"
+msgstr ""
+
+#: src/app/templates/admin/components/modals/add/invoice.html:34
+#: src/app/templates/admin/components/modals/update/invoice.html:33
+msgid "CLOSE_LABEL"
 msgstr ""
 
 #: src/app/templates/admin/components/modals/add/job.html:14
@@ -1119,11 +1277,11 @@ msgstr ""
 msgid "UPDATE_EMPLOYEE_DESCRIPTION_MODAL_MSG"
 msgstr ""
 
-#: src/app/templates/admin/components/modals/update/invoice.html:13
+#: src/app/templates/admin/components/modals/update/invoice.html:18
 msgid "UPDATE_INVOICE_INFORMATION_MSG"
 msgstr ""
 
-#: src/app/templates/admin/components/modals/update/invoice.html:16
+#: src/app/templates/admin/components/modals/update/invoice.html:25
 msgid "UPDATE_INVOICE_DESCRIPTION_MSG"
 msgstr ""
 
@@ -1237,6 +1395,22 @@ msgstr ""
 
 #: src/app/templates/admin/components/tables/header/header.html:32
 msgid "SEARCH_PLACEHOLDER"
+msgstr ""
+
+#: src/app/templates/admin/components/tables/td/invoice_number.html:16
+msgid "ITEMS_LABEL"
+msgstr ""
+
+#: src/app/templates/admin/components/tables/td/invoice_number.html:18
+msgid "COMPLETED_LABEL"
+msgstr ""
+
+#: src/app/templates/admin/components/tables/td/invoice_number.html:19
+msgid "DRAFT_LABEL"
+msgstr ""
+
+#: src/app/templates/admin/components/tables/td/invoice_number.html:20
+msgid "CANCELLED_LABEL"
 msgstr ""
 
 #: src/app/templates/admin/components/tables/td/is_active.html:4

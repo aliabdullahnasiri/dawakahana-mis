@@ -19,7 +19,7 @@ cols: List[Tuple[ColumnID, ColumnName]] = [
     (ColumnID("company_name"), ColumnName(g("COMPANY_NAME_LABEL"))),
     (ColumnID("phone"), ColumnName(g("PHONE_LABEL"))),
     (ColumnID("email"), ColumnName(g("EMAIL_LABEL"))),
-    (ColumnID("temp_is_active"), ColumnName(g("STATUS_LABEL"))),
+    (ColumnID("is_active"), ColumnName(g("STATUS_LABEL"))),
 ]
 
 

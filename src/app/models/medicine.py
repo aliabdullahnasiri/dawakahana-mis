@@ -1,3 +1,5 @@
+from sqlalchemy import func
+
 from app.extensions.db import db
 from app.models.base import Base
 from app.models.medicine_stock import MedicineStock
@@ -36,6 +38,10 @@ class Medicine(Base):
         }
 
     @property
+    def stock_count(self):
+        return self.stocks.count()
+
+    @property
     def unit_price(self):
         stock = (
             self.stocks.filter(MedicineStock.selling_price.isnot(None))
@@ -45,6 +51,18 @@ class Medicine(Base):
 
         if stock:
             return float(stock.selling_price)
+
+    @property
+    def quantity(self):
+        return (
+            self.stocks.with_entities(
+                func.coalesce(
+                    func.sum(MedicineStock.quantity),
+                    0,
+                )
+            ).scalar()
+            or 0
+        )
 
     def __repr__(self):
         return f"<Medicine name='{self.name!r}' barcode='{self.barcode!r}'>"

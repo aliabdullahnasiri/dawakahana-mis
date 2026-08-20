@@ -12,7 +12,7 @@ from app.cls import ColumnID, ColumnName
 from app.extensions.db import db
 from app.forms.invoice import AddInvoiceForm, AddInvoiceItemForm, UpdateInvoiceForm
 from app.func import render_td
-from app.models.invoice import Invoice, InvoiceType
+from app.models.invoice import Invoice, InvoiceStatus, InvoiceType
 from app.models.invoice_item import InvoiceItem
 from app.models.medicine import Medicine
 from app.models.medicine_stock import MedicineStock
@@ -23,11 +23,11 @@ from app.models.user import permission_required
 cols: List[Tuple[ColumnID, ColumnName]] = [
     (ColumnID("id"), ColumnName(g("ID_LABEL"))),
     (ColumnID("invoice_number"), ColumnName(g("INVOICE_NUMBER_LABEL"))),
-    (ColumnID("display_invoice_type"), ColumnName(g("INVOICE_TYPE_LABEL"))),
-    (ColumnID("total_amount"), ColumnName(g("TOTAL_AMOUNT_LABEL"))),
-    (ColumnID("paid_amount"), ColumnName(g("PAID_AMOUNT_LABEL"))),
-    (ColumnID("remaining_amount"), ColumnName(g("REMAINING_AMOUNT_LABEL"))),
-    (ColumnID("invoice_date"), ColumnName(g("DATE_LABEL"))),
+    (ColumnID("invoice_type"), ColumnName(g("INVOICE_TYPE_LABEL"))),
+    (ColumnID("display_total_amount"), ColumnName(g("TOTAL_AMOUNT_LABEL"))),
+    (ColumnID("display_settled_amount"), ColumnName(g("SETTLED_AMOUNT_LABEL"))),
+    (ColumnID("display_remaining_amount"), ColumnName(g("REMAINING_AMOUNT_LABEL"))),
+    (ColumnID("display_invoice_date"), ColumnName(g("DATE_LABEL"))),
 ]
 
 
@@ -147,6 +147,9 @@ def add_invoice():
             invoice.invoice_type = invoice_type
             invoice.invoice_date = date.today()
             invoice.created_by = current_user.id
+            invoice.status = (
+                InvoiceStatus.DRAFT if form.is_draft.data else InvoiceStatus.COMPLETED
+            )
 
             if invoice_type in (InvoiceType.PURCHASE, InvoiceType.PURCHASE_RETURN):
                 invoice.supplier_id = supplier_id
@@ -172,243 +175,123 @@ def add_invoice():
 
                 total_amount += item_total
 
-                match invoice_type:
-                    case InvoiceType.PURCHASE:
-                        batch_number = item.get("purchase_batch_number")
-                        expiry_date = item.get("expiry_date")
+                invoice_item = InvoiceItem()
 
-                        stock = MedicineStock()
+                invoice_item.invoice_id = invoice.id
+                invoice_item.medicine_id = medicine.id
+                invoice_item.quantity = quantity
+                invoice_item.unit_price = unit_price
+                invoice_item.total_price = item_total
 
-                        stock.medicine_id = getattr(medicine, "id")
-                        stock.batch_number = batch_number
-                        stock.quantity = quantity
-                        stock.purchase_price = unit_price
-                        stock.expiry_date = expiry_date
+                if not form.is_draft.data:
+                    match invoice_type:
+                        case InvoiceType.PURCHASE:
+                            batch_number = item.get("purchase_batch_number")
+                            expiry_date = item.get("expiry_date")
 
-                        db.session.add(stock)
-                        db.session.flush()
-
-                        invoice_item = InvoiceItem()
-
-                        invoice_item.invoice_id = invoice.id
-                        invoice_item.medicine_id = medicine.id
-                        invoice_item.quantity = quantity
-                        invoice_item.unit_price = unit_price
-                        invoice_item.total_price = item_total
-                        invoice_item.batch_number = batch_number
-
-                        db.session.add(invoice_item)
-
-                    case InvoiceType.SALE:
-                        stock = (
-                            MedicineStock.query.filter(
-                                MedicineStock.medicine_id == medicine.id,
-                                MedicineStock.quantity >= quantity,
-                                MedicineStock.batch_number.isnot(None),
-                            )
-                            .order_by(MedicineStock.expiry_date.asc())
-                            .first()
-                        )
-
-                        if stock:
-                            stock.quantity -= quantity
-
-                            invoice_item = InvoiceItem()
-
-                            invoice_item.invoice_id = invoice.id
-                            invoice_item.medicine_id = medicine.id
-                            invoice_item.quantity = quantity
-                            invoice_item.unit_price = unit_price
-                            invoice_item.total_price = item_total
-                            invoice_item.batch_number = stock.batch_number
-
-                            db.session.add(invoice_item)
-
-                    case InvoiceType.PURCHASE_RETURN:
-                        stock = MedicineStock.query.filter(
-                            MedicineStock.medicine_id == medicine.id,
-                            MedicineStock.quantity >= quantity,
-                            MedicineStock.batch_number
-                            == item.get("return_batch_number"),
-                        ).first()
-
-                        if stock:
-                            stock.quantity -= quantity
-
-                            invoice_item = InvoiceItem()
-
-                            invoice_item.invoice_id = invoice.id
-                            invoice_item.medicine_id = medicine.id
-                            invoice_item.quantity = quantity
-                            invoice_item.unit_price = unit_price
-                            invoice_item.total_price = item_total
-                            invoice_item.batch_number = stock.batch_number
-
-                            db.session.add(invoice_item)
-
-                    case InvoiceType.SALE_RETURN:
-                        batch_number = item.get("return_batch_number")
-
-                        stock = MedicineStock.query.filter(
-                            MedicineStock.medicine_id == medicine.id,
-                            MedicineStock.batch_number == batch_number,
-                        ).first()
-
-                        if stock:
-                            stock.quantity += quantity
-                        else:
                             stock = MedicineStock()
 
-                            stock.medicine_id = medicine.id
+                            stock.medicine_id = getattr(medicine, "id")
                             stock.batch_number = batch_number
                             stock.quantity = quantity
                             stock.purchase_price = unit_price
+                            stock.expiry_date = expiry_date
 
                             db.session.add(stock)
                             db.session.flush()
 
-                            invoice_item = InvoiceItem()
-
-                            invoice_item.invoice_id = invoice.id
-                            invoice_item.medicine_id = medicine.id
-                            invoice_item.quantity = quantity
-                            invoice_item.unit_price = unit_price
-                            invoice_item.total_price = item_total
                             invoice_item.batch_number = batch_number
 
-                            db.session.add(invoice_item)
+                        case InvoiceType.SALE:
+                            if stock := (
+                                MedicineStock.query.filter(
+                                    MedicineStock.medicine_id == medicine.id,
+                                    MedicineStock.quantity >= quantity,
+                                    MedicineStock.batch_number.isnot(None),
+                                )
+                                .order_by(MedicineStock.expiry_date.asc())
+                                .first()
+                            ):
+                                stock.quantity -= quantity
+                                invoice_item.batch_number = stock.batch_number
 
-            paid_amount = Decimal(str(form.paid_amount.data or 0))
+                        case InvoiceType.PURCHASE_RETURN:
+                            if stock := MedicineStock.query.filter(
+                                MedicineStock.medicine_id == medicine.id,
+                                MedicineStock.quantity >= quantity,
+                                MedicineStock.batch_number
+                                == item.get("return_batch_number"),
+                            ).first():
+                                stock.quantity -= quantity
+                                invoice_item.batch_number = stock.batch_number
 
-            match invoice_type:
-                case InvoiceType.PURCHASE:
-                    transaction = Transaction()
+                        case InvoiceType.SALE_RETURN:
+                            batch_number = item.get("return_batch_number")
 
-                    transaction.supplier_id = supplier_id
-                    transaction.invoice_id = invoice.id
-                    transaction.transaction_type = TransactionType.PURCHASE
-                    transaction.created_by = current_user.id
-                    transaction.amount = total_amount
+                            stock = MedicineStock.query.filter(
+                                MedicineStock.medicine_id == medicine.id,
+                                MedicineStock.batch_number == batch_number,
+                            ).first()
 
-                    db.session.add(transaction)
+                            if stock:
+                                stock.quantity += quantity
+                            else:
+                                stock = MedicineStock()
 
-                case InvoiceType.SALE:
-                    transaction = Transaction()
+                                stock.medicine_id = medicine.id
+                                stock.batch_number = batch_number
+                                stock.quantity = quantity
+                                stock.purchase_price = unit_price
 
-                    transaction.customer_id = customer_id
-                    transaction.invoice_id = invoice.id
-                    transaction.transaction_type = TransactionType.SALE
-                    transaction.created_by = current_user.id
-                    transaction.amount = total_amount
+                                db.session.add(stock)
+                                db.session.flush()
 
-                    db.session.add(transaction)
-
-                case InvoiceType.PURCHASE_RETURN:
-                    transaction = Transaction()
-
-                    transaction.supplier_id = supplier_id
-                    transaction.invoice_id = invoice.id
-                    transaction.transaction_type = TransactionType.PURCHASE_RETURN
-                    transaction.amount = total_amount
-                    transaction.created_by = current_user.id
-
-                    db.session.add(transaction)
-                case InvoiceType.SALE_RETURN:
-                    transaction = Transaction()
-
-                    transaction.customer_id = customer_id
-                    transaction.invoice_id = invoice.id
-                    transaction.transaction_type = TransactionType.SALE_RETURN
-                    transaction.amount = total_amount
-                    transaction.created_by = current_user.id
-
-                    db.session.add(transaction)
-
-            if paid_amount > 0:
-
-                def allocate_payment(
-                    invoice: Invoice,
-                    total_amount: Decimal,
-                    customer_id: int | None = None,
-                    supplier_id: int | None = None,
-                    processed_invoice_ids: set[int] | None = None,
-                ):
-                    if processed_invoice_ids is None:
-                        processed_invoice_ids = set()
-
-                    if total_amount <= 0:
-                        return
-
-                    if invoice.id in processed_invoice_ids:
-                        return
-
-                    processed_invoice_ids.add(invoice.id)
-
-                    payment_amount = min(
-                        total_amount,
-                        invoice.remaining_amount,
+                            invoice_item.batch_number = batch_number
+                else:
+                    invoice_item.batch_number = (
+                        item.get("batch_number")
+                        or item.get("purchase_batch_number")
+                        or item.get("return_batch_number")
                     )
 
-                    if payment_amount > 0:
-                        transaction = Transaction()
-                        transaction.invoice_id = invoice.id
-                        transaction.transaction_type = TransactionType.PAYMENT
-                        transaction.amount = payment_amount
-                        transaction.created_by = current_user.id
+                db.session.add(invoice_item)
 
-                        if customer_id is not None:
-                            transaction.customer_id = customer_id
-                        elif supplier_id is not None:
-                            transaction.supplier_id = supplier_id
+            if not form.is_draft.data:
+                paid_amount = Decimal(str(form.paid_amount.data or 0))
+
+                transaction = Transaction()
+
+                transaction.invoice_id = invoice.id
+                transaction.created_by = current_user.id
+                transaction.amount = total_amount
+
+                match invoice_type:
+                    case InvoiceType.PURCHASE:
+                        transaction.supplier_id = supplier_id
+                        transaction.transaction_type = TransactionType.PURCHASE
+
+                    case InvoiceType.SALE:
+                        transaction.customer_id = customer_id
+                        transaction.transaction_type = TransactionType.SALE
+
+                    case InvoiceType.PURCHASE_RETURN:
+                        transaction.supplier_id = supplier_id
+                        transaction.transaction_type = TransactionType.PURCHASE_RETURN
 
                         db.session.add(transaction)
+                    case InvoiceType.SALE_RETURN:
+                        transaction.customer_id = customer_id
+                        transaction.transaction_type = TransactionType.SALE_RETURN
 
-                    remaining_payment = total_amount - payment_amount
+                invoice.settle_invoice(
+                    invoice,
+                    paid_amount,
+                    customer_id,
+                    supplier_id,
+                    current_user.id,
+                )
 
-                    if remaining_payment <= 0:
-                        return
-
-                    if supplier_id is not None:
-                        previous_invoice = (
-                            Invoice.query.filter(
-                                Invoice.supplier_id == supplier_id,
-                                Invoice.invoice_type == InvoiceType.PURCHASE,
-                                ~Invoice.id.in_(processed_invoice_ids),
-                            )
-                            .order_by(
-                                Invoice.invoice_date.asc(),
-                                Invoice.id.asc(),
-                            )
-                            .first()
-                        )
-
-                    elif customer_id is not None:
-                        previous_invoice = (
-                            Invoice.query.filter(
-                                Invoice.customer_id == customer_id,
-                                Invoice.invoice_type == InvoiceType.SALE,
-                                ~Invoice.id.in_(processed_invoice_ids),
-                            )
-                            .order_by(
-                                Invoice.invoice_date.asc(),
-                                Invoice.id.asc(),
-                            )
-                            .first()
-                        )
-
-                    else:
-                        return
-
-                    if previous_invoice:
-                        return allocate_payment(
-                            previous_invoice,
-                            remaining_payment,
-                            customer_id,
-                            supplier_id,
-                            processed_invoice_ids,
-                        )
-
-                allocate_payment(invoice, paid_amount, customer_id, supplier_id)
+                db.session.add(transaction)
 
             db.session.commit()
 
@@ -427,7 +310,8 @@ def add_invoice():
             response["message"] = str(e)
             response["category"] = "error"
 
-        except Exception:
+        except Exception as err:
+            print(err)
             db.session.rollback()
 
             response["title"] = g("ERROR_ERROR")
@@ -451,46 +335,292 @@ def add_invoice_item():
 
     form = AddInvoiceItemForm()
 
-    if form.validate_on_submit():
-
-        medicine_id = form.medicine_id.data
-        quantity = form.quantity.data
-        unit_price = form.unit_price.data
-
-        if isinstance(quantity, int) and isinstance(unit_price, int):
-            if medicine := Medicine.query.get(medicine_id):
-                # Get stock with nearest expiry first
-                stock = (
-                    MedicineStock.query.filter(
-                        MedicineStock.medicine_id == medicine_id,
-                        MedicineStock.quantity > quantity,
-                        MedicineStock.batch_number.isnot(None),
-                    )
-                    .order_by(MedicineStock.expiry_date.asc())
-                    .first()
-                )
-
-                dct = {}
-
-                if stock:
-                    dct["batch_number"] = stock.batch_number
-
-                response["data"] = {
-                    "medicine": render_template(
-                        "admin/components/tables/td/medicine.html",
-                        medicine=medicine,
-                    ),
-                    "medicine_id": medicine.id,
-                    "quantity": quantity,
-                    "unit_price": float(unit_price),
-                    "total_price": float(quantity * unit_price),
-                    **dct,
-                }
-
-                response["category"] = "success"
-
-    else:
+    if not form.validate_on_submit():
         response["errors"] = form.errors
+
+        return Response(
+            json.dumps(response),
+            status=200,
+            headers={"Content-Type": "application/json"},
+        )
+
+    medicine_id = form.medicine_id.data
+    quantity = form.quantity.data
+    unit_price = form.unit_price.data
+    invoice_type = InvoiceType(form.invoice_type.data)
+
+    medicine = Medicine.query.get(medicine_id)
+
+    if not medicine:
+        response["title"] = g("ERROR_ERROR")
+        response["message"] = g("MEDICINE_NOT_FOUND_MSG")
+        response["category"] = "error"
+
+        return Response(
+            json.dumps(response),
+            status=404,
+            headers={"Content-Type": "application/json"},
+        )
+
+    quantity = int(quantity or 0)
+    unit_price = Decimal(str(unit_price or 0))
+
+    if quantity <= 0:
+        response["title"] = g("ERROR_ERROR")
+        response["message"] = g("QUANTITY_MUST_BE_GREATER_THAN_ZERO_MSG")
+        response["category"] = "error"
+
+        return Response(
+            json.dumps(response),
+            status=422,
+            headers={"Content-Type": "application/json"},
+        )
+
+    if unit_price < 0:
+        response["title"] = g("ERROR_ERROR")
+        response["message"] = g("UNIT_PRICE_CANNOT_BE_NEGATIVE_MSG")
+        response["category"] = "error"
+
+        return Response(
+            json.dumps(response),
+            status=422,
+            headers={"Content-Type": "application/json"},
+        )
+
+    items = []
+
+    if invoice_type == InvoiceType.PURCHASE:
+
+        batch_number = form.purchase_batch_number.data
+        expiry_date = form.expiry_date.data
+
+        if not batch_number:
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("BATCH_NUMBER_IS_REQUIRED_MSG")
+            response["category"] = "error"
+
+            return Response(
+                json.dumps(response),
+                status=422,
+                headers={"Content-Type": "application/json"},
+            )
+
+        if not expiry_date:
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("EXPIRY_DATE_IS_REQUIRED_MSG")
+            response["category"] = "error"
+
+            return Response(
+                json.dumps(response),
+                status=422,
+                headers={"Content-Type": "application/json"},
+            )
+
+        # Check whether this exact batch already exists.
+        existing_stock = MedicineStock.query.filter(
+            MedicineStock.medicine_id == medicine_id,
+            MedicineStock.batch_number == batch_number,
+        ).first()
+
+        if existing_stock:
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("BATCH_NUMBER_ALREADY_EXISTS_MSG")
+            response["category"] = "error"
+
+            return Response(
+                json.dumps(response),
+                status=422,
+                headers={"Content-Type": "application/json"},
+            )
+
+        items.append(
+            {
+                "stock_id": None,
+                "batch_number": batch_number,
+                "quantity": quantity,
+                "available_quantity": 0,
+                "expiry_date": expiry_date.isoformat(),
+            }
+        )
+
+    elif invoice_type == InvoiceType.PURCHASE_RETURN:
+
+        batch_number = form.return_batch_number.data
+
+        if not batch_number:
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("BATCH_NUMBER_IS_REQUIRED_MSG")
+            response["category"] = "error"
+
+            return Response(
+                json.dumps(response),
+                status=422,
+                headers={"Content-Type": "application/json"},
+            )
+
+        stock = MedicineStock.query.filter(
+            MedicineStock.medicine_id == medicine_id,
+            MedicineStock.batch_number == batch_number,
+            MedicineStock.quantity > 0,
+        ).first()
+
+        if not stock:
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("BATCH_NOT_FOUND_MSG")
+            response["category"] = "error"
+
+            return Response(
+                json.dumps(response),
+                status=422,
+                headers={"Content-Type": "application/json"},
+            )
+
+        if stock.quantity < quantity:
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("NOT_ENOUGH_STOCK_AVAILABLE_MSG")
+            response["category"] = "error"
+
+            response["data"] = {
+                "requested_quantity": quantity,
+                "available_quantity": stock.quantity,
+            }
+
+            return Response(
+                json.dumps(response),
+                status=422,
+                headers={"Content-Type": "application/json"},
+            )
+
+        items.append(
+            {
+                "stock_id": stock.id,
+                "batch_number": stock.batch_number,
+                "quantity": quantity,
+                "available_quantity": stock.quantity,
+                "expiry_date": (
+                    stock.expiry_date.isoformat() if stock.expiry_date else None
+                ),
+            }
+        )
+
+    elif invoice_type == InvoiceType.SALE_RETURN:
+
+        batch_number = form.return_batch_number.data
+
+        if not batch_number:
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("BATCH_NUMBER_IS_REQUIRED_MSG")
+            response["category"] = "error"
+
+            return Response(
+                json.dumps(response),
+                status=422,
+                headers={"Content-Type": "application/json"},
+            )
+
+        stock = MedicineStock.query.filter(
+            MedicineStock.medicine_id == medicine_id,
+            MedicineStock.batch_number == batch_number,
+        ).first()
+
+        if not stock:
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("BATCH_NOT_FOUND_MSG")
+            response["category"] = "error"
+
+            return Response(
+                json.dumps(response),
+                status=422,
+                headers={"Content-Type": "application/json"},
+            )
+
+        items.append(
+            {
+                "stock_id": stock.id,
+                "batch_number": stock.batch_number,
+                "quantity": quantity,
+                "available_quantity": stock.quantity,
+                "expiry_date": (
+                    stock.expiry_date.isoformat() if stock.expiry_date else None
+                ),
+            }
+        )
+
+    elif invoice_type == InvoiceType.SALE:
+
+        stocks = (
+            MedicineStock.query.filter(
+                MedicineStock.medicine_id == medicine_id,
+                MedicineStock.quantity > 0,
+                MedicineStock.batch_number.isnot(None),
+            )
+            .order_by(
+                MedicineStock.expiry_date.asc(),
+                MedicineStock.id.asc(),
+            )
+            .all()
+        )
+
+        remaining_quantity = quantity
+
+        for stock in stocks:
+
+            if remaining_quantity <= 0:
+                break
+
+            allocated_quantity = min(
+                remaining_quantity,
+                stock.quantity,
+            )
+
+            items.append(
+                {
+                    "stock_id": stock.id,
+                    "batch_number": stock.batch_number,
+                    "quantity": allocated_quantity,
+                    "available_quantity": stock.quantity,
+                    "expiry_date": (
+                        stock.expiry_date.isoformat() if stock.expiry_date else None
+                    ),
+                }
+            )
+
+            remaining_quantity -= allocated_quantity
+
+        if remaining_quantity > 0:
+
+            available_quantity = quantity - remaining_quantity
+
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("NOT_ENOUGH_STOCK_AVAILABLE_MSG")
+            response["category"] = "error"
+
+            response["data"] = {
+                "requested_quantity": quantity,
+                "available_quantity": available_quantity,
+            }
+
+            return Response(
+                json.dumps(response),
+                status=422,
+                headers={"Content-Type": "application/json"},
+            )
+
+    total_price = Decimal(quantity) * unit_price
+
+    response["data"] = {
+        "medicine": render_template(
+            "admin/components/tables/td/medicine.html",
+            medicine=medicine,
+        ),
+        "medicine_id": medicine.id,
+        "quantity": quantity,
+        "unit_price": float(unit_price),
+        "total_price": float(total_price),
+        "items": items,
+    }
+
+    response["category"] = "success"
 
     return Response(
         json.dumps(response),
@@ -507,16 +637,339 @@ def update_invoice():
 
     response: Dict = {}
 
-    if form.validate_on_submit():
-        pass
-
-    else:
-
+    if not form.validate_on_submit():
         response["errors"] = form.errors
+
+        return Response(
+            json.dumps(response),
+            status=200,
+            headers={"Content-Type": "application/json"},
+        )
+
+    try:
+        invoice = Invoice.query.get(form.id.data)
+
+        if not invoice:
+            response["title"] = g("ERROR_ERROR")
+            response["message"] = g("INVOICE_NOT_FOUND_MSG")
+            response["category"] = "error"
+
+            return Response(
+                json.dumps(response),
+                status=404,
+                headers={"Content-Type": "application/json"},
+            )
+
+        items = json.loads(form.items.data or "[]")
+
+        if not isinstance(items, list):
+            raise ValueError(g("INVALID_INVOICE_ITEMS_MSG"))
+
+        supplier_id = form.supplier_id.data
+        customer_id = form.customer_id.data
+
+        invoice_type = InvoiceType(form.invoice_type.data)
+
+        is_draft = bool(form.is_draft.data)
+
+        if invoice.status == InvoiceStatus.COMPLETED:
+
+            if invoice_type != invoice.invoice_type:
+                raise ValueError(g("CANNOT_CHANGE_COMPLETED_INVOICE_TYPE_MSG"))
+
+            if invoice_type in (
+                InvoiceType.SALE,
+                InvoiceType.SALE_RETURN,
+            ):
+                if customer_id != invoice.customer_id:
+                    raise ValueError(g("CANNOT_CHANGE_COMPLETED_INVOICE_CUSTOMER_MSG"))
+
+            elif invoice_type in (
+                InvoiceType.PURCHASE,
+                InvoiceType.PURCHASE_RETURN,
+            ):
+                if supplier_id != invoice.supplier_id:
+                    raise ValueError(g("CANNOT_CHANGE_COMPLETED_INVOICE_SUPPLIER_MSG"))
+
+            if is_draft:
+                raise ValueError(g("COMPLETED_INVOICE_CANNOT_BE_DRAFT_MSG"))
+
+            if hasattr(form, "note") and hasattr(invoice, "note"):
+                invoice.note = form.note.data
+
+            db.session.commit()
+
+            response["title"] = g("INVOICE_UPDATED_LABEL")
+            response["message"] = g("INVOICE_UPDATED_SUCCESSFULLY_MSG")
+            response["category"] = "success"
+            response["id"] = invoice.id
+
+            return Response(
+                json.dumps(response),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+
+        if invoice.status != InvoiceStatus.DRAFT:
+            raise ValueError(g("INVALID_INVOICE_STATUS_MSG"))
+
+        invoice.invoice_type = invoice_type
+
+        if hasattr(form, "note") and hasattr(invoice, "note"):
+            invoice.note = form.note.data
+
+        invoice.status = InvoiceStatus.DRAFT if is_draft else InvoiceStatus.COMPLETED
+
+        invoice.supplier_id = None
+        invoice.customer_id = None
+
+        if invoice_type in (
+            InvoiceType.PURCHASE,
+            InvoiceType.PURCHASE_RETURN,
+        ):
+            invoice.supplier_id = supplier_id
+
+        elif invoice_type in (
+            InvoiceType.SALE,
+            InvoiceType.SALE_RETURN,
+        ):
+            invoice.customer_id = customer_id
+
+        InvoiceItem.query.filter(InvoiceItem.invoice_id == invoice.id).delete(
+            synchronize_session=False
+        )
+
+        db.session.flush()
+
+        total_amount = Decimal("0")
+
+        for item in items:
+
+            medicine_id = item.get("medicine_id")
+
+            quantity = int(item.get("quantity", 0))
+
+            unit_price = Decimal(str(item.get("unit_price", 0)))
+
+            if quantity <= 0:
+                raise ValueError(g("QUANTITY_MUST_BE_GREATER_THAN_ZERO_MSG"))
+
+            if unit_price < 0:
+                raise ValueError(g("UNIT_PRICE_CANNOT_BE_NEGATIVE_MSG"))
+
+            medicine = Medicine.query.filter_by(id=medicine_id).first()
+
+            if not medicine:
+                raise ValueError(g("MEDICINE_NOT_FOUND_MSG"))
+
+            item_total = Decimal(quantity) * unit_price
+
+            total_amount += item_total
+
+            invoice_item = InvoiceItem()
+            invoice_item.invoice_id = invoice.id
+            invoice_item.medicine_id = medicine.id
+            invoice_item.quantity = quantity
+            invoice_item.unit_price = unit_price
+            invoice_item.total_price = item_total
+
+            if is_draft:
+                invoice_item.batch_number = (
+                    item.get("batch_number")
+                    or item.get("purchase_batch_number")
+                    or item.get("return_batch_number")
+                )
+
+            else:
+
+                match invoice_type:
+
+                    case InvoiceType.PURCHASE:
+
+                        batch_number = item.get("purchase_batch_number") or item.get(
+                            "batch_number"
+                        )
+
+                        expiry_date = item.get("expiry_date")
+
+                        if not batch_number:
+                            raise ValueError(g("BATCH_NUMBER_IS_REQUIRED_MSG"))
+
+                        stock = MedicineStock()
+                        stock.medicine_id = medicine.id
+                        stock.batch_number = batch_number
+                        stock.quantity = quantity
+                        stock.purchase_price = unit_price
+                        stock.expiry_date = expiry_date
+
+                        db.session.add(stock)
+
+                        invoice_item.batch_number = batch_number
+
+                    case InvoiceType.SALE:
+
+                        stock = (
+                            MedicineStock.query.filter(
+                                MedicineStock.medicine_id == medicine.id,
+                                MedicineStock.quantity >= quantity,
+                                MedicineStock.batch_number.isnot(None),
+                            )
+                            .order_by(
+                                MedicineStock.expiry_date.asc(),
+                                MedicineStock.id.asc(),
+                            )
+                            .first()
+                        )
+
+                        if not stock:
+                            raise ValueError(g("NOT_ENOUGH_STOCK_AVAILABLE_MSG"))
+
+                        stock.quantity -= quantity
+
+                        invoice_item.batch_number = stock.batch_number
+
+                    case InvoiceType.PURCHASE_RETURN:
+
+                        batch_number = item.get("return_batch_number") or item.get(
+                            "batch_number"
+                        )
+
+                        if not batch_number:
+                            raise ValueError(g("BATCH_NUMBER_IS_REQUIRED_MSG"))
+
+                        stock = MedicineStock.query.filter(
+                            MedicineStock.medicine_id == medicine.id,
+                            MedicineStock.batch_number == batch_number,
+                            MedicineStock.quantity >= quantity,
+                        ).first()
+
+                        if not stock:
+                            raise ValueError(g("NOT_ENOUGH_STOCK_AVAILABLE_MSG"))
+
+                        stock.quantity -= quantity
+
+                        invoice_item.batch_number = batch_number
+
+                    case InvoiceType.SALE_RETURN:
+
+                        batch_number = item.get("return_batch_number") or item.get(
+                            "batch_number"
+                        )
+
+                        if not batch_number:
+                            raise ValueError(g("BATCH_NUMBER_IS_REQUIRED_MSG"))
+
+                        stock = MedicineStock.query.filter(
+                            MedicineStock.medicine_id == medicine.id,
+                            MedicineStock.batch_number == batch_number,
+                        ).first()
+
+                        if stock:
+
+                            stock.quantity += quantity
+
+                        else:
+
+                            stock = MedicineStock()
+                            stock.medicine_id = medicine.id
+                            stock.batch_number = batch_number
+                            stock.quantity = quantity
+                            stock.purchase_price = unit_price
+
+                            db.session.add(stock)
+
+                        invoice_item.batch_number = batch_number
+
+            db.session.add(invoice_item)
+
+        if is_draft:
+
+            db.session.commit()
+
+            response["title"] = g("INVOICE_UPDATED_LABEL")
+
+            response["message"] = g("INVOICE_SAVED_AS_DRAFT_SUCCESSFULLY_MSG")
+
+            response["category"] = "success"
+            response["id"] = invoice.id
+
+            return Response(
+                json.dumps(response),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+
+        paid_amount = Decimal(str(form.paid_amount.data or 0))
+
+        # Create invoice financial transaction
+        transaction = Transaction()
+        transaction.invoice_id = invoice.id
+        transaction.created_by = current_user.id
+        transaction.amount = total_amount
+
+        match invoice_type:
+
+            case InvoiceType.PURCHASE:
+
+                transaction.supplier_id = supplier_id
+                transaction.transaction_type = TransactionType.PURCHASE
+
+            case InvoiceType.SALE:
+
+                transaction.customer_id = customer_id
+                transaction.transaction_type = TransactionType.SALE
+
+            case InvoiceType.PURCHASE_RETURN:
+
+                transaction.supplier_id = supplier_id
+                transaction.transaction_type = TransactionType.PURCHASE_RETURN
+
+            case InvoiceType.SALE_RETURN:
+
+                transaction.customer_id = customer_id
+                transaction.transaction_type = TransactionType.SALE_RETURN
+
+        db.session.add(transaction)
+
+        if paid_amount > 0:
+
+            invoice.allocate_payment(
+                invoice,
+                paid_amount,
+                customer_id,
+                supplier_id,
+                current_user.id,
+            )
+
+        db.session.commit()
+
+        response["title"] = g("INVOICE_UPDATED_LABEL")
+
+        response["message"] = g("INVOICE_UPDATED_SUCCESSFULLY_MSG")
+
+        response["category"] = "success"
+        response["id"] = invoice.id
+
+    except (ValueError, KeyError, TypeError) as e:
+
+        db.session.rollback()
+
+        response["title"] = g("ERROR_ERROR")
+        response["message"] = str(e)
+        response["category"] = "error"
+
+    except Exception as e:
+
+        db.session.rollback()
+
+        response["title"] = g("ERROR_ERROR")
+        response["message"] = g("INVOICE_COULD_NOT_BE_UPDATED_MSG")
+        response["category"] = "error"
 
     return Response(
         json.dumps(response),
         status=200,
+        headers={"Content-Type": "application/json"},
     )
 
 

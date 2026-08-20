@@ -101,9 +101,4 @@ def create_app(config_class: type[Config] | None = None) -> Flask:
 
                 db.session.commit()
 
-    # Handle 404 errors
-    @app.errorhandler(404)
-    def _(_):
-        return redirect(url_for("admin.dashboard"))
-
     return app

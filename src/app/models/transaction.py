@@ -7,9 +7,15 @@ from app.models.base import Base
 class TransactionType(enum.Enum):
     SALE = "SALE"
     PURCHASE = "PURCHASE"
+
     PAYMENT = "PAYMENT"
+    REFUND = "REFUND"
+
     PURCHASE_RETURN = "PURCHASE_RETURN"
     SALE_RETURN = "SALE_RETURN"
+
+    CREDIT_USED = "CREDIT_USED"
+
     ADJUSTMENT = "ADJUSTMENT"
 
 
@@ -23,6 +29,11 @@ class Transaction(Base):
 
     supplier_id = db.Column(db.Integer, db.ForeignKey("suppliers.id"), nullable=True)
 
+    source_invoice_id = db.Column(
+        db.Integer,
+        db.ForeignKey("invoices.id"),
+        nullable=True,
+    )
     invoice_id = db.Column(db.Integer, db.ForeignKey("invoices.id"), nullable=True)
 
     amount = db.Column(db.Numeric(10, 2), nullable=False)
@@ -37,4 +48,14 @@ class Transaction(Base):
 
     supplier = db.relationship("Supplier", back_populates="transactions")
 
-    invoice = db.relationship("Invoice")
+    invoice = db.relationship(
+        "Invoice",
+        foreign_keys=[invoice_id],
+        back_populates="transactions",
+    )
+
+    source_invoice = db.relationship(
+        "Invoice",
+        foreign_keys=[source_invoice_id],
+        back_populates="source_transactions",
+    )

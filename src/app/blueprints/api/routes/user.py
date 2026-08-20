@@ -17,9 +17,9 @@ from app.models.user import User, permission_required
 
 cols: List[Tuple[ColumnID, ColumnName]] = [
     (ColumnID("id"), ColumnName(g("ID_LABEL"))),
-    (ColumnID("temp_user"), ColumnName(g("USER_LABEL"))),
+    (ColumnID("user"), ColumnName(g("USER_LABEL"))),
     (ColumnID("user_name"), ColumnName(g("USER_NAME_LABEL"))),
-    (ColumnID("birthday"), ColumnName(g("BIRTHDAY_LABEL"))),
+    (ColumnID("display_birthday"), ColumnName(g("BIRTHDAY_LABEL"))),
     (ColumnID("age"), ColumnName(g("AGE_LABEL"))),
 ]
 

@@ -1,0 +1,27 @@
+<div class="d-flex px-0 py-1">
+  <div>
+    <div
+      class="avatar avatar-sm border-radius-lg d-flex align-items-center justify-content-center {% if invoice.invoice_type.value == 'SALE' %} bg-gradient-success {% elif invoice.invoice_type.value == 'PURCHASE' %} bg-gradient-info {% elif invoice.invoice_type.value == 'SALE_RETURN' %} bg-gradient-warning {% elif invoice.invoice_type.value == 'PURCHASE_RETURN' %} bg-gradient-danger {% endif %}"
+    >
+      {{ invoice.invoice_number[0] }}
+    </div>
+  </div>
+
+  <div class="d-flex flex-column justify-content-center ms-0">
+    <h6 class="mb-0 text-sm text-start">
+      {{ invoice.invoice_number }}
+    </h6>
+
+    <p class="text-xs text-secondary mb-1 text-start text-lowercase">
+      {{ invoice.items.count() }} {{ _("ITEMS_LABEL") }}
+      <span class="mx-1">•</span>
+      {% if invoice.status.value == "COMPLETED" %}
+        {{ _("COMPLETED_LABEL")}}
+      {% elif invoice.status.value == "DRAFT"%}
+        {{ _("DRAFT_LABEL")}}
+      {% elif invoice.status.value == "CANCELLED" %}
+        {{ _("CANCELLED_LABEL")}}
+      {% endif %}
+    </p>
+  </div>
+</div>

@@ -1,3 +1,5 @@
+from flask import render_template
+
 from app.extensions.db import db
 from app.models.base import Base
 
@@ -21,3 +23,18 @@ class InvoiceItem(Base):
     invoice = db.relationship("Invoice", back_populates="items")
 
     medicine = db.relationship("Medicine")
+
+    def to_dict(self) -> dict:
+        return {
+            "medicine_id": self.medicine_id,
+            "medicine": render_template(
+                "admin/components/tables/td/medicine.html",
+                medicine=self.medicine,
+            ),
+            "batch_number": self.batch_number,
+            "quantity": self.quantity,
+            "unit_price": float(self.unit_price or 0),
+            "total_price": float(self.total_price or 0),
+            "is_deletable": self.invoice.status.value != "COMPLETED",
+            **getattr(super(), "to_dict")(),
+        }

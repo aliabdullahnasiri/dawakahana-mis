@@ -4,8 +4,8 @@ from datetime import date
 
 import jdatetime
 from flask import render_template, request, session
+from jinja2 import TemplateNotFound
 
-from app.config import Config
 from app.const import LANGUAGES
 
 
@@ -24,35 +24,24 @@ def get_file_url(id: int):
         return file.file_url
 
 
-def render_td(col_id: str, obj, max_length: int = 64) -> str:
-    dct = obj.to_dict()
+def render_td(name: str, obj) -> str:
+    dct = {obj.__class__.__name__.lower(): obj}
 
-    dct.setdefault("obj_{}".format(obj.__class__.__name__.lower()), obj)
+    value = None
 
-    for TEMP in Config.TD_TEMPS:
-        if col_id.startswith(let := "temp_"):
-            col_id = col_id[len(let) :]
+    try:
+        return render_template(
+            f"admin/components/tables/td/{name}.html",
+            **dct
+            | ({name: (value := getattr(obj, name))} if hasattr(obj, name) else {}),
+        )
+    except TemplateNotFound as _:
+        pass
 
-        if col_id == TEMP.name.split(chr(46)).pop(0):
-            try:
-                return render_template(
-                    f"admin/components/tables/td/{TEMP.name}",
-                    **{col_id: getattr(obj, col_id)},
-                )
-            except AttributeError as _:
-                pass
+    if value is not None:
+        return value
 
-            return render_template(f"admin/components/tables/td/{TEMP.name}", **dct)
-
-    if hasattr(obj, attr := f"display_{col_id}"):
-        return getattr(obj, attr)
-
-    val = dct.get(col_id, "N/A")
-
-    if type(val) == str and len(val) > max_length:
-        return "{}...".format(val[slice(max_length)])
-
-    return val
+    return "N/A"
 
 
 def __import_all__(path: str) -> None:

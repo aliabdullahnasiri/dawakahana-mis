@@ -15,10 +15,10 @@ from app.models.user import permission_required
 
 cols: List[Tuple[ColumnID, ColumnName]] = [
     (ColumnID("id"), ColumnName(g("ID_LABEL"))),
-    (ColumnID("temp_medicine"), ColumnName(g("MEDICINE_LABEL"))),
+    (ColumnID("medicine"), ColumnName(g("MEDICINE_LABEL"))),
     (ColumnID("batch_number"), ColumnName(g("BATCH_NUMBER_LABEL"))),
     (ColumnID("quantity"), ColumnName(g("QUANTITY_LABEL"))),
-    (ColumnID("expiry_date"), ColumnName(g("EXPIRY_DATE_LABEL"))),
+    (ColumnID("display_expiry_date"), ColumnName(g("EXPIRY_DATE_LABEL"))),
 ]
 
 
@@ -26,7 +26,10 @@ cols: List[Tuple[ColumnID, ColumnName]] = [
 @permission_required(Permission.get("FETCH_MEDICINE_STOCKS"))
 def fetch_medicine_stocks():
 
-    stocks = [stock.to_dict() for stock in MedicineStock.query.all()]
+    stocks = [
+        stock.to_dict()
+        for stock in MedicineStock.query.filter(MedicineStock.quantity > 0).all()
+    ]
 
     return Response(
         json.dumps(stocks),
@@ -63,7 +66,7 @@ def fetch_medicine_stock(id) -> Response:
 @permission_required(Permission.get("FETCH_MEDICINE_STOCKS"))
 def fetch_medicine_stocks_rows():
 
-    stocks = MedicineStock.query.all()
+    stocks = MedicineStock.query.filter(MedicineStock.quantity > 0).all()
 
     rows = []
 

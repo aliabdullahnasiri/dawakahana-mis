@@ -78,8 +78,9 @@ export function resetForm(form) {
 
   // Recreate Bootstrap Select
   selectElements.forEach((selectElement) => {
-
-    const input = document.querySelector(`input[type="hidden"]#${selectElement.id}`);
+    const input = document.querySelector(
+      `input[type="hidden"]#${selectElement.id}`,
+    );
 
     if (input) {
       input.value = selectElement.value;
@@ -394,22 +395,25 @@ export function createProgressBar(now_value, min_value, max_value) {
   return divElement;
 }
 
-export function groupSwitcher(select) {
-  document
-    .querySelectorAll("[data-group-id], [data-second-group-id]")
-    .forEach((element) => {
-      const group = element.closest(".row, .group");
+export function groupSwitcher(select, _form) {
+  let form = _form || select.closest("form");
 
-      if (!group) {
-        return;
-      }
+  if (form)
+    form
+      .querySelectorAll("[data-group-id], [data-second-group-id]")
+      .forEach((element) => {
+        const group = element.closest(".row, .group");
 
-      const matches =
-        element.dataset.groupId === select.value ||
-        element.dataset.secondGroupId === select.value;
+        if (!group) {
+          return;
+        }
 
-      group.classList.toggle("d-none", !matches);
-    });
+        const matches =
+          element.dataset.groupId === select.value ||
+          element.dataset.secondGroupId === select.value;
+
+        group.classList.toggle("d-none", !matches);
+      });
 }
 
 export function upload(files, dropZone) {
@@ -741,6 +745,9 @@ export function upload(files, dropZone) {
       params.set("search-col", target.dataset.searchCol);
       params.set("select-val", target.dataset.selectVal);
       params.set("template", target.dataset.template);
+      if (target.dataset.basedOn)
+        params.set("where", `${target.dataset.basedOn}=${document.querySelector('#' + target.dataset.basedOn)?.value}`)
+
 
       url = url.concat(String.fromCharCode(63)).concat(params.toString());
 

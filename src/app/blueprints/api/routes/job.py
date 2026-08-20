@@ -16,8 +16,8 @@ from app.models.user import permission_required
 cols: List[Tuple[ColumnID, ColumnName]] = [
     (ColumnID("id"), ColumnName(g("id_LABEL"))),
     (ColumnID("job_title"), ColumnName(g("JOB_TITLE_LABEL"))),
-    (ColumnID("min_salary"), ColumnName(g("MIN_SALARY_LABEL"))),
-    (ColumnID("max_salary"), ColumnName(g("MAX_SALARY_LABEL"))),
+    (ColumnID("display_min_salary"), ColumnName(g("MIN_SALARY_LABEL"))),
+    (ColumnID("display_max_salary"), ColumnName(g("MAX_SALARY_LABEL"))),
 ]
 
 

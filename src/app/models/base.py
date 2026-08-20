@@ -4,6 +4,7 @@ from decimal import Decimal
 from typing import Any
 
 import jdatetime
+from flask import request
 from numerize import numerize
 from sqlalchemy import Column, Date, DateTime, event, extract, func
 from sqlalchemy.ext.declarative import declared_attr
@@ -224,6 +225,22 @@ def before_insert(mapper, connection, target) -> None: ...
 
 @event.listens_for(Base, "after_insert", propagate=True)
 def after_insert(mapper, connection, target) -> None: ...
+
+
+def all(self):
+    try:
+        page = int(request.args.get("page", 1))
+        limit = int(request.args.get("limit", 100))
+        offset = (page - 1) * limit
+
+        return self.offset(offset).limit(abs(limit))
+    except Exception as err:
+        print(err)
+
+    return self
+
+
+db.Model.query_class.all = all
 
 
 db.Model = Base

@@ -18,10 +18,10 @@ from app.models.user import User, permission_required
 
 cols: List[Tuple[ColumnID, ColumnName]] = [
     (ColumnID("id"), ColumnName(g("ID_LABEL"))),
-    (ColumnID("temp_employee"), ColumnName(g("EMPLOYEE_LABEL"))),
-    (ColumnID("birthday"), ColumnName(g("BIRTHDAY_LABEL"))),
+    (ColumnID("employee"), ColumnName(g("EMPLOYEE_LABEL"))),
+    (ColumnID("display_birthday"), ColumnName(g("BIRTHDAY_LABEL"))),
     (ColumnID("age"), ColumnName(g("AGE_LABEL"))),
-    (ColumnID("hire_date"), ColumnName(g("HIRE_DATE_LABEL"))),
+    (ColumnID("display_hire_date"), ColumnName(g("HIRE_DATE_LABEL"))),
     (ColumnID("salary"), ColumnName(g("SALARY_LABEL"))),
 ]
 

@@ -530,3 +530,15 @@ body.dark-version .suggestions-container .item:hover {
 .autocomplete-results ul {
   padding-top: 0px !important;
 }
+
+
+table[data-role=invoice-item] td{
+  padding: 10px !important;
+
+}
+
+
+#EditInvoiceModal tr:has([data-total-debt]),
+#EditInvoiceModal tr:has([data-total-credit]) {
+  display: none;
+}
